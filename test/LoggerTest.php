@@ -22,6 +22,9 @@
 
 namespace ZendTest\Log;
 
+require_once __DIR__ . '/TestAsset/NotExtendedWriterAbstract.php';
+require_once __DIR__ . '/TestAsset/NotImplementsFilterInterface.php';
+
 use \Zend\Log\Logger,
     \Zend\Log;
 
@@ -320,5 +323,102 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         } else {
             $this->assertTrue(empty($this->errWriter->events));
         }
+    }
+
+    /**
+     * @group ZF-9870
+     */
+    public function testSetAndGetTimestampFormat()
+    {
+        $logger = new Logger($this->writer);
+        $this->assertEquals('c', $logger->getTimestampFormat());
+        $this->assertSame($logger, $logger->setTimestampFormat('Y-m-d H:i:s'));
+        $this->assertEquals('Y-m-d H:i:s', $logger->getTimestampFormat());
+    }
+
+    /**
+     * @group ZF-9870
+     */
+    public function testLogWritesWithModifiedTimestampFormat()
+    {
+        $logger = new Logger($this->writer);
+        $logger->setTimestampFormat('Y-m-d');
+        $logger->debug('ZF-9870');
+        rewind($this->log);
+        $message = stream_get_contents($this->log);
+        $this->assertEquals(date('Y-m-d'), substr($message, 0, 10));
+    }
+
+    /**
+     * @group ZF-9955
+     */
+    public function testExceptionConstructWriterFromConfig()
+    {
+        try {
+            $logger = new Logger();
+            $writer = array('writerName' => 'NotExtendedWriterAbstract');
+            $logger->addWriter($writer);
+        } catch (\Exception $e) {
+            $this->assertType('Zend\Log\Exception', $e);
+            $this->assertRegExp('#^(Zend\\\\Log\\\\Writer\\\\NotExtendedWriterAbstract|The\sspecified\swriter)#', $e->getMessage());
+        }
+    }
+
+    /**
+     * @group ZF-9956
+     */
+    public function testExceptionConstructFilterFromConfig()
+    {
+        try {
+            $logger = new Logger();
+            $filter = array('filterName' => 'NotImplementsFilterInterface');
+            $logger->addFilter($filter);
+        } catch (\Exception $e) {
+            $this->assertType('Zend\Log\Exception', $e);
+            $this->assertRegExp('#^(Zend\\\\Log\\\\Filter\\\\NotImplementsFilterInterface|The\sspecified\sfilter)#', $e->getMessage());
+        }
+    }
+
+    /**
+     * @group ZF-8953
+     */
+    public function testFluentInterface()
+    {
+        $logger   = new Zend_Log();
+        $instance = $logger->addPriority('all', 8)
+                           ->addFilter(1)
+                           ->addWriter(array('writerName' => 'Null'))
+                           ->setEventItem('os', PHP_OS);
+
+        $this->assertTrue($instance instanceof Zend_Log);
+    }
+
+    /**
+     * @group ZF-10170
+     */
+    public function testPriorityDuplicates()
+    {
+        $logger   = new Zend_Log();
+        $mock     = new Zend_Log_Writer_Mock();
+        $logger->addWriter($mock);
+        try {
+            $logger->addPriority('emerg', 8);
+            $this->fail();
+        } catch(Exception $e) {
+            $this->assertType('Zend_Log_Exception', $e);
+            $this->assertEquals('Existing priorities cannot be overwritten', $e->getMessage());
+        }
+
+        try {
+            $logger->log('zf10170', 0);
+            $logger->log('clone zf10170', 8);
+            $this->fail();
+        } catch (Exception $e) {
+            $this->assertType('Zend_Log_Exception', $e);
+            $this->assertEquals('Bad log priority', $e->getMessage());
+        }
+        $this->assertEquals(0, $mock->events[0]['priority']);
+        $this->assertEquals('EMERG', $mock->events[0]['priorityName']);
+        $this->assertFalse(array_key_exists(1, $mock->events));
     }
 }

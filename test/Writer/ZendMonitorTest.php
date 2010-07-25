@@ -14,49 +14,48 @@
  *
  * @category   Zend
  * @package    Zend_Log
- * @subpackage Writer
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
-/**
- * @namespace
- */
-namespace Zend\Log\Filter;
-use Zend\Log\Factory,
-    Zend\Log\Filter;
+/** PHPUnit_Framework_TestCase */
+require_once 'PHPUnit/Framework/TestCase.php';
+
+/** Zend_Log_Writer_ZendMonitor */
+require_once 'Zend/Log/Writer/ZendMonitor.php';
 
 /**
- * @uses       \Zend\Log\Exception
- * @uses       \Zend\Log\Filter\FilterInterface
- * @uses       \Zend\Log\FactoryInterface
  * @category   Zend
  * @package    Zend_Log
- * @subpackage Writer
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @group      Zend_Log
  */
-abstract class AbstractFilter implements Filter, Factory
+class Zend_Log_Writer_ZendMonitorTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Validate and optionally convert the config to array
-     * 
-     * @param  array|\Zend\Config\Config $config \Zend\Config\Config or Array
-     * @return array
-     * @throws \Zend\Log\Exception
+     * @group ZF-10081
      */
-    static protected function _parseConfig($config)
+    public function testWrite()
     {
-        if ($config instanceof \Zend\Config\Config) {
-            $config = $config->toArray();
-        }
+        $writer = new Zend_Log_Writer_ZendMonitor();
+        $writer->write(array('message' => 'my mess', 'priority' => 1));
+    }
 
-        if (!is_array($config)) {
-            throw new \Zend\Log\Exception('Configuration must be an array or instance of Zend\\Config\\Config');
-        }
+    public function testFactory()
+    {
+        $cfg = array();
 
-        return $config;
+        $writer = Zend_Log_Writer_ZendMonitor::factory($cfg);
+        $this->assertTrue($writer instanceof Zend_Log_Writer_ZendMonitor);
+    }
+
+    public function testIsEnabled()
+    {
+        $writer = new Zend_Log_Writer_ZendMonitor();
+        $this->assertType('boolean', $writer->isEnabled());
     }
 }

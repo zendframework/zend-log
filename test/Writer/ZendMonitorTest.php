@@ -14,58 +14,50 @@
  *
  * @category   Zend
  * @package    Zend_Log
- * @subpackage Writer
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
-/**
- * @namespace
- */
-namespace Zend\Log;
+namespace ZendTest\Log\Writer;
+
+/** PHPUnit_Framework_TestCase */
+require_once 'PHPUnit/Framework/TestCase.php';
+
+/** Zend_Log_Writer_ZendMonitor */
+require_once 'Zend/Log/Writer/ZendMonitor.php';
 
 /**
- * @uses       \Zend\Log\Exception
- * @uses       \Zend\Log\FactoryInterface
- * @uses       \Zend\Log\Filter\Priority
  * @category   Zend
  * @package    Zend_Log
- * @subpackage Writer
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
+ * @group      Zend_Log
  */
-interface Writer
+class ZendMonitorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Add a log filter to the writer
-     * 
-     * @param  int|\Zend\Log\Filter $filter 
-     * @return Writer
+     * @group ZF-10081
      */
-    public function addFilter($filter);
+    public function testWrite()
+    {
+        $writer = new \Zend\Log\Writer\ZendMonitor();
+        $writer->write(array('message' => 'my mess', 'priority' => 1));
+    }
 
-    /**
-     * Set a message formatter for the writer
-     * 
-     * @param  \Zend\Log\Formatter|Callable $formatter 
-     * @return Writer
-     */
-    public function setFormatter(Formatter $formatter);
+    public function testFactory()
+    {
+        $cfg = array();
 
-    /**
-     * Write a log message
-     * 
-     * @param  array|mixed $event 
-     * @return Writer
-     */
-    public function write($event);
+        $writer = \Zend\Log\Writer\ZendMonitor::factory($cfg);
+        $this->assertTrue($writer instanceof \Zend\Log\Writer\ZendMonitor);
+    }
 
-    /**
-     * Perform shutdown activities
-     * 
-     * @return void
-     */
-    public function shutdown();
+    public function testIsEnabled()
+    {
+        $writer = new \Zend\Log\Writer\ZendMonitor();
+        $this->assertType('boolean', $writer->isEnabled());
+    }
 }

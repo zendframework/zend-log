@@ -15,38 +15,45 @@
  * @category   Zend
  * @package    Zend_Log
  * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendTest\Log\Writer;
+namespace ZendTest\Log\Formatter;
 
-use \Zend\Log\Writer\Null as NullWriter,
-    \Zend\Log\Logger;
+use Zend\Log\Formatter\Firebug;
 
 /**
  * @category   Zend
  * @package    Zend_Log
  * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
-class NullTest extends \PHPUnit_Framework_TestCase
+class FirebugTest extends \PHPUnit_Framework_TestCase
 {
-    public function testWrite()
+    public function testFormat()
     {
-        $writer = new NullWriter();
-        $writer->write(array('message' => 'foo', 'priority' => 42));
+        $event = array(
+            'timestamp' => date('c'),
+        	'message' => 'tottakai',
+            'priority' => 2,
+        	'priorityName' => 'CRIT'
+        );
+        $formatter = new Firebug();
+        $output = $formatter->format($event);
+
+        $this->assertEquals('tottakai', $output);
     }
 
+    /**
+     * @group ZF-9176
+     */
     public function testFactory()
     {
-        $cfg = array('log' => array('memory' => array(
-            'writerName' => "Null"
-        )));
-
-        $logger = Logger::factory($cfg['log']);
-        $this->assertTrue($logger instanceof Logger);
+        $options = array();
+        $formatter = Firebug::factory($options);
+        $this->assertInstanceOf('Zend\Log\Formatter\Firebug', $formatter);
     }
 }

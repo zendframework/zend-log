@@ -14,7 +14,7 @@
  *
  * @category   Zend
  * @package    Zend_Log
- * @subpackage Writer
+ * @subpackage Formatter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
@@ -22,36 +22,19 @@
 /**
  * @namespace
  */
-namespace Zend\Log\Writer;
+namespace Zend\Log\Formatter;
+use \Zend\Log\Factory,
+    \Zend\Log\Formatter;
 
 /**
- * @uses       \Zend\Log\Writer\AbstractWriter
+ * @uses       \Zend\Log\Factory
+ * @uses       \Zend\Log\Formatter
  * @category   Zend
  * @package    Zend_Log
- * @subpackage Writer
+ * @subpackage Formatter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Null extends AbstractWriter
+abstract class AbstractFormatter implements Formatter, Factory
 {
-    /**
-     * Write a message to the log.
-     *
-     * @param  array  $event  event data
-     * @return void
-     */
-    protected function _write($event)
-    {
-    }
-
-    /**
-     * Create a new instance of Zend_Log_Writer_Null
-     *
-     * @param  array|\Zend\Config\Config $config
-     * @return \Zend\Log\Writer\Null
-     */
-    static public function factory($config = array())
-    {
-        return new self();
-    }
 }

@@ -23,19 +23,17 @@
  */
 namespace Zend\Log;
 
+use Zend\Log\Logger;
+
 /**
+ * Logger aware interface
+ *
  * @category   Zend
  * @package    Zend_Log
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Factory
+interface LoggerAware
 {
-    /**
-     * Construct a Zend_Log driver
-     *
-     * @param  array|\Zend\Config\Config $config
-     * @return \Zend\Log\Factory
-     */
-    static public function factory($config = array());
+    public function setLogger(Logger $logger);
 }

@@ -21,7 +21,7 @@
 
 namespace ZendTest\Log\Formatter;
 
-use Zend\Log\Formatter\Firebug;
+use Zend\Log\Formatter\ExceptionHandler;
 
 /**
  * @category   Zend
@@ -31,29 +31,34 @@ use Zend\Log\Formatter\Firebug;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
-class FirebugTest extends \PHPUnit_Framework_TestCase
+class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
 {
     public function testFormat()
     {
+        $date = date('c');
         $event = array(
-            'timestamp' => date('c'),
-        	'message' => 'tottakai',
-            'priority' => 2,
-        	'priorityName' => 'CRIT'
+            'timestamp'    => $date,
+            'message'      => 'test',
+            'priority'     => 1,
+            'priorityName' => 'CRIT',
+            'extra' => array (
+                'file'  => 'test.php',
+                'line'  => 1,
+                'trace' => array(array(
+                    'file'     => 'test.php',
+                    'line'     => 1,
+                    'function' => 'test',
+                    'class'    => 'Test',
+                    'type'     => '::',
+                    'args'     => array(1)
+                ))
+            )
         );
-        $formatter = new Firebug();
+        $formatter = new ExceptionHandler();
         $output = $formatter->format($event);
 
-        $this->assertEquals('tottakai', $output);
-    }
-
-    /**
-     * @group ZF-9176
-     */
-    public function testFactory()
-    {
-        $options = array();
-        $formatter = Firebug::factory($options);
-        $this->assertInstanceOf('Zend\Log\Formatter\Firebug', $formatter);
+        $this->assertEquals($date . " CRIT (1) test in test.php on line 1\n" .
+                "[Trace]\nFile  : test.php\nLine  : 1\nFunc  : test\nClass : Test\n" .
+                "Type  : static\nArgs  : Array\n(\n    [0] => 1\n)\n\n", $output);
     }
 }

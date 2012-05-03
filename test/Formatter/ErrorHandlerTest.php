@@ -19,10 +19,9 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendTest\Log\Writer;
+namespace ZendTest\Log\Formatter;
 
-use Zend\Log\Writer\Mock as MockWriter,
-    Zend\Log\Logger;
+use Zend\Log\Formatter\ErrorHandler;
 
 /**
  * @category   Zend
@@ -32,15 +31,25 @@ use Zend\Log\Writer\Mock as MockWriter,
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
-class MockTest extends \PHPUnit_Framework_TestCase
+class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testWrite()
+    public function testFormat()
     {
-        $writer = new MockWriter();
-        $this->assertSame(array(), $writer->events);
+        $date = date('c');
+        $event = array(
+            'timestamp'    => $date,
+            'message'      => 'test',
+            'priority'     => 1,
+            'priorityName' => 'CRIT',
+            'extra' => array (
+                'errno' => 1,
+                'file'  => 'test.php',
+                'line'  => 1
+            )
+        );
+        $formatter = new ErrorHandler();
+        $output = $formatter->format($event);
 
-        $fields = array('foo' => 'bar');
-        $writer->write($fields);
-        $this->assertSame(array($fields), $writer->events);
+        $this->assertEquals($date . ' CRIT (1) test (errno 1) in test.php on line 1', $output);
     }
 }

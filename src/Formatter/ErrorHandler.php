@@ -19,11 +19,12 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
+/**
+ * @namespace
+ */
 namespace Zend\Log\Formatter;
-
 use Zend\Log\Formatter,
-    Zend\Log\Exception,
-    Zend\Config\Config;
+    Zend\Log\Exception;
 
 /**
  * @category   Zend
@@ -32,58 +33,55 @@ use Zend\Log\Formatter,
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Simple implements Formatter
+class ErrorHandler implements Formatter
 {
+    const DEFAULT_FORMAT = '%timestamp% %priorityName% (%priority%) %message% (errno %extra[errno]%) in %extra[file]% on line %extra[line]%';
+    
     /**
-     * @var string
+     * Format
+     * 
+     * @var string 
      */
-    protected $_format;
-
-    const DEFAULT_FORMAT = '%timestamp% %priorityName% (%priority%): %message% %info%';
-
+    protected $format;
+    
     /**
      * Class constructor
      *
      * @param  null|string  $format  Format specifier for log messages
      * @return void
-     * @throws \Zend\Log\Exception\InvalidArgumentException
+     * @throws Zend\Log\Exception\InvalidArgumentException
      */
     public function __construct($format = null)
     {
         if ($format === null) {
-            $format = self::DEFAULT_FORMAT . PHP_EOL;
+            $format = self::DEFAULT_FORMAT;
         }
 
         if (!is_string($format)) {
             throw new Exception\InvalidArgumentException('Format must be a string');
         }
 
-        $this->_format = $format;
+        $this->format = $format;
     }
 
     /**
-     * Formats data into a single line to be written by the writer.
+     * This method formats the event for the PHP Error Handler.
      *
-     * @param  array    $event    event data
-     * @return string             formatted line to write to the log
+     * @param  array $event
+     * @return string
      */
     public function format($event)
     {
-        $output = $this->_format;
-
-        if (!isset($event['info'])) {
-            $event['info'] = '';
-        }
+        $output = $this->format;
         foreach ($event as $name => $value) {
-            if ((is_object($value) && !method_exists($value,'__toString'))
-                || is_array($value)
-            ) {
-                $value = gettype($value);
+            if (is_array($value)) {
+                foreach ($value as $sname => $svalue) {
+                    $output = str_replace("%{$name}[{$sname}]%", $svalue, $output);
+                }
+            } else {
+                $output = str_replace("%$name%", $value, $output);
             }
-
-            $output = str_replace("%$name%", $value, $output);
         }
-
         return $output;
     }
 }

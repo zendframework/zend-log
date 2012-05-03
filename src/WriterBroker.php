@@ -14,33 +14,44 @@
  *
  * @category   Zend
  * @package    Zend_Log
- * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-
-namespace ZendTest\Log\Writer;
-
-use Zend\Log\Writer\Mock as MockWriter,
-    Zend\Log\Logger;
 
 /**
+ * @namespace
+ */
+namespace Zend\Log;
+
+use Zend\Loader\PluginBroker;
+
+/**
+ * @uses       \Zend\Loader\PluginBroker
  * @category   Zend
  * @package    Zend_Log
- * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Log
  */
-class MockTest extends \PHPUnit_Framework_TestCase
+class WriterBroker extends PluginBroker
 {
-    public function testWrite()
-    {
-        $writer = new MockWriter();
-        $this->assertSame(array(), $writer->events);
+    /**
+     * @var string Default plugin loading strategy
+     */
+    protected $defaultClassLoader = 'Zend\Log\WriterLoader';
 
-        $fields = array('foo' => 'bar');
-        $writer->write($fields);
-        $this->assertSame(array($fields), $writer->events);
+    /**
+     * Determine whether we have a valid plugin
+     *
+     * @param mixed $plugin
+     * @return boolean
+     * @throws Exception\InvalidArgumentException
+     */
+    protected function validatePlugin($plugin)
+    {
+        if (!$plugin instanceof Writer) {
+            throw new Exception\InvalidArgumentException('Writer must implement Zend\Log\Writer');
+        }
+
+        return true;
     }
 }

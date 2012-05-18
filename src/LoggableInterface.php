@@ -29,61 +29,61 @@ namespace Zend\Log;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Loggable
+interface LoggableInterface
 {
     /**
      * @param string $message
      * @param array|\Traversable $extra
-     * @return Loggabble
+     * @return LoggabbleInterface
      */
     public function emerg($message, $extra = array());
 
     /**
      * @param string $message
      * @param array|\Traversable $extra
-     * @return Loggabble
+     * @return LoggabbleInterface
      */
     public function alert($message, $extra = array());
 
     /**
      * @param string $message
      * @param array|\Traversable $extra
-     * @return Loggabble
+     * @return LoggabbleInterface
      */
     public function crit($message, $extra = array());
 
     /**
      * @param string $message
      * @param array|\Traversable $extra
-     * @return Loggabble
+     * @return LoggabbleInterface
      */
     public function err($message, $extra = array());
 
     /**
      * @param string $message
      * @param array|\Traversable $extra
-     * @return Loggabble
+     * @return LoggabbleInterface
      */
     public function warn($message, $extra = array());
 
     /**
      * @param string $message
      * @param array|\Traversable $extra
-     * @return Loggabble
+     * @return LoggabbleInterface
      */
     public function notice($message, $extra = array());
 
     /**
      * @param string $message
      * @param array|\Traversable $extra
-     * @return Loggabble
+     * @return LoggabbleInterface
      */
     public function info($message, $extra = array());
 
     /**
      * @param string $message
      * @param array|\Traversable $extra
-     * @return Loggabble
+     * @return LoggabbleInterface
      */
     public function debug($message, $extra = array());
 }

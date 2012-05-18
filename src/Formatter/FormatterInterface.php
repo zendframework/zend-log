@@ -18,12 +18,7 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/**
- * @namespace
- */
-namespace Zend\Log;
-
-use Zend\Loader\PluginClassLoader;
+namespace Zend\Log\Formatter;
 
 /**
  * @category   Zend
@@ -31,19 +26,13 @@ use Zend\Loader\PluginClassLoader;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class WriterLoader extends PluginClassLoader
+interface FormatterInterface
 {
     /**
-     * @var array Pre-aliased writers
+     * Formats data into a single line to be written by the writer.
+     *
+     * @param  array    $event    event data
+     * @return string             formatted line to write to the log
      */
-    protected $plugins = array(
-        'db'           => 'Zend\Log\Writer\Db',
-        'firebug'      => 'Zend\Log\Writer\Firebug',
-        'mail'         => 'Zend\Log\Writer\Mail',
-        'mock'         => 'Zend\Log\Writer\Mock',
-        'null'         => 'Zend\Log\Writer\Null',
-        'stream'       => 'Zend\Log\Writer\Stream',
-        'syslog'       => 'Zend\Log\Writer\Syslog',
-        'zend_monitor' => 'Zend\Log\Writer\ZendMonitor',
-    );
+    public function format($event);
 }

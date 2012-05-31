@@ -23,7 +23,7 @@
  */
 namespace Zend\Log;
 
-use Zend\Log\Logger;
+use Zend\Log\LoggerInterface;
 
 /**
  * Logger aware interface
@@ -33,7 +33,7 @@ use Zend\Log\Logger;
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface LoggerAware
+interface LoggerAwareInterface
 {
-    public function setLogger(Logger $logger);
+    public function setLogger(LoggerInterface $logger);
 }

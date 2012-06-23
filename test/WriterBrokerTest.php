@@ -19,10 +19,9 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendTest\Log\Writer;
+namespace ZendTest\Log;
 
-use Zend\Log\Writer\Mock as MockWriter,
-    Zend\Log\Logger;
+use Zend\Log\WriterBroker;
 
 /**
  * @category   Zend
@@ -32,15 +31,21 @@ use Zend\Log\Writer\Mock as MockWriter,
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
-class MockTest extends \PHPUnit_Framework_TestCase
+class WriterBrokerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testWrite()
+    public function setUp()
     {
-        $writer = new MockWriter();
-        $this->assertSame(array(), $writer->events);
+        $this->broker = new WriterBroker();
+    }
 
-        $fields = array('foo' => 'bar');
-        $writer->write($fields);
-        $this->assertSame(array($fields), $writer->events);
+    public function testUsesWriterLoaderAsDefaultClassLoader()
+    {
+        $this->assertInstanceOf('Zend\Log\WriterLoader', $this->broker->getClassLoader());
+    }
+
+    public function testRegisteringInvalidWriterRaisesException()
+    {
+        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'must implement');
+        $this->broker->register('test', $this);
     }
 }

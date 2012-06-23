@@ -14,33 +14,17 @@
  *
  * @category   Zend
  * @package    Zend_Log
- * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendTest\Log\Writer;
-
-use Zend\Log\Writer\Mock as MockWriter,
-    Zend\Log\Logger;
+namespace Zend\Log\Exception;
 
 /**
  * @category   Zend
  * @package    Zend_Log
- * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Log
  */
-class MockTest extends \PHPUnit_Framework_TestCase
-{
-    public function testWrite()
-    {
-        $writer = new MockWriter();
-        $this->assertSame(array(), $writer->events);
-
-        $fields = array('foo' => 'bar');
-        $writer->write($fields);
-        $this->assertSame(array($fields), $writer->events);
-    }
-}
+interface ExceptionInterface
+{}

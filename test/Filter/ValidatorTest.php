@@ -19,9 +19,13 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendTest\Log\Writer;
+namespace ZendTest\Log\Filter;
 
-use Zend\Log\Writer\ZendMonitor;
+use Zend\Log\Logger,
+    Zend\Log\Filter\Validator,
+    Zend\Validator\ValidatorChain,
+    Zend\Validator\Alnum,
+    Zend\Validator\Int;
 
 /**
  * @category   Zend
@@ -31,23 +35,24 @@ use Zend\Log\Writer\ZendMonitor;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
-class ZendMonitorTest extends \PHPUnit_Framework_TestCase
+class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @group ZF-10081
-     */
-    public function testWrite()
+    public function testValidatorFilter()
     {
-        $writer = new ZendMonitor();
-        $writer->write(array(
-            'message' => 'my mess',
-            'priority' => 1
-        ));
+        $filter = new Validator(new Alnum());
+        $this->assertTrue($filter->filter(array('message' => '123')));
+        $this->assertTrue($filter->filter(array('message' => 'test')));
+        $this->assertTrue($filter->filter(array('message' => 'test123')));
+        $this->assertFalse($filter->filter(array('message' => '(%$')));
     }
-
-    public function testIsEnabled()
+    
+    public function testValidatorChain()
     {
-        $writer = new ZendMonitor();
-        $this->assertInternalType('boolean', $writer->isEnabled());
+        $validatorChain = new ValidatorChain();
+        $validatorChain->addValidator(new Alnum());
+        $validatorChain->addValidator(new Int());
+        $filter = new Validator($validatorChain);
+        $this->assertTrue($filter->filter(array('message' => '123')));
+        $this->assertFalse($filter->filter(array('message' => 'test')));
     }
 }

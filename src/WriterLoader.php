@@ -23,19 +23,27 @@
  */
 namespace Zend\Log;
 
+use Zend\Loader\PluginClassLoader;
+
 /**
  * @category   Zend
  * @package    Zend_Log
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Factory
+class WriterLoader extends PluginClassLoader
 {
     /**
-     * Construct a Zend_Log driver
-     *
-     * @param  array|\Zend\Config\Config $config
-     * @return \Zend\Log\Factory
+     * @var array Pre-aliased writers
      */
-    static public function factory($config = array());
+    protected $plugins = array(
+        'db'           => 'Zend\Log\Writer\Db',
+        'firebug'      => 'Zend\Log\Writer\Firebug',
+        'mail'         => 'Zend\Log\Writer\Mail',
+        'mock'         => 'Zend\Log\Writer\Mock',
+        'null'         => 'Zend\Log\Writer\Null',
+        'stream'       => 'Zend\Log\Writer\Stream',
+        'syslog'       => 'Zend\Log\Writer\Syslog',
+        'zend_monitor' => 'Zend\Log\Writer\ZendMonitor',
+    );
 }

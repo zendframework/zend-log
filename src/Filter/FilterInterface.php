@@ -14,27 +14,25 @@
  *
  * @category   Zend
  * @package    Zend_Log
- * @subpackage Formatter
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/**
- * @namespace
- */
-namespace Zend\Log\Formatter;
-use \Zend\Log\Factory,
-    \Zend\Log\Formatter;
+namespace Zend\Log\Filter;
 
 /**
- * @uses       \Zend\Log\Factory
- * @uses       \Zend\Log\Formatter
  * @category   Zend
  * @package    Zend_Log
- * @subpackage Formatter
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class AbstractFormatter implements Formatter, Factory
+interface FilterInterface
 {
+    /**
+     * Returns TRUE to accept the message, FALSE to block it.
+     *
+     * @param array $event event data
+     * @return boolean accepted?
+     */
+    public function filter(array $event);
 }

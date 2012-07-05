@@ -1,6 +1,6 @@
 {
     "name": "zendframework/zend-log",
-    "description": "Zend\\Log component",
+    "description": "component for general purpose logging",
     "license": "BSD-3-Clause",
     "keywords": [
         "zf2",
@@ -10,11 +10,11 @@
     "homepage": "https://github.com/zendframework/zend-log",
     "autoload": {
         "psr-4": {
-            "Zend\\Log\\": "src/"
+            "Zend\\Log": "src/"
         }
     },
     "require": {
-        "php": ">=5.3.23",
+        "php": ">=5.3.3",
         "zendframework/zend-servicemanager": "self.version",
         "zendframework/zend-stdlib": "self.version"
     },

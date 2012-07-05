@@ -14,54 +14,33 @@
  *
  * @category   Zend
  * @package    Zend_Log
- * @subpackage Writer
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Log\Writer;
+namespace ZendTest\Log;
+
+use Zend\Log\WriterPluginManager;
 
 /**
  * @category   Zend
  * @package    Zend_Log
- * @subpackage Writer
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @group      Zend_Log
  */
-class Mock extends AbstractWriter
+class WriterPluginManagerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * array of log events
-     *
-     * @var array
-     */
-    public $events = array();
-
-    /**
-     * shutdown called?
-     *
-     * @var boolean
-     */
-    public $shutdown = false;
-
-    /**
-     * Write a message to the log.
-     *
-     * @param array $event event data
-     * @return void
-     */
-    public function doWrite(array $event)
+    public function setUp()
     {
-        $this->events[] = $event;
+        $this->plugins = new WriterPluginManager();
     }
 
-    /**
-     * Record shutdown
-     *
-     * @return void
-     */
-    public function shutdown()
+    public function testRegisteringInvalidWriterRaisesException()
     {
-        $this->shutdown = true;
+        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'must implement');
+        $this->plugins->setService('test', $this);
     }
 }

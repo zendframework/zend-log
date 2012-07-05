@@ -21,8 +21,11 @@
 
 namespace ZendTest\Log\Filter;
 
-use \Zend\Log\Logger;
-use \Zend\Log\Filter\Priority;
+use Zend\Log\Logger;
+use Zend\Log\Filter\Validator;
+use Zend\Validator\ValidatorChain;
+use Zend\Validator\Digits as DigitsFilter;
+use Zend\I18n\Validator\Int;
 
 /**
  * @category   Zend
@@ -32,31 +35,24 @@ use \Zend\Log\Filter\Priority;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
-class PriorityTest extends \PHPUnit_Framework_TestCase
+class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
-    public function testComparisonDefaultsToLessThanOrEqual()
+    public function testValidatorFilter()
     {
-        // accept at or below priority 2
-        $filter = new Priority(2);
-
-        $this->assertTrue($filter->filter(array('priority' => 2)));
-        $this->assertTrue($filter->filter(array('priority' => 1)));
-        $this->assertFalse($filter->filter(array('priority' => 3)));
+        $filter = new Validator(new DigitsFilter());
+        $this->assertTrue($filter->filter(array('message' => '123')));
+        $this->assertFalse($filter->filter(array('message' => 'test')));
+        $this->assertFalse($filter->filter(array('message' => 'test123')));
+        $this->assertFalse($filter->filter(array('message' => '(%$')));
     }
-
-    public function testComparisonOperatorCanBeChanged()
+    
+    public function testValidatorChain()
     {
-        // accept above priority 2
-        $filter = new Priority(2, '>');
-
-        $this->assertTrue($filter->filter(array('priority' => 3)));
-        $this->assertFalse($filter->filter(array('priority' => 2)));
-        $this->assertFalse($filter->filter(array('priority' => 1)));
-    }
-
-    public function testConstructorThrowsOnInvalidPriority()
-    {
-        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'must be an integer');
-        new Priority('foo');
+        $validatorChain = new ValidatorChain();
+        $validatorChain->addValidator(new DigitsFilter());
+        $validatorChain->addValidator(new Int());
+        $filter = new Validator($validatorChain);
+        $this->assertTrue($filter->filter(array('message' => '123')));
+        $this->assertFalse($filter->filter(array('message' => 'test')));
     }
 }

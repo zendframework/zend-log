@@ -24,40 +24,53 @@
  */
 namespace Zend\Log\Filter;
 
-use Zend\Log\Factory,
-    Zend\Log\Filter,
-    Zend\Log\Exception,
-    Zend\Config\Config;
+use Zend\Log\Exception;
 
 /**
- * @uses       \Zend\Log\Exception\InvalidArgumentException
- * @uses       \Zend\Log\Filter
- * @uses       \Zend\Log\Factory
  * @category   Zend
  * @package    Zend_Log
  * @subpackage Filter
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class AbstractFilter implements Filter, Factory
+class Regex implements FilterInterface
 {
     /**
-     * Validate and optionally convert the config to array
+     * Regex to match
      *
-     * @param  array|Config $config Config or Array
-     * @return array
+     * @var string
+     */
+    protected $regex;
+
+    /**
+     * Filter out any log messages not matching the pattern
+     *
+     * @param string $regex Regular expression to test the log message
      * @throws Exception\InvalidArgumentException
      */
-    static protected function _parseConfig($config)
+    public function __construct($regex)
     {
-        if ($config instanceof Config) {
-            $config = $config->toArray();
+        if (@preg_match($regex, '') === false) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Invalid regular expression "%s"',
+                $regex
+            ));
         }
+        $this->regex = $regex;
+    }
 
-        if (!is_array($config)) {
-            throw new Exception\InvalidArgumentException('Configuration must be an array or instance of Zend\Config\Config');
+    /**
+     * Returns TRUE to accept the message, FALSE to block it.
+     *
+     * @param array $event event data
+     * @return boolean accepted?
+     */
+    public function filter(array $event)
+    {
+        $message = $event['message'];
+        if (is_array($event['message'])) {
+            $message = var_export($message, TRUE); 
         }
-
-        return $config;
+        return preg_match($this->regex, $message) > 0;
     }
 }

@@ -14,25 +14,33 @@
  *
  * @category   Zend
  * @package    Zend_Log
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Log;
+namespace ZendTest\Log;
+
+use Zend\Log\WriterPluginManager;
 
 /**
  * @category   Zend
  * @package    Zend_Log
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @group      Zend_Log
  */
-interface Filter
+class WriterPluginManagerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Returns TRUE to accept the message, FALSE to block it.
-     *
-     * @param array $event event data
-     * @return boolean accepted?
-     */
-    public function filter(array $event);
+    public function setUp()
+    {
+        $this->plugins = new WriterPluginManager();
+    }
+
+    public function testRegisteringInvalidWriterRaisesException()
+    {
+        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'must implement');
+        $this->plugins->setService('test', $this);
+    }
 }

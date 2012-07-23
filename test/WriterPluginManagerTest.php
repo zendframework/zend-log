@@ -8,10 +8,9 @@
  * @package   Zend_Log
  */
 
-namespace ZendTest\Log\Writer;
+namespace ZendTest\Log;
 
-use Zend\Log\Writer\Null as NullWriter;
-use Zend\Log\Logger;
+use Zend\Log\WriterPluginManager;
 
 /**
  * @category   Zend
@@ -19,11 +18,16 @@ use Zend\Log\Logger;
  * @subpackage UnitTests
  * @group      Zend_Log
  */
-class NullTest extends \PHPUnit_Framework_TestCase
+class WriterPluginManagerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testWrite()
+    public function setUp()
     {
-        $writer = new NullWriter();
-        $writer->write(array('message' => 'foo', 'priority' => 42));
+        $this->plugins = new WriterPluginManager();
+    }
+
+    public function testRegisteringInvalidWriterRaisesException()
+    {
+        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'must implement');
+        $this->plugins->setService('test', $this);
     }
 }

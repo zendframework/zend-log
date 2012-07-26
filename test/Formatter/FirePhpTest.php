@@ -14,25 +14,32 @@
  *
  * @category   Zend
  * @package    Zend_Log
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Log;
+namespace ZendTest\Log\Formatter;
+
+use Zend\Log\Formatter\FirePhp;
 
 /**
  * @category   Zend
  * @package    Zend_Log
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @group      Zend_Log
  */
-interface Filter
+class FirePhpTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Returns TRUE to accept the message, FALSE to block it.
-     *
-     * @param array $event event data
-     * @return boolean accepted?
-     */
-    public function filter(array $event);
+    public function testFormat()
+    {
+        $fields = array( 'message' => 'foo' );
+
+        $f = new FirePhp();
+        $line = $f->format($fields);
+
+        $this->assertContains($fields['message'], $line);
+    }    
 }

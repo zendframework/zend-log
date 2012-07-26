@@ -8,22 +8,23 @@
  * @package   Zend_Log
  */
 
-namespace ZendTest\Log\Writer;
-
-use Zend\Log\Writer\Null as NullWriter;
-use Zend\Log\Logger;
+namespace Zend\Log\Formatter;
 
 /**
  * @category   Zend
  * @package    Zend_Log
- * @subpackage UnitTests
- * @group      Zend_Log
+ * @subpackage Formatter
  */
-class NullTest extends \PHPUnit_Framework_TestCase
+class FirePhp implements FormatterInterface
 {
-    public function testWrite()
+    /**
+     * Formats the given evevnt data into a single line to be written by the writer.
+     *
+     * @param array $event The event data which should be formatted.
+     * @return string
+     */
+    public function format($event)
     {
-        $writer = new NullWriter();
-        $writer->write(array('message' => 'foo', 'priority' => 42));
+        return $event['message'];
     }
 }

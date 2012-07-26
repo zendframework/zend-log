@@ -8,22 +8,19 @@
  * @package   Zend_Log
  */
 
-namespace ZendTest\Log\Writer;
-
-use Zend\Log\Writer\Null as NullWriter;
-use Zend\Log\Logger;
+namespace Zend\Log\Writer\FirePhp;
 
 /**
  * @category   Zend
  * @package    Zend_Log
- * @subpackage UnitTests
- * @group      Zend_Log
+ * @subpackage Writer
  */
-class NullTest extends \PHPUnit_Framework_TestCase
+interface FirePhpInterface
 {
-    public function testWrite()
-    {
-        $writer = new NullWriter();
-        $writer->write(array('message' => 'foo', 'priority' => 42));
-    }
+    public function getEnabled();
+    public function error($line);
+    public function warn($line);
+    public function info($line);
+    public function trace($line);
+    public function log($line);
 }

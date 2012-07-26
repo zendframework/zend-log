@@ -8,14 +8,14 @@
  * @package   Zend_Log
  */
 
-namespace Zend\Log\Writer;
+namespace Zend\Log\Filter;
 
 /**
  * @category   Zend
  * @package    Zend_Log
  * @subpackage Writer
  */
-class Mock extends AbstractWriter
+class Mock implements FilterInterface
 {
     /**
      * array of log events
@@ -23,32 +23,16 @@ class Mock extends AbstractWriter
      * @var array
      */
     public $events = array();
-
+    
     /**
-     * shutdown called?
-     *
-     * @var boolean
-     */
-    public $shutdown = false;
-
-    /**
-     * Write a message to the log.
+     * Returns TRUE to accept the message
      *
      * @param array $event event data
-     * @return void
+     * @return boolean
      */
-    public function doWrite(array $event)
+    public function filter(array $event)
     {
         $this->events[] = $event;
-    }
-
-    /**
-     * Record shutdown
-     *
-     * @return void
-     */
-    public function shutdown()
-    {
-        $this->shutdown = true;
+        return true;
     }
 }

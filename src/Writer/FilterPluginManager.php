@@ -8,35 +8,35 @@
  * @package   Zend_Log
  */
 
-namespace Zend\Log;
+namespace Zend\Log\Writer;
 
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\ConfigurationInterface;
+use Zend\Log\Filter;
+use Zend\Log\Exception;
 
 /**
  * @category   Zend
  * @package    Zend_Log
  */
-class WriterPluginManager extends AbstractPluginManager
+class FilterPluginManager extends AbstractPluginManager
 {
     /**
-     * Default set of writers
+     * Default set of filters
      *
      * @var array
      */
     protected $invokableClasses = array(
-        'db'          => 'Zend\Log\Writer\Db',
-        'firephp'     => 'Zend\Log\Writer\FirePhp',
-        'mail'        => 'Zend\Log\Writer\Mail',
-        'mock'        => 'Zend\Log\Writer\Mock',
-        'null'        => 'Zend\Log\Writer\Null',
-        'stream'      => 'Zend\Log\Writer\Stream',
-        'syslog'      => 'Zend\Log\Writer\Syslog',
-        'zendmonitor' => 'Zend\Log\Writer\ZendMonitor',
+        'mock'           => 'Zend\Log\Filter\Mock',
+        'priority'       => 'Zend\Log\Filter\Priority',
+        'regex'          => 'Zend\Log\Filter\Regex',
+        'suppress'       => 'Zend\Log\Filter\suppressFilter',
+        'suppressfilter' => 'Zend\Log\Filter\suppressFilter',
+        'validator'      => 'Zend\Log\Filter\Validator',
     );
 
     /**
-     * Allow many writers of the same type
+     * Allow many filters of the same type
      * 
      * @var bool
      */
@@ -45,7 +45,7 @@ class WriterPluginManager extends AbstractPluginManager
     /**
      * Validate the plugin
      *
-     * Checks that the writer loaded is an instance of Writer\WriterInterface.
+     * Checks that the writer loaded is an instance of Filter\FilterInterface.
      *
      * @param  mixed $plugin
      * @return void
@@ -53,13 +53,13 @@ class WriterPluginManager extends AbstractPluginManager
      */
     public function validatePlugin($plugin)
     {
-        if ($plugin instanceof Writer\WriterInterface) {
+        if ($plugin instanceof Filter\FilterInterface) {
             // we're okay
             return;
         }
 
         throw new Exception\InvalidArgumentException(sprintf(
-            'Plugin of type %s is invalid; must implement %s\Writer\WriterInterface',
+            'Plugin of type %s is invalid; must implement %s\Filter\FilterInterface',
             (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
             __NAMESPACE__
         ));

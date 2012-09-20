@@ -10,17 +10,14 @@
 
 namespace ZendTest\Log\TestAsset;
 
-use Zend\Log\Writer\Syslog as SyslogWriter;
+use Zend\Log\Writer\AbstractWriter;
 
-class CustomSyslogWriter extends SyslogWriter
+class ErrorGeneratingWriter extends AbstractWriter
 {
-    public function getFacility()
+    protected function doWrite(array $event)
     {
-        return $this->facility;
-    }
-
-    public function getApplicationName()
-    {
-        return $this->appName;
+        $stream = fopen("php://memory", "r");
+        fclose($stream);
+        fwrite($stream, "test");
     }
 }

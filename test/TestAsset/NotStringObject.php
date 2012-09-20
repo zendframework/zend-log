@@ -10,17 +10,7 @@
 
 namespace ZendTest\Log\TestAsset;
 
-use Zend\Log\Writer\Syslog as SyslogWriter;
-
-class CustomSyslogWriter extends SyslogWriter
+class NotStringObject
 {
-    public function getFacility()
-    {
-        return $this->facility;
-    }
-
-    public function getApplicationName()
-    {
-        return $this->appName;
-    }
+   // This object has no __toString method
 }

@@ -10,7 +10,7 @@
     "homepage": "https://github.com/zendframework/zend-log",
     "autoload": {
         "psr-4": {
-            "Zend\\Log": "src/"
+            "Zend\\Log\\": "src/"
         }
     },
     "require": {

@@ -8,34 +8,28 @@
  * @package   Zend_Log
  */
 
-namespace Zend\Log\Writer;
+namespace Zend\Log;
 
 use Zend\ServiceManager\AbstractPluginManager;
-use Zend\Log\Filter;
-use Zend\Log\Exception;
 
 /**
  * @category   Zend
  * @package    Zend_Log
  */
-class FilterPluginManager extends AbstractPluginManager
+class ProcessorPluginManager extends AbstractPluginManager
 {
     /**
-     * Default set of filters
+     * Default set of writers
      *
      * @var array
      */
     protected $invokableClasses = array(
-        'mock'           => 'Zend\Log\Filter\Mock',
-        'priority'       => 'Zend\Log\Filter\Priority',
-        'regex'          => 'Zend\Log\Filter\Regex',
-        'suppress'       => 'Zend\Log\Filter\suppressFilter',
-        'suppressfilter' => 'Zend\Log\Filter\suppressFilter',
-        'validator'      => 'Zend\Log\Filter\Validator',
+        'backtrace' => 'Zend\Log\Processor\Backtrace',
+        'requestid' => 'Zend\Log\Processor\RequestId',
     );
 
     /**
-     * Allow many filters of the same type
+     * Allow many writers of the same type
      *
      * @var bool
      */
@@ -44,7 +38,7 @@ class FilterPluginManager extends AbstractPluginManager
     /**
      * Validate the plugin
      *
-     * Checks that the filter loaded is an instance of Filter\FilterInterface.
+     * Checks that the processor loaded is an instance of Processor\ProcessorInterface.
      *
      * @param  mixed $plugin
      * @return void
@@ -52,13 +46,13 @@ class FilterPluginManager extends AbstractPluginManager
      */
     public function validatePlugin($plugin)
     {
-        if ($plugin instanceof Filter\FilterInterface) {
+        if ($plugin instanceof Processor\ProcessorInterface) {
             // we're okay
             return;
         }
 
         throw new Exception\InvalidArgumentException(sprintf(
-            'Plugin of type %s is invalid; must implement %s\Filter\FilterInterface',
+            'Plugin of type %s is invalid; must implement %s\Processor\ProcessorInterface',
             (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
             __NAMESPACE__
         ));

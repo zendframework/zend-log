@@ -8,35 +8,34 @@
  * @package   Zend_Log
  */
 
-namespace Zend\Log;
+namespace Zend\Log\Writer;
 
 use Zend\ServiceManager\AbstractPluginManager;
+use Zend\Log\Formatter;
+use Zend\Log\Exception;
 
 /**
  * @category   Zend
  * @package    Zend_Log
  */
-class WriterPluginManager extends AbstractPluginManager
+class FormatterPluginManager extends AbstractPluginManager
 {
     /**
-     * Default set of writers
+     * Default set of formatters
      *
      * @var array
      */
     protected $invokableClasses = array(
-        'db'             => 'Zend\Log\Writer\Db',
-        'fingerscrossed' => 'Zend\Log\Writer\FingersCrossed',
-        'firephp'        => 'Zend\Log\Writer\FirePhp',
-        'mail'           => 'Zend\Log\Writer\Mail',
-        'mock'           => 'Zend\Log\Writer\Mock',
-        'null'           => 'Zend\Log\Writer\Null',
-        'stream'         => 'Zend\Log\Writer\Stream',
-        'syslog'         => 'Zend\Log\Writer\Syslog',
-        'zendmonitor'    => 'Zend\Log\Writer\ZendMonitor',
+        'base'             => 'Zend\Log\Formatter\Base',
+        'simple'           => 'Zend\Log\Formatter\Simple',
+        'xml'              => 'Zend\Log\Formatter\Xml',
+        'db'               => 'Zend\Log\Formatter\Db',
+        'errorhandler'     => 'Zend\Log\Formatter\ErrorHandler',
+        'exceptionhandler' => 'Zend\Log\Formatter\ExceptionHandler',
     );
 
     /**
-     * Allow many writers of the same type
+     * Allow many filters of the same type
      *
      * @var bool
      */
@@ -45,7 +44,7 @@ class WriterPluginManager extends AbstractPluginManager
     /**
      * Validate the plugin
      *
-     * Checks that the writer loaded is an instance of Writer\WriterInterface.
+     * Checks that the formatter loaded is an instance of Formatter\FormatterInterface.
      *
      * @param  mixed $plugin
      * @return void
@@ -53,13 +52,13 @@ class WriterPluginManager extends AbstractPluginManager
      */
     public function validatePlugin($plugin)
     {
-        if ($plugin instanceof Writer\WriterInterface) {
+        if ($plugin instanceof Formatter\FormatterInterface) {
             // we're okay
             return;
         }
 
         throw new Exception\InvalidArgumentException(sprintf(
-            'Plugin of type %s is invalid; must implement %s\Writer\WriterInterface',
+            'Plugin of type %s is invalid; must implement %s\Formatter\FormatterInterface',
             (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
             __NAMESPACE__
         ));

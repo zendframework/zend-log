@@ -1,26 +1,16 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Log
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Log
  */
 
 namespace ZendTest\Log\Formatter;
 
+use DateTime;
 use ZendTest\Log\TestAsset\SerializableObject;
 use Zend\Log\Formatter\Xml as XmlFormatter;
 
@@ -28,17 +18,17 @@ use Zend\Log\Formatter\Xml as XmlFormatter;
  * @category   Zend
  * @package    Zend_Log
  * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
 class XmlTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaultFormat()
     {
+        $date = new DateTime();
         $f = new XmlFormatter();
-        $line = $f->format(array('message' => 'foo', 'priority' => 42));
+        $line = $f->format(array('timestamp' => $date, 'message' => 'foo', 'priority' => 42));
 
+        $this->assertContains($date->format('c'), $line);
         $this->assertContains('foo', $line);
         $this->assertContains((string)42, $line);
     }
@@ -48,6 +38,36 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $f = new XmlFormatter('log', array('foo' => 'bar'));
         $line = $f->format(array('bar' => 'baz'));
         $this->assertContains('<log><foo>baz</foo></log>', $line);
+    }
+
+    /**
+     * @dataProvider provideDateTimeFormats
+     */
+    public function testConfiguringDateTimeFormat($dateTimeFormat)
+    {
+        $date = new DateTime();
+        $f = new XmlFormatter('log', null, 'UTF-8', $dateTimeFormat);
+        $this->assertContains($date->format($dateTimeFormat), $f->format(array('timestamp' => $date)));
+    }
+
+    /**
+     * @dataProvider provideDateTimeFormats
+     */
+    public function testSetDateTimeFormat($dateTimeFormat)
+    {
+        $date = new DateTime();
+        $f = new XmlFormatter();
+        $this->assertSame($f, $f->setDateTimeFormat($dateTimeFormat));
+        $this->assertContains($dateTimeFormat, $f->getDateTimeFormat());
+        $this->assertContains($date->format($dateTimeFormat), $f->format(array('timestamp' => $date)));
+    }
+
+    public function provideDateTimeFormats()
+    {
+        return array(
+            array('r'),
+            array('U'),
+        );
     }
 
     public function testXmlDeclarationIsStripped()
@@ -94,18 +114,22 @@ class XmlTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorWithArray()
     {
+        $date = new DateTime();
         $options = array(
             'rootElement' => 'log',
             'elementMap' => array(
+                'date' => 'timestamp',
                 'word' => 'message',
                 'priority' => 'priority'
-            )
+            ),
+            'dateTimeFormat' => 'r',
         );
         $event = array(
+            'timestamp' => $date,
             'message' => 'tottakai',
             'priority' => 4
         );
-        $expected = '<log><word>tottakai</word><priority>4</priority></log>';
+        $expected = sprintf('<log><date>%s</date><word>tottakai</word><priority>4</priority></log>', $date->format('r'));
 
         $formatter = new XmlFormatter($options);
         $output = $formatter->format($event);
@@ -153,5 +177,24 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $formatter = new XmlFormatter($options);
         $output = $formatter->format($event);
         $this->assertContains($expected, $output);
+    }
+
+    /**
+     * @group ZF2-453
+     */
+    public function testFormatWillRemoveExtraEmptyArrayFromEvent()
+    {
+        $formatter = new XmlFormatter;
+        $d = new DateTime('2001-01-01T12:00:00-06:00');
+        $event = array(
+            'timestamp'    =>  $d,
+            'message'      => 'test',
+            'priority'     => 1,
+            'priorityName' => 'CRIT',
+            'extra' => array()
+        );
+        $expected = '<logEntry><timestamp>2001-01-01T12:00:00-06:00</timestamp><message>test</message><priority>1</priority><priorityName>CRIT</priorityName></logEntry>';
+        $expected .= PHP_EOL . PHP_EOL;
+        $this->assertEquals($expected, $formatter->format($event));
     }
 }

@@ -1,35 +1,23 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Log
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Log
  */
 
 namespace ZendTest\Log\Formatter;
 
-use ZendTest\Log\TestAsset\StringObject;
-use \Zend\Log\Formatter\Simple;
+use DateTime;
+use Zend\Log\Formatter\Simple;
+use RuntimeException;
 
 /**
  * @category   Zend
  * @package    Zend_Log
  * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
 class SimpleTest extends \PHPUnit_Framework_TestCase
@@ -40,82 +28,94 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         new Simple(1);
     }
 
+    /**
+     * @dataProvider provideDateTimeFormats
+     */
+    public function testConstructorWithOptions($dateTimeFormat)
+    {
+        $options = array('dateTimeFormat' => $dateTimeFormat, 'format' => '%timestamp%');
+        $formatter = new Simple($options);
+
+        $this->assertEquals($dateTimeFormat, $formatter->getDateTimeFormat());
+        $this->assertAttributeEquals('%timestamp%', 'format', $formatter);
+    }
+
     public function testDefaultFormat()
     {
-        $fields = array('timestamp'    => 0,
-                        'message'      => 'foo',
-                        'priority'     => 42,
-                        'priorityName' => 'bar');
+        $date = new DateTime('2012-08-28T18:15:00Z');
+        $fields = array(
+            'timestamp'    => $date,
+            'message'      => 'foo',
+            'priority'     => 42,
+            'priorityName' => 'bar',
+            'extra'        => array()
+        );
 
-        $f = new Simple();
-        $line = $f->format($fields);
+        $outputExpected = '2012-08-28T18:15:00+00:00 bar (42): foo';
+        $formatter = new Simple();
 
-        $this->assertContains((string)$fields['timestamp'], $line);
-        $this->assertContains($fields['message'], $line);
-        $this->assertContains($fields['priorityName'], $line);
-        $this->assertContains((string)$fields['priority'], $line);
+        $this->assertEquals($outputExpected, $formatter->format($fields));
     }
 
-    function testComplexValues()
+    /**
+     * @dataProvider provideDateTimeFormats
+     */
+    public function testCustomDateTimeFormat($dateTimeFormat)
     {
-        $fields = array('timestamp'    => 0,
-                        'priority'     => 42,
-                        'priorityName' => 'bar');
+        $date = new DateTime();
+        $event = array('timestamp' => $date);
+        $formatter = new Simple('%timestamp%', $dateTimeFormat);
 
-        $f = new Simple();
-
-        $fields['message'] = 'Foo';
-        $line = $f->format($fields);
-        $this->assertContains($fields['message'], $line);
-
-        $fields['message'] = 10;
-        $line = $f->format($fields);
-        $this->assertContains($fields['message'], $line);
-
-        $fields['message'] = 10.5;
-        $line = $f->format($fields);
-        $this->assertContains($fields['message'], $line);
-
-        $fields['message'] = true;
-        $line = $f->format($fields);
-        $this->assertContains('1', $line);
-
-        $fields['message'] = fopen('php://stdout', 'w');
-        $line = $f->format($fields);
-        $this->assertContains('Resource id ', $line);
-        fclose($fields['message']);
-
-        $fields['message'] = range(1,10);
-        $line = $f->format($fields);
-        $this->assertContains('array', $line);
-
-        $fields['message'] = new StringObject();
-        $line = $f->format($fields);
-        $this->assertContains($fields['message']->__toString(), $line);
-
-        $fields['message'] = new \stdClass();
-        $line = $f->format($fields);
-        $this->assertContains('object', $line);
+        $this->assertEquals($date->format($dateTimeFormat), $formatter->format($event));
     }
-    
+
+    /**
+     * @dataProvider provideDateTimeFormats
+     */
+    public function testSetDateTimeFormat($dateTimeFormat)
+    {
+        $date = new DateTime();
+        $event = array('timestamp' => $date);
+        $formatter = new Simple('%timestamp%');
+
+        $this->assertSame($formatter, $formatter->setDateTimeFormat($dateTimeFormat));
+        $this->assertEquals($dateTimeFormat, $formatter->getDateTimeFormat());
+        $this->assertEquals($date->format($dateTimeFormat), $formatter->format($event));
+    }
+
+    public function provideDateTimeFormats()
+    {
+        return array(
+            array('r'),
+            array('U'),
+        );
+    }
+
     /**
      * @group ZF-10427
      */
     public function testDefaultFormatShouldDisplayExtraInformations()
     {
-    	$message = 'custom message';
-    	$exception = new \RuntimeException($message);
-    	$event = array(
-    	    'timestamp'    => date('c'),
-    	    'message'      => 'Application error',
-    	    'priority'     => 2,
-    	    'priorityName' => 'CRIT',
-    	    'info'         => $exception,
-    	);
+        $message = 'custom message';
+        $exception = new RuntimeException($message);
+        $event = array(
+            'timestamp'    => new DateTime(),
+            'message'      => 'Application error',
+            'priority'     => 2,
+            'priorityName' => 'CRIT',
+            'extra'        => array($exception),
+        );
 
         $formatter = new Simple();
         $output = $formatter->format($event);
 
         $this->assertContains($message, $output);
+    }
+
+    public function testAllowsSpecifyingFormatAsConstructorArgument()
+    {
+        $format = '[%timestamp%] %message%';
+        $formatter = new Simple($format);
+        $this->assertEquals($format, $formatter->format(array()));
     }
 }

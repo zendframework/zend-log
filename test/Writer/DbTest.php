@@ -1,38 +1,24 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Log
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Log
  */
 
 namespace ZendTest\Log\Writer;
 
+use DateTime;
 use ZendTest\Log\TestAsset\MockDbAdapter;
-use ZendTest\Log\TestAsset\MockDbDriver;
 use Zend\Log\Writer\Db as DbWriter;
-use Zend\Log\Logger;
-use Zend\Log\Formatter\Simple as SimpleFormatter;
+use Zend\Log\Formatter\FormatterInterface;
 
 /**
  * @category   Zend
  * @package    Zend_Log
  * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
 class DbTest extends \PHPUnit_Framework_TestCase
@@ -45,10 +31,27 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->writer = new DbWriter($this->db, $this->tableName);
     }
 
-    public function testFormattingIsNotSupported()
+    public function testNotPassingTableNameToConstructorThrowsException()
     {
-        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'does not support formatting');
-        $this->writer->setFormatter(new SimpleFormatter);
+        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'table name');
+        $writer = new DbWriter($this->db);
+    }
+
+    public function testNotPassingDbToConstructorThrowsException()
+    {
+        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'Adapter');
+        $writer = new DbWriter(array());
+    }
+
+    public function testPassingTableNameAsArgIsOK()
+    {
+        $options = array(
+            'db'    => $this->db,
+            'table' => $this->tableName,
+        );
+        $writer = new DbWriter($options);
+        $this->assertInstanceOf('Zend\Log\Writer\Db', $writer);
+        $this->assertAttributeEquals($this->tableName, 'tableName', $writer);
     }
 
     public function testWriteWithDefaults()
@@ -70,7 +73,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testWriteWithDefaultsUsingArray()
-    {      
+    {
         // log to the mock db adapter
         $message  = 'message-to-log';
         $priority = 2;
@@ -94,11 +97,11 @@ class DbTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(array($binds), $this->db->calls['execute'][0]);
     }
-    
+
     public function testWriteWithDefaultsUsingArrayAndSeparator()
-    {      
+    {
         $this->writer = new DbWriter($this->db, $this->tableName, null, '-');
-        
+
         // log to the mock db adapter
         $message  = 'message-to-log';
         $priority = 2;
@@ -122,12 +125,12 @@ class DbTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(array($binds), $this->db->calls['execute'][0]);
     }
-    
+
     public function testWriteUsesOptionalCustomColumnNames()
     {
         $this->writer = new DbWriter($this->db, $this->tableName, array(
             'message' => 'new-message-field' ,
-            'priority' => 'new-priority-field' 
+            'priority' => 'new-priority-field'
         ));
 
         // log to the mock db adapter
@@ -149,7 +152,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals(array($binds), $this->db->calls['execute'][0]);
     }
-    
+
     public function testWriteUsesParamsWithArray()
     {
         $this->writer = new DbWriter($this->db, $this->tableName, array(
@@ -160,7 +163,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
                 'file' => 'new-file'
             )
         ));
-        
+
         // log to the mock db adapter
         $message  = 'message-to-log';
         $priority = 2;
@@ -194,12 +197,35 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->writer->write(array('message' => 'this should fail'));
     }
 
-    /**
-     * @group ZF-10089
-     */
-    public function testThrowStrictSetFormatter()
+    public function testWriteDateTimeAsTimestamp()
     {
-    	$this->setExpectedException('PHPUnit_Framework_Error');
-        $this->writer->setFormatter(new \StdClass());
+        $date = new DateTime();
+        $event = array('timestamp'=> $date);
+        $this->writer->write($event);
+
+        $this->assertContains('query', array_keys($this->db->calls));
+        $this->assertEquals(1, count($this->db->calls['query']));
+
+        $this->assertEquals(array(array(
+            'timestamp' => $date->format(FormatterInterface::DEFAULT_DATETIME_FORMAT)
+        )), $this->db->calls['execute'][0]);
+    }
+
+    public function testWriteDateTimeAsExtraValue()
+    {
+        $date = new DateTime();
+        $event = array(
+            'extra'=> array(
+                'request_time' => $date
+            )
+        );
+        $this->writer->write($event);
+
+        $this->assertContains('query', array_keys($this->db->calls));
+        $this->assertEquals(1, count($this->db->calls['query']));
+
+        $this->assertEquals(array(array(
+            'extra_request_time' => $date->format(FormatterInterface::DEFAULT_DATETIME_FORMAT)
+        )), $this->db->calls['execute'][0]);
     }
 }

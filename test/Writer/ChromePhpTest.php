@@ -21,9 +21,9 @@
 
 namespace ZendTest\Log\Writer;
 
-use ZendTest\Log\TestAsset\MockFirePhp;
-use Zend\Log\Writer\FirePhp;
-use Zend\Log\Writer\FirePhp\FirePhpInterface;
+use ZendTest\Log\TestAsset\MockChromePhp;
+use Zend\Log\Writer\ChromePhp;
+use Zend\Log\Writer\ChromePhp\ChromePhpInterface;
 use Zend\Log\Logger;
 
 /**
@@ -34,72 +34,64 @@ use Zend\Log\Logger;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
-class FirePhpTest extends \PHPUnit_Framework_TestCase
+class ChromePhpTest extends \PHPUnit_Framework_TestCase
 {
-    protected $firephp;
+    protected $chromephp;
 
     public function setUp()
     {
-        $this->firephp = new MockFirePhp();
+        $this->chromephp = new MockChromePhp();
 
     }
-    /**
-     * Test get FirePhp
-     */
-    public function testGetFirePhp()
-    {
-        $writer = new FirePhp($this->firephp);
-        $this->assertTrue($writer->getFirePhp() instanceof FirePhpInterface);
-    }
-    /**
-     * Test set firephp
-     */
-    public function testSetFirePhp()
-    {
-        $writer   = new FirePhp($this->firephp);
-        $firephp2 = new MockFirePhp();
 
-        $writer->setFirePhp($firephp2);
-        $this->assertTrue($writer->getFirePhp() instanceof FirePhpInterface);
-        $this->assertEquals($firephp2, $writer->getFirePhp());
+    public function testGetChromePhp()
+    {
+        $writer = new ChromePhp($this->chromephp);
+        $this->assertTrue($writer->getChromePhp() instanceof ChromePhpInterface);
     }
-    /**
-     * Test write
-     */
+
+    public function testSetChromePhp()
+    {
+        $writer   = new ChromePhp($this->chromephp);
+        $chromephp2 = new MockChromePhp();
+
+        $writer->setChromePhp($chromephp2);
+        $this->assertTrue($writer->getChromePhp() instanceof ChromePhpInterface);
+        $this->assertEquals($chromephp2, $writer->getChromePhp());
+    }
+
     public function testWrite()
     {
-        $writer = new FirePhp($this->firephp);
+        $writer = new ChromePhp($this->chromephp);
         $writer->write(array(
             'message' => 'my msg',
             'priority' => Logger::DEBUG
         ));
-        $this->assertEquals('my msg', $this->firephp->calls['trace'][0]);
+        $this->assertEquals('my msg', $this->chromephp->calls['trace'][0]);
     }
-    /**
-     * Test write with FirePhp disabled
-     */
+
     public function testWriteDisabled()
     {
-        $firephp = new MockFirePhp(false);
-        $writer = new FirePhp($firephp);
+        $chromephp = new MockChromePhp(false);
+        $writer = new ChromePhp($chromephp);
         $writer->write(array(
             'message' => 'my msg',
             'priority' => Logger::DEBUG
         ));
-        $this->assertTrue(empty($this->firephp->calls));
+        $this->assertTrue(empty($this->chromephp->calls));
     }
 
     public function testConstructWithOptions()
     {
         $formatter = new \Zend\Log\Formatter\Simple();
         $filter    = new \Zend\Log\Filter\Mock();
-        $writer = new FirePhp(array(
-                'filters'   => $filter,
-                'formatter' => $formatter,
-                'instance'  => $this->firephp,
+        $writer = new ChromePhp(array(
+            'filters'   => $filter,
+            'formatter' => $formatter,
+            'instance'  => $this->chromephp,
         ));
-        $this->assertTrue($writer->getFirePhp() instanceof FirePhpInterface);
-        $this->assertAttributeInstanceOf('Zend\Log\Formatter\FirePhp', 'formatter', $writer);
+        $this->assertTrue($writer->getChromePhp() instanceof ChromePhpInterface);
+        $this->assertAttributeInstanceOf('Zend\Log\Formatter\ChromePhp', 'formatter', $writer);
 
         $filters = self::readAttribute($writer, 'filters');
         $this->assertCount(1, $filters);

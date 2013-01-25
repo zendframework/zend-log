@@ -13,14 +13,26 @@ namespace Zend\Log\Filter;
 /**
  * @category   Zend
  * @package    Zend_Log
+ * @subpackage Writer
  */
-interface FilterInterface
+class Mock implements FilterInterface
 {
     /**
-     * Returns TRUE to accept the message, FALSE to block it.
+     * array of log events
+     *
+     * @var array
+     */
+    public $events = array();
+
+    /**
+     * Returns TRUE to accept the message
      *
      * @param array $event event data
-     * @return bool accepted?
+     * @return bool
      */
-    public function filter(array $event);
+    public function filter(array $event)
+    {
+        $this->events[] = $event;
+        return true;
+    }
 }

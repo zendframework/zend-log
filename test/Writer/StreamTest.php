@@ -1,36 +1,22 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Log
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Log
  */
 
 namespace ZendTest\Log\Writer;
 
-use Zend\Log\Writer\Stream as StreamWriter,
-    Zend\Log\Logger,
-    Zend\Log\Formatter\Simple as SimpleFormatter;
+use Zend\Log\Writer\Stream as StreamWriter;
+use Zend\Log\Formatter\Simple as SimpleFormatter;
 
 /**
  * @category   Zend
  * @package    Zend_Log
  * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
 class StreamWriterTest extends \PHPUnit_Framework_TestCase
@@ -123,5 +109,41 @@ class StreamWriterTest extends \PHPUnit_Framework_TestCase
         fclose($stream);
 
         $this->assertContains($expected, $contents);
+    }
+
+    public function testAllowSpecifyingLogSeparator()
+    {
+        $stream = fopen('php://memory', 'w+');
+        $writer = new StreamWriter($stream);
+        $writer->setLogSeparator('::');
+
+        $fields = array('message' => 'message1');
+        $writer->write($fields);
+        $fields['message'] = 'message2';
+        $writer->write($fields);
+
+        rewind($stream);
+        $contents = stream_get_contents($stream);
+        fclose($stream);
+
+        $this->assertRegexp('/message1.*?::.*?message2/', $contents);
+        $this->assertNotContains(PHP_EOL, $contents);
+    }
+
+    public function testAllowsSpecifyingLogSeparatorAsConstructorArgument()
+    {
+        $writer = new StreamWriter('php://memory', 'w+', '::');
+        $this->assertEquals('::', $writer->getLogSeparator());
+    }
+
+    public function testAllowsSpecifyingLogSeparatorWithinArrayPassedToConstructor()
+    {
+        $options = array(
+            'stream'        => 'php://memory',
+            'mode'          => 'w+',
+            'log_separator' => '::',
+        );
+        $writer = new StreamWriter($options);
+        $this->assertEquals('::', $writer->getLogSeparator());
     }
 }

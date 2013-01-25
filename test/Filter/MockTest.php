@@ -8,9 +8,9 @@
  * @package   Zend_Log
  */
 
-namespace ZendTest\Log\Writer;
+namespace ZendTest\Log\Filter;
 
-use Zend\Log\Writer\Mock as MockWriter;
+use Zend\Log\Filter\Mock as MockFilter;
 
 /**
  * @category   Zend
@@ -22,11 +22,11 @@ class MockTest extends \PHPUnit_Framework_TestCase
 {
     public function testWrite()
     {
-        $writer = new MockWriter();
-        $this->assertSame(array(), $writer->events);
+        $filter = new MockFilter();
+        $this->assertSame(array(), $filter->events);
 
         $fields = array('foo' => 'bar');
-        $writer->write($fields);
-        $this->assertSame(array($fields), $writer->events);
+        $this->assertTrue($filter->filter($fields));
+        $this->assertSame(array($fields), $filter->events);
     }
 }

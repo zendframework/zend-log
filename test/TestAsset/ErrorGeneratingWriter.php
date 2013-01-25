@@ -10,10 +10,14 @@
 
 namespace ZendTest\Log\TestAsset;
 
-class StringObject
+use Zend\Log\Writer\AbstractWriter;
+
+class ErrorGeneratingWriter extends AbstractWriter
 {
-    public function __toString()
+    protected function doWrite(array $event)
     {
-        return 'Hello World';
+        $stream = fopen("php://memory", "r");
+        fclose($stream);
+        fwrite($stream, "test");
     }
 }

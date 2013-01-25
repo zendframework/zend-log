@@ -15,37 +15,40 @@
  * @category   Zend
  * @package    Zend_Log
  * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace ZendTest\Log;
+namespace ZendTest\Log\Formatter;
 
-use Zend\Log\WriterBroker;
+use Zend\Log\Formatter\FirePhp;
 
 /**
  * @category   Zend
  * @package    Zend_Log
  * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
-class WriterBrokerTest extends \PHPUnit_Framework_TestCase
+class FirePhpTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    public function testFormat()
     {
-        $this->broker = new WriterBroker();
+        $fields = array( 'message' => 'foo' );
+
+        $f = new FirePhp();
+        $line = $f->format($fields);
+
+        $this->assertContains($fields['message'], $line);
     }
 
-    public function testUsesWriterLoaderAsDefaultClassLoader()
+    public function testSetDateTimeFormatDoesNothing()
     {
-        $this->assertInstanceOf('Zend\Log\WriterLoader', $this->broker->getClassLoader());
-    }
+        $formatter = new FirePhp();
 
-    public function testRegisteringInvalidWriterRaisesException()
-    {
-        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'must implement');
-        $this->broker->register('test', $this);
+        $this->assertEquals('', $formatter->getDateTimeFormat());
+        $this->assertSame($formatter, $formatter->setDateTimeFormat('r'));
+        $this->assertEquals('', $formatter->getDateTimeFormat());
     }
 }

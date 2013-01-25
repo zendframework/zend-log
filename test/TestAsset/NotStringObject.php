@@ -10,10 +10,7 @@
 
 namespace ZendTest\Log\TestAsset;
 
-class StringObject
+class NotStringObject
 {
-    public function __toString()
-    {
-        return 'Hello World';
-    }
+   // This object has no __toString method
 }

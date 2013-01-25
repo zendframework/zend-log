@@ -1,38 +1,24 @@
 <?php
 /**
- * Zend Framework
+ * Zend Framework (http://framework.zend.com/)
  *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://framework.zend.com/license/new-bsd
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@zend.com so we can send you a copy immediately.
- *
- * @category   Zend
- * @package    Zend_Log
- * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @link      http://github.com/zendframework/zf2 for the canonical source repository
+ * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @package   Zend_Log
  */
 
 namespace ZendTest\Log\Writer;
 
-use Zend\Log\Logger,
-    Zend\Log\Writer\Mail as MailWriter,
-    Zend\Log\Formatter\Simple as SimpleFormatter,
-    Zend\Mail\Message as MailMessage,
-    Zend\Mail\Transport;
+use Zend\Log\Logger;
+use Zend\Log\Writer\Mail as MailWriter;
+use Zend\Mail\Message as MailMessage;
+use Zend\Mail\Transport;
 
 /**
  * @category   Zend
  * @package    Zend_Log
  * @subpackage UnitTests
- * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Log
  */
 class MailTest extends \PHPUnit_Framework_TestCase
@@ -43,10 +29,10 @@ class MailTest extends \PHPUnit_Framework_TestCase
      */
     protected $writer;
     /**
-     * @var Logger 
+     * @var Logger
      */
     protected $log;
-    
+
     protected function setUp()
     {
         $message = new MailMessage();
@@ -61,7 +47,7 @@ class MailTest extends \PHPUnit_Framework_TestCase
 
         $this->writer = new MailWriter($message, $transport);
         $this->log = new Logger();
-        $this->log->addWriter($this->writer);   
+        $this->log->addWriter($this->writer);
     }
 
     protected function tearDown()
@@ -75,11 +61,11 @@ class MailTest extends \PHPUnit_Framework_TestCase
      * @return void
      */
     public function testNormalLoggingMultiplePerLevel()
-    {                
+    {
         $this->log->info('an info message');
         $this->log->info('a second info message');
         unset($this->log);
-        
+
         $contents = file_get_contents(__DIR__ . '/' . self::FILENAME);
         $this->assertContains('an info message', $contents);
         $this->assertContains('a second info message', $contents);
@@ -88,13 +74,39 @@ class MailTest extends \PHPUnit_Framework_TestCase
     public function testSetSubjectPrependText()
     {
         $this->writer->setSubjectPrependText('test');
-        
+
         $this->log->info('an info message');
         $this->log->info('a second info message');
         unset($this->log);
-        
+
         $contents = file_get_contents(__DIR__ . '/' . self::FILENAME);
         $this->assertContains('an info message', $contents);
         $this->assertContains('Subject: test', $contents);
+    }
+
+    public function testConstructWithOptions()
+    {
+        $message   = new MailMessage();
+        $transport = new Transport\File();
+        $options   = new Transport\FileOptions(array(
+                'path'      => __DIR__,
+                'callback'  => function (Transport\File $transport) {
+                    return MailTest::FILENAME;
+                },
+        ));
+        $transport->setOptions($options);
+
+        $formatter = new \Zend\Log\Formatter\Simple();
+        $writer = new MailWriter(array(
+                'formatter' => $formatter,
+                'mail'      => $message,
+                'transport' => $transport,
+                'subject_prepend_text' => 'subject prepend',
+        ));
+
+        $this->assertAttributeEquals($message, 'mail', $writer);
+        $this->assertAttributeEquals($transport, 'transport', $writer);
+        $this->assertAttributeEquals($formatter, 'formatter', $writer);
+        $this->assertAttributeEquals('subject prepend', 'subjectPrependText', $writer);
     }
 }

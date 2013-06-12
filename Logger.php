@@ -147,11 +147,11 @@ class Logger implements LoggerInterface
             }
 
             if (isset($options['exceptionhandler']) && $options['exceptionhandler'] === true) {
-                static::registerExceptionHandler($this);
+                self::registerExceptionHandler($this);
             }
 
             if (isset($options['errorhandler']) && $options['errorhandler'] === true) {
-                static::registerErrorHandler($this);
+                self::registerErrorHandler($this);
             }
 
         }
@@ -517,16 +517,16 @@ class Logger implements LoggerInterface
             return false;
         }
 
-        $errorPriorityMap = static::$errorPriorityMap;
+        $errorHandlerMap = static::$errorPriorityMap;
 
-        $previous = set_error_handler(function ($level, $message, $file, $line)
-            use ($logger, $errorPriorityMap, $continueNativeHandler)
+        $previous = set_error_handler(function ($level, $message, $file, $line, $context)
+            use ($logger, $errorHandlerMap, $continueNativeHandler)
         {
             $iniLevel = error_reporting();
 
             if ($iniLevel & $level) {
-                if (isset($errorPriorityMap[$level])) {
-                    $priority = $errorPriorityMap[$level];
+                if (isset(Logger::$errorPriorityMap[$level])) {
+                    $priority = $errorHandlerMap[$level];
                 } else {
                     $priority = Logger::INFO;
                 }
@@ -534,6 +534,7 @@ class Logger implements LoggerInterface
                     'errno'   => $level,
                     'file'    => $file,
                     'line'    => $line,
+                    'context' => $context,
                 ));
             }
 

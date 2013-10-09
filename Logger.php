@@ -123,7 +123,7 @@ class Logger implements LoggerInterface
      * @return Logger
      * @throws Exception\InvalidArgumentException
      */
-    public function __construct(array $options = null)
+    public function __construct($options = null)
     {
         $this->writers = new SplPriorityQueue();
 
@@ -131,7 +131,10 @@ class Logger implements LoggerInterface
             $options = ArrayUtils::iteratorToArray($options);
         }
 
-        if (is_array($options)) {
+        if ($options && !is_array($options)) {
+            throw new Exception\InvalidArgumentException('Options must be an array or an object implementing \Traversable ');
+        }
+        else if (is_array($options)) {
             if (isset($options['writers']) && is_array($options['writers'])) {
                 foreach ($options['writers'] as $writer) {
 

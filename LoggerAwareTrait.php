@@ -29,14 +29,4 @@ trait LoggerAwareTrait
 
         return $this;
     }
-
-    /**
-     * Get logger object
-     *
-     * @return null|LoggerInterface
-     */
-    public function getLogger()
-    {
-        return $this->logger;
-    }
 }

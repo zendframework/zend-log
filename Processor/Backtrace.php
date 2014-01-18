@@ -60,17 +60,17 @@ class Backtrace implements ProcessorInterface
     }
 
     /**
-     * Provide backtrace as slim as possible
+     * Provide backtrace as slim as posible
      *
      * @return  array:
      */
     protected function getBacktrace()
     {
-        if (PHP_VERSION_ID >= 50400) {
+        if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
             return debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $this->traceLimit);
         }
 
-        if (PHP_VERSION_ID >= 50306) {
+        if (version_compare(PHP_VERSION, '5.3.6') >= 0) {
             return debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         }
 

@@ -12,7 +12,6 @@ namespace Zend\Log;
 use DateTime;
 use ErrorException;
 use Traversable;
-use Zend\ServiceManager\AbstractPluginManager;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Stdlib\SplPriorityQueue;
 
@@ -60,13 +59,6 @@ class Logger implements LoggerInterface
      * @var bool
      */
     protected static $registeredErrorHandler = false;
-
-    /**
-     * Registered shutdown error handler
-     *
-     * @var bool
-     */
-    protected static $registeredFatalErrorShutdownFunction = false;
 
     /**
      * Registered exception handler
@@ -122,7 +114,7 @@ class Logger implements LoggerInterface
     /**
      * Constructor
      *
-     * Set options for a logger. Accepted options are:
+     * Set options for an logger. Accepted options are:
      * - writers: array of writers to add to this logger
      * - exceptionhandler: if true register this logger as exceptionhandler
      * - errorhandler: if true register this logger as errorhandler
@@ -133,72 +125,40 @@ class Logger implements LoggerInterface
      */
     public function __construct($options = null)
     {
-        $this->writers    = new SplPriorityQueue();
-        $this->processors = new SplPriorityQueue();
+        $this->writers = new SplPriorityQueue();
 
         if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
         }
 
-        if (!$options) {
-            return;
-        }
+        if (is_array($options)) {
+            if (isset($options['writers']) && is_array($options['writers'])) {
+                foreach ($options['writers'] as $writer) {
 
-        if (!is_array($options)) {
+                    if (!isset($writer['name'])) {
+                        throw new Exception\InvalidArgumentException('Options must contain a name for the writer');
+                    }
+
+                    $priority      = (isset($writer['priority'])) ? $writer['priority'] : null;
+                    $writerOptions = (isset($writer['options'])) ? $writer['options'] : null;
+
+                    $this->addWriter($writer['name'], $priority, $writerOptions);
+                }
+            }
+
+            if (isset($options['exceptionhandler']) && $options['exceptionhandler'] === true) {
+                static::registerExceptionHandler($this);
+            }
+
+            if (isset($options['errorhandler']) && $options['errorhandler'] === true) {
+                static::registerErrorHandler($this);
+            }
+
+        } elseif ($options) {
             throw new Exception\InvalidArgumentException('Options must be an array or an object implementing \Traversable ');
         }
 
-        // Inject writer plugin manager, if available
-        if (isset($options['writer_plugin_manager'])
-            && $options['writer_plugin_manager'] instanceof AbstractPluginManager
-        ) {
-            $this->setWriterPluginManager($options['writer_plugin_manager']);
-        }
-
-        // Inject processor plugin manager, if available
-        if (isset($options['processor_plugin_manager'])
-            && $options['processor_plugin_manager'] instanceof AbstractPluginManager
-        ) {
-            $this->setProcessorPluginManager($options['processor_plugin_manager']);
-        }
-
-        if (isset($options['writers']) && is_array($options['writers'])) {
-            foreach ($options['writers'] as $writer) {
-                if (!isset($writer['name'])) {
-                    throw new Exception\InvalidArgumentException('Options must contain a name for the writer');
-                }
-
-                $priority      = (isset($writer['priority'])) ? $writer['priority'] : null;
-                $writerOptions = (isset($writer['options'])) ? $writer['options'] : null;
-
-                $this->addWriter($writer['name'], $priority, $writerOptions);
-            }
-        }
-
-        if (isset($options['processors']) && is_array($options['processors'])) {
-            foreach ($options['processors'] as $processor) {
-                if (!isset($processor['name'])) {
-                    throw new Exception\InvalidArgumentException('Options must contain a name for the processor');
-                }
-
-                $priority         = (isset($processor['priority'])) ? $processor['priority'] : null;
-                $processorOptions = (isset($processor['options']))  ? $processor['options']  : null;
-
-                $this->addProcessor($processor['name'], $priority, $processorOptions);
-            }
-        }
-
-        if (isset($options['exceptionhandler']) && $options['exceptionhandler'] === true) {
-            static::registerExceptionHandler($this);
-        }
-
-        if (isset($options['errorhandler']) && $options['errorhandler'] === true) {
-            static::registerErrorHandler($this);
-        }
-
-        if (isset($options['fatal_error_shutdownfunction']) && $options['fatal_error_shutdownfunction'] === true) {
-            static::registerFatalErrorShutdownFunction($this);
-        }
+        $this->processors = new SplPriorityQueue();
     }
 
     /**
@@ -593,41 +553,6 @@ class Logger implements LoggerInterface
         restore_error_handler();
         static::$registeredErrorHandler = false;
     }
-
-
-    /**
-     * Register a shutdown handler to log fatal errors
-     *
-     * @link http://www.php.net/manual/function.register-shutdown-function.php
-     * @param  Logger $logger
-     * @return bool
-     */
-    public static function registerFatalErrorShutdownFunction(Logger $logger)
-    {
-        // Only register once per instance
-        if (static::$registeredFatalErrorShutdownFunction) {
-            return false;
-        }
-
-        $errorPriorityMap = static::$errorPriorityMap;
-
-        register_shutdown_function(function () use ($logger, $errorPriorityMap) {
-            $error = error_get_last();
-            if (null !== $error && $error['type'] === E_ERROR) {
-                $logger->log($errorPriorityMap[E_ERROR],
-                    $error['message'],
-                    array(
-                        'file' => $error['file'],
-                        'line' => $error['line']
-                    )
-                );
-            }
-        });
-
-        static::$registeredFatalErrorShutdownFunction = true;
-        return true;
-    }
-
 
     /**
      * Register logging system as an exception handler to log PHP exceptions

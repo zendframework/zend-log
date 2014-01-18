@@ -12,6 +12,7 @@ namespace Zend\Log\Writer;
 use Traversable;
 use Zend\Db\Adapter\Adapter;
 use Zend\Log\Exception;
+use Zend\Log\Formatter;
 use Zend\Log\Formatter\Db as DbFormatter;
 
 class Db extends AbstractWriter
@@ -86,9 +87,7 @@ class Db extends AbstractWriter
             $this->separator = $separator;
         }
 
-        if (!$this->hasFormatter()) {
-            $this->setFormatter(new DbFormatter());
-        }
+        $this->setFormatter(new DbFormatter());
     }
 
     /**

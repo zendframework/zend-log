@@ -91,7 +91,7 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
 
     protected function processConfig(&$config, ServiceLocatorInterface $services)
     {
-        if (isset($config['writer_plugin_manager']) 
+        if (isset($config['writer_plugin_manager'])
             && is_string($config['writer_plugin_manager'])
             && $services->has($config['writer_plugin_manager'])
         ) {
@@ -100,9 +100,23 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
 
         if ((!isset($config['writer_plugin_manager'])
             || ! $config['writer_plugin_manager'] instanceof AbstractPluginManager)
-            && $services->has('Zend\Log\WriterPluginManager')
+            && $services->has('LogWriterManager')
         ) {
-            $config['writer_plugin_manager'] = $services->get('Zend\Log\WriterPluginManager');
+            $config['writer_plugin_manager'] = $services->get('LogWriterManager');
+        }
+
+        if (isset($config['processor_plugin_manager'])
+            && is_string($config['processor_plugin_manager'])
+            && $services->has($config['processor_plugin_manager'])
+        ) {
+            $config['processor_plugin_manager'] = $services->get($config['processor_plugin_manager']);
+        }
+
+        if ((!isset($config['processor_plugin_manager'])
+            || ! $config['processor_plugin_manager'] instanceof AbstractPluginManager)
+            && $services->has('LogProcessorManager')
+        ) {
+            $config['processor_plugin_manager'] = $services->get('LogProcessorManager');
         }
 
         if (!isset($config['writers'])) {

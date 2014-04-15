@@ -67,7 +67,6 @@ abstract class AbstractWriter implements WriterInterface
      * - formatter: formatter for this writer
      *
      * @param  array|Traversable $options
-     * @return Logger
      * @throws Exception\InvalidArgumentException
      */
     public function __construct($options = null)
@@ -296,9 +295,9 @@ abstract class AbstractWriter implements WriterInterface
 
         if (!$formatter instanceof Formatter\FormatterInterface) {
             throw new Exception\InvalidArgumentException(sprintf(
-                    'Formatter must implement %s\Formatter\FormatterInterface; received "%s"',
-                    __NAMESPACE__,
-                    is_object($formatter) ? get_class($formatter) : gettype($formatter)
+                'Formatter must implement %s\Formatter\FormatterInterface; received "%s"',
+                __NAMESPACE__,
+                is_object($formatter) ? get_class($formatter) : gettype($formatter)
             ));
         }
 

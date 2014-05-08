@@ -62,11 +62,15 @@ class MongoDB extends AbstractWriter
         }
 
         if (null === $collection) {
-            throw new Exception\InvalidArgumentException('The collection parameter cannot be empty');
+            throw new Exception\InvalidArgumentException(
+                    'The collection parameter cannot be empty'
+            );
         }
 
         if (null === $database) {
-            throw new Exception\InvalidArgumentException('The database parameter cannot be empty');
+            throw new Exception\InvalidArgumentException(
+                    'The database parameter cannot be empty'
+            );
         }
 
         if (!($mongo instanceof MongoClient || $mongo instanceof Mongo)) {

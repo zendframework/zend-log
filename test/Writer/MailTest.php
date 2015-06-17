@@ -122,10 +122,27 @@ class MailTest extends \PHPUnit_Framework_TestCase
             'body'      => 'body',
         ];
 
+        $writer = new MailWriter([
+            'mail' => $messageOptions,
+        ]);
+
+        $this->assertAttributeInstanceOf('Zend\Mail\Message', 'mail', $writer);
+    }
+
+    public function testConstructWithMailTransportAsArrayOptions()
+    {
+        $messageOptions = [
+            'encoding'  => 'UTF-8',
+            'from'      => 'matthew@example.com',
+            'to'        => 'zf-devteam@example.com',
+            'subject'   => 'subject',
+            'body'      => 'body',
+        ];
+
         $transportOptions = [
             'type' => 'smtp',
             'options' => [
-                'host' => 'test',
+                'host' => 'test.dev',
                 'connection_class' => 'login',
                 'connection_config' => [
                     'username' => 'foo',
@@ -137,10 +154,9 @@ class MailTest extends \PHPUnit_Framework_TestCase
 
         $writer = new MailWriter([
             'mail' => $messageOptions,
-            'transport' => $transportOptions
+            'transport' => $transportOptions,
         ]);
 
-        $this->assertAttributeInstanceOf('Zend\Mail\Message', 'mail', $writer);
         $this->assertAttributeInstanceOf('Zend\Mail\Transport\Smtp', 'transport', $writer);
     }
 }

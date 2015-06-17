@@ -122,10 +122,25 @@ class MailTest extends \PHPUnit_Framework_TestCase
             'body'      => 'body',
         ];
 
+        $transportOptions = [
+            'type' => 'smtp',
+            'options' => [
+                'host' => 'test',
+                'connection_class' => 'login',
+                'connection_config' => [
+                    'username' => 'foo',
+                    'smtp_password' => 'bar',
+                    'ssl' => 'tls'
+                ]
+            ]
+        ];
+
         $writer = new MailWriter([
             'mail' => $messageOptions,
+            'transport' => $transportOptions
         ]);
 
         $this->assertAttributeInstanceOf('Zend\Mail\Message', 'mail', $writer);
+        $this->assertAttributeInstanceOf('Zend\Mail\Transport\Smtp', 'transport', $writer);
     }
 }

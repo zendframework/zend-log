@@ -90,6 +90,9 @@ class Mail extends AbstractWriter
             if (is_array($mail)) {
                 $mail = MailMessageFactory::getInstance($mail);
             }
+            if (is_array($transport)) {
+                $transport = Transport\Factory::create($transport);
+            }
         }
 
         // Ensure we have a valid mail message

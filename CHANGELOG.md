@@ -37,4 +37,6 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#4](https://github.com/zendframework/zend-log/pull/4) adds better, more
+  complete verbiage to the `composer.json` `suggest` section, to detail why
+  and when you might need additional dependencies.

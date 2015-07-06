@@ -457,9 +457,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         // check for single error handler instance
         $this->assertFalse(Logger::registerFatalErrorShutdownFunction($this->logger));
 
-        $self = $this;
-        register_shutdown_function(function () use ($writer, $self, &$caught) {
-            $self->assertEquals(
+        register_shutdown_function(function () use ($writer) {
+            $this->assertEquals(
                 'Call to undefined method ZendTest\Log\LoggerTest::callToNonExistingMethod()',
                 $writer->events[0]['message']
             );
@@ -489,9 +488,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         // check for single error handler instance
         $this->assertFalse(Logger::registerFatalErrorShutdownFunction($this->logger));
 
-        $self = $this;
-        register_shutdown_function(function () use ($writer, $self, &$caught) {
-            $self->assertStringMatchesFormat(
+        register_shutdown_function(function () use ($writer) {
+            $this->assertStringMatchesFormat(
                 'syntax error%A',
                 $writer->events[0]['message']
             );

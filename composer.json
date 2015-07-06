@@ -31,11 +31,11 @@
     },
     "suggest": {
         "ext-mongo": "mongodb extetension to use MongoDB writer",
+        "zendframework/zend-console": "Zend\\Console component to use Processor RequestId",
+        "zendframework/zend-db": "Zend\\Db component to use Db writer",
         "zendframework/zend-escaper": "Zend\\Escaper component, for use in the XML formatter",
         "zendframework/zend-mail": "Zend\\Mail component to use Email writer",
-        "zendframework/zend-validator": "Zend\\Validator component to block invalid log messages",
-        "zendframework/zend-console": "Zend\\Console component to use Processor RequestId",
-        "zendframework/zend-db": "Zend\\Db component to use Db writer"
+        "zendframework/zend-validator": "Zend\\Validator component to block invalid log messages"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

@@ -31,7 +31,7 @@ class WriterPluginManager extends AbstractPluginManager
         'mail'           => 'Zend\Log\Writer\Mail',
         'mock'           => 'Zend\Log\Writer\Mock',
         'noop'           => 'Zend\Log\Writer\Noop',
-        'psr3'           => 'Zend\Log\Writer\Psr3',
+        'psr'            => 'Zend\Log\Writer\Psr',
         'stream'         => 'Zend\Log\Writer\Stream',
         'syslog'         => 'Zend\Log\Writer\Syslog',
         'zendmonitor'    => 'Zend\Log\Writer\ZendMonitor',

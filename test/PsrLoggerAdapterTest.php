@@ -12,20 +12,20 @@ namespace ZendTest\Log;
 use Psr\Log\LogLevel;
 use Psr\Log\Test\LoggerInterfaceTest;
 use Zend\Log\Logger;
-use Zend\Log\Psr3LoggerAdapter;
+use Zend\Log\PsrLoggerAdapter;
 use Zend\Log\Writer\Mock as MockWriter;
 
 /**
  * @group Zend_Log
- * @coversDefaultClass Zend\Log\Psr3LoggerAdapter
+ * @coversDefaultClass Zend\Log\PsrLoggerAdapter
  * @covers ::<!public>
  */
-class Psr3LoggerAdapterTest extends LoggerInterfaceTest
+class PsrLoggerAdapterTest extends LoggerInterfaceTest
 {
     /**
      * @var array
      */
-    protected $psr3PriorityMap = [
+    protected $psrPriorityMap = [
         LogLevel::EMERGENCY => Logger::EMERG,
         LogLevel::ALERT     => Logger::ALERT,
         LogLevel::CRITICAL  => Logger::CRIT,
@@ -39,15 +39,15 @@ class Psr3LoggerAdapterTest extends LoggerInterfaceTest
     /**
      * Provides logger for LoggerInterface compat tests
      *
-     * @return Psr3LoggerAdapter
+     * @return PsrLoggerAdapter
      */
     public function getLogger()
     {
         $this->mockWriter = new MockWriter;
         $logger = new Logger;
-        $logger->addProcessor('psr3placeholder');
+        $logger->addProcessor('psrplaceholder');
         $logger->addWriter($this->mockWriter);
-        return new Psr3LoggerAdapter($logger);
+        return new PsrLoggerAdapter($logger);
     }
 
     /**
@@ -61,7 +61,7 @@ class Psr3LoggerAdapterTest extends LoggerInterfaceTest
      */
     public function getLogs()
     {
-        $prefixMap = array_flip($this->psr3PriorityMap);
+        $prefixMap = array_flip($this->psrPriorityMap);
         $convert = function ($event) use ($prefixMap) {
             $prefix = $prefixMap[$event['priority']];
             $message = $prefix . ' ' . $event['message'];
@@ -84,7 +84,7 @@ class Psr3LoggerAdapterTest extends LoggerInterfaceTest
     {
         $logger = new Logger;
 
-        $adapter = new Psr3LoggerAdapter($logger);
+        $adapter = new PsrLoggerAdapter($logger);
         $this->assertAttributeEquals($logger, 'logger', $adapter);
 
         $this->assertSame($logger, $adapter->getLogger($logger));
@@ -94,7 +94,7 @@ class Psr3LoggerAdapterTest extends LoggerInterfaceTest
      * @covers ::log
      * @dataProvider logLevelsToPriorityProvider
      */
-    public function testPsr3LogLevelsMapsToPriorities($logLevel, $priority)
+    public function testPsrLogLevelsMapsToPriorities($logLevel, $priority)
     {
         $message = 'foo';
         $context = ['bar' => 'baz'];
@@ -108,7 +108,7 @@ class Psr3LoggerAdapterTest extends LoggerInterfaceTest
                 $this->equalTo($context)
             );
 
-        $adapter = new Psr3LoggerAdapter($logger);
+        $adapter = new PsrLoggerAdapter($logger);
         $adapter->log($logLevel, $message, $context);
     }
 
@@ -120,7 +120,7 @@ class Psr3LoggerAdapterTest extends LoggerInterfaceTest
     public function logLevelsToPriorityProvider()
     {
         $return = [];
-        foreach ($this->psr3PriorityMap as $level => $priority) {
+        foreach ($this->psrPriorityMap as $level => $priority) {
             $return[] = [$level, $priority];
         }
         return $return;

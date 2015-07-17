@@ -15,7 +15,7 @@ namespace Zend\Log\Processor;
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
-class Psr3Placeholder implements ProcessorInterface
+class PsrPlaceholder implements ProcessorInterface
 {
     /**
      * @param array $event event data

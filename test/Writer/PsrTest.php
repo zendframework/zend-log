@@ -15,24 +15,24 @@ use Psr\Log\NullLogger;
 use Zend\Log\Filter\Mock as MockFilter;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
 use Zend\Log\Logger;
-use Zend\Log\Writer\Psr3 as Psr3Writer;
+use Zend\Log\Writer\Psr as PsrWriter;
 
 /**
  * @group      Zend_Log
- * @coversDefaultClass Zend\Log\Writer\Psr3
+ * @coversDefaultClass Zend\Log\Writer\Psr
  * @covers ::<!public>
  */
-class Psr3Test extends \PHPUnit_Framework_TestCase
+class PsrTest extends \PHPUnit_Framework_TestCase
 {
     /**
      *
      * @covers ::__construct
      */
-    public function testConstructWithPsr3Logger()
+    public function testConstructWithPsrLogger()
     {
-        $psr3Logger = $this->getMock(LoggerInterface::class);
-        $writer = new Psr3Writer($psr3Logger);
-        $this->assertAttributeSame($psr3Logger, 'logger', $writer);
+        $psrLogger = $this->getMock(LoggerInterface::class);
+        $writer = new PsrWriter($psrLogger);
+        $this->assertAttributeSame($psrLogger, 'logger', $writer);
     }
 
     /**
@@ -41,16 +41,16 @@ class Psr3Test extends \PHPUnit_Framework_TestCase
      */
     public function testConstructWithOptions()
     {
-        $psr3Logger = $this->getMock(LoggerInterface::class);
+        $psrLogger = $this->getMock(LoggerInterface::class);
         $formatter = new SimpleFormatter();
         $filter    = new MockFilter();
-        $writer = new Psr3Writer([
+        $writer = new PsrWriter([
                 'filters'   => $filter,
                 'formatter' => $formatter,
-                'logger'    => $psr3Logger,
+                'logger'    => $psrLogger,
         ]);
 
-        $this->assertAttributeSame($psr3Logger, 'logger', $writer);
+        $this->assertAttributeSame($psrLogger, 'logger', $writer);
         $this->assertAttributeSame($formatter, 'formatter', $writer);
 
         $filters = self::readAttribute($writer, 'filters');
@@ -64,7 +64,7 @@ class Psr3Test extends \PHPUnit_Framework_TestCase
      */
     public function testFallbackLoggerIsNullLogger()
     {
-        $writer = new Psr3Writer;
+        $writer = new PsrWriter;
         $this->assertAttributeInstanceOf(NullLogger::class, 'logger', $writer);
     }
 
@@ -76,8 +76,8 @@ class Psr3Test extends \PHPUnit_Framework_TestCase
         $message = 'foo';
         $extra = ['bar' => 'baz'];
 
-        $psr3Logger = $this->getMock(LoggerInterface::class);
-        $psr3Logger->expects($this->once())
+        $psrLogger = $this->getMock(LoggerInterface::class);
+        $psrLogger->expects($this->once())
             ->method('log')
             ->with(
                 $this->equalTo($logLevel),
@@ -85,7 +85,7 @@ class Psr3Test extends \PHPUnit_Framework_TestCase
                 $this->equalTo($extra)
             );
 
-        $writer = new Psr3Writer($psr3Logger);
+        $writer = new PsrWriter($psrLogger);
         $logger = new Logger();
         $logger->addWriter($writer);
 

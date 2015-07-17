@@ -20,7 +20,7 @@ class ProcessorPluginManager extends AbstractPluginManager
      */
     protected $invokableClasses = [
         'backtrace' => 'Zend\Log\Processor\Backtrace',
-        'psr3placeholder' => 'Zend\Log\Processor\Psr3Placeholder',
+        'psrplaceholder' => 'Zend\Log\Processor\PsrPlaceholder',
         'referenceid' => 'Zend\Log\Processor\ReferenceId',
         'requestid' => 'Zend\Log\Processor\RequestId',
     ];

@@ -9,14 +9,14 @@
 
 namespace ZendTest\Log\Processor;
 
-use Zend\Log\Processor\Psr3Placeholder;
+use Zend\Log\Processor\PsrPlaceholder;
 use stdClass;
 
 /**
  * @group      Zend_Log
- * @coversDefaultClass Zend\Log\Processor\Psr3Placeholder
+ * @coversDefaultClass Zend\Log\Processor\PsrPlaceholder
  */
-class Psr3PlaceholderTest extends \PHPUnit_Framework_TestCase
+class PsrPlaceholderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider pairsProvider
@@ -24,8 +24,8 @@ class Psr3PlaceholderTest extends \PHPUnit_Framework_TestCase
      */
     public function testReplacement($val, $expected)
     {
-        $psr3Processor = new Psr3Placeholder;
-        $event = $psr3Processor->process([
+        $psrProcessor = new PsrPlaceholder;
+        $event = $psrProcessor->process([
             'message' => '{foo}',
             'extra' => ['foo' => $val]
         ]);

@@ -10,24 +10,24 @@
 namespace Zend\Log\Writer;
 
 use Psr\Log\LogLevel;
-use Psr\Log\LoggerAwareTrait as Psr3LoggerAwareTrait;
-use Psr\Log\LoggerInterface as Psr3LoggerInterface;
+use Psr\Log\LoggerAwareTrait as PsrLoggerAwareTrait;
+use Psr\Log\LoggerInterface as PsrLoggerInterface;
 use Psr\Log\NullLogger;
 use Zend\Log\Logger;
 
 /**
  * Proxies log messages to an existing PSR-3 compliant logger.
  */
-class Psr3 extends AbstractWriter
+class Psr extends AbstractWriter
 {
-    use Psr3LoggerAwareTrait;
+    use PsrLoggerAwareTrait;
 
     /**
      * Map priority to PSR-3 LogLevels
      *
      * @var array
      */
-    protected $psr3PriorityMap = [
+    protected $psrPriorityMap = [
         Logger::EMERG  => LogLevel::EMERGENCY,
         Logger::ALERT  => LogLevel::ALERT,
         Logger::CRIT   => LogLevel::CRITICAL,
@@ -53,7 +53,7 @@ class Psr3 extends AbstractWriter
      */
     public function __construct($options = null)
     {
-        if ($options instanceof Psr3LoggerInterface) {
+        if ($options instanceof PsrLoggerInterface) {
             $this->setLogger($options);
         }
         if ($options instanceof Traversable) {
@@ -82,8 +82,8 @@ class Psr3 extends AbstractWriter
         $message  = $event['message'];
         $context  = $event['extra'];
 
-        if (isset($this->psr3PriorityMap[$priority])) {
-            $level = $this->psr3PriorityMap[$priority];
+        if (isset($this->psrPriorityMap[$priority])) {
+            $level = $this->psrPriorityMap[$priority];
         } else {
             $level = $this->defaultLogLevel;
         }

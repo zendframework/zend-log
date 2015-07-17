@@ -15,6 +15,9 @@ use Psr\Log\LoggerInterface as Psr3LoggerInterface;
 use Psr\Log\NullLogger;
 use Zend\Log\Logger;
 
+/**
+ * Proxies log messages to an existing PSR-3 compliant logger.
+ */
 class Psr3 extends AbstractWriter
 {
     use Psr3LoggerAwareTrait;
@@ -68,7 +71,7 @@ class Psr3 extends AbstractWriter
     }
 
     /**
-     * Write a message to the log.
+     * Write a message to the PSR-3 compliant logger.
      *
      * @param array $event event data
      * @return void

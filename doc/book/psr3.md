@@ -16,11 +16,6 @@ features:
 PSR logger adapter wraps `Zend\Log\LoggerInterface` allowing it to be used
 anywhere `Psr\Log\LoggerInterface` is expected.
 
-PSR-3 log levels and `zend-log` priorities are eight [RFC 5424][] severity
-levels and mapped directly.
-
-[RFC 5424]: https://tools.ietf.org/html/rfc5424#section-6.2.1
-
 ```php
 $zendLogLogger = new Zend\Log\Logger;
 
@@ -31,17 +26,17 @@ $psrLogger->log(Psr\Log\LogLevel::INFO, 'We have PSR compatible logger');
 ## PSR logger writer
 
 PSR logger writer allows log messages and extras to be forwared to any PSR-3
-compatible logger.
-
-Writer needs psr logger to be useful and fallbacks to `Psr\Log\NullLogger` if
-none was provided. This writer can use filters as any other writter, you can read
+compatible logger. Filters can be used to limit forwarded messages, you can read
 more in Filters section.
 
+Writer needs PSR logger to be useful and fallbacks to `Psr\Log\NullLogger` if
+none was provided. There are three ways to pass it:
+
 ```php
-// by passing logger as constructor parameter
+// as constructor parameter
 $writer = new Zend\Log\Writer\Psr($psrLogger);
 
-// by passing logger in options
+// as option
 $writer = new Zend\Log\Writer\Psr(['logger' => $psrLogger]);
 
 // via setter injection

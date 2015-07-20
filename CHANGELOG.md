@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.6.0 - TBD
+## 2.6.0 - 2015-07-20
 
 ### Added
 
@@ -17,25 +17,6 @@ All notable changes to this project will be documented in this file, in reverse 
     message placeholders in your log messages; they will be substituted from
     corresponding keys of values passed in the `$extra` array when logging the
     message.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-
-## 2.5.3 - TBD
-
-### Added
-
-- Nothing.
 
 ### Deprecated
 

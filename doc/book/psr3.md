@@ -1,63 +1,61 @@
 # PSR-3 Logger Interface compatibility
 
-[PSR-3 Logger Interface][] is a standard recommendation defining common
-interface for logging libraries. `zend-log` component predates it and have
-minor incompatibilities with common interface but provides compatibility
-features:
+[PSR-3 Logger Interface](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)
+is a standards recommendation defining a common interface for logging libraries. The `zend-log`
+component predates it, and has minor incompatibilities, but starting with version 2.6 provides the
+following compatibility features:
 
 - PSR logger adapter
 - PSR logger writer
 - PSR placeholder processor
 
-[PSR-3 Logger Interface]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
+## PsrLoggerAdapter
 
-## PSR logger adapter
-
-PSR logger adapter wraps `Zend\Log\LoggerInterface` allowing it to be used
+`Zend\Log\PsrLoggerAdapter` wraps `Zend\Log\LoggerInterface`, allowing it to be used
 anywhere `Psr\Log\LoggerInterface` is expected.
 
 ```php
 $zendLogLogger = new Zend\Log\Logger;
 
 $psrLogger = new Zend\Log\PsrLoggerAdapter($zendLogLogger);
-$psrLogger->log(Psr\Log\LogLevel::INFO, 'We have PSR compatible logger');
+$psrLogger->log(Psr\Log\LogLevel::INFO, 'We have a PSR-compatible logger');
 ```
 
-## PSR logger writer
+## PSR-3 log writer
 
-PSR logger writer allows log messages and extras to be forwared to any PSR-3
-compatible logger. Filters can be used to limit forwarded messages, you can read
-more in Filters section.
+`Zend\Log\Writer\Psr` allows log messages and extras to be forwared to any PSR-3 compatible logger.
+As with any log writer, this has the added benefit that you filters can be used to limit forwarded
+messages.
 
-Writer needs PSR logger to be useful and fallbacks to `Psr\Log\NullLogger` if
-none was provided. There are three ways to pass it:
+The writer needs a `Psr\Logger\LoggerInterface` instance to be useful, and fallbacks to
+`Psr\Log\NullLogger` if none is provided. There are three ways to provide the PSR logger instance to
+the log writer:
 
 ```php
-// as constructor parameter
+// Via constructor parameter:
 $writer = new Zend\Log\Writer\Psr($psrLogger);
 
-// as option
+// Via option:
 $writer = new Zend\Log\Writer\Psr(['logger' => $psrLogger]);
 
-// via setter injection
-$writer = new Zend\Log\Writer\Psr;
+// Via setter injection:
+$writer = new Zend\Log\Writer\Psr();
 $writer->setLogger($psrLogger);
 ```
 
-## PSR placeholder processor
+## PSR-3 placeholder processor
 
-PsrPlaceholder processor adds support for [PSR-3 message placeholders][].
-Placeholder names correspond to keys in extras array.
+`Zend\Log\Processor\PsrPlaceholder` adds support for [PSR-3 message placeholders](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md#12-message).
+Placeholder names correspond to keys in the "extras" array passed when logging a message.
 
-Value can be of arbitrary type where scalars or object implementing `__toString`
-will be used directly and others will result in type printed.
-
-[PSR-3 message placeholders]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md#12-message
+Values can be of arbitrary type, including all scalars, and objects implementing `__toString`;
+objects not capable of string serialization will result in the fully-qualified class name being
+substituted.
 
 ```php
-$zendLogLogger = new Zend\Log\Logger;
-$zendLogLogger->addProcessor(new Zend\Log\Processor\PsrPlaceholder);
+$logger = new Zend\Log\Logger;
+$logger->addProcessor(new Zend\Log\Processor\PsrPlaceholder);
 
-$zendLogLogger->info('User with email {email} registered', ['email' => 'user@example.org']);
+$logger->info('User with email {email} registered', ['email' => 'user@example.org']);
 // logs message 'User with email user@example.org registered'
 ```

@@ -25,7 +25,7 @@ class Psr extends AbstractWriter
     /**
      * Map priority to PSR-3 LogLevels
      *
-     * @var array
+     * @var int[]
      */
     protected $psrPriorityMap = [
         Logger::EMERG  => LogLevel::EMERGENCY,
@@ -38,15 +38,21 @@ class Psr extends AbstractWriter
         Logger::DEBUG  => LogLevel::DEBUG,
     ];
 
+    /**
+     * Default log level (warning)
+     *
+     * @var int
+     */
     protected $defaultLogLevel = LogLevel::WARNING;
 
     /**
      * Constructor
      *
      * Set options for a writer. Accepted options are:
+     *
      * - filters: array of filters to add to this filter
      * - formatter: formatter for this writer
-     * - logger: Psr\Log\LoggerInterface implementation
+     * - logger: PsrLoggerInterface implementation
      *
      * @param  array|Traversable|LoggerInterface $options
      * @throws Exception\InvalidArgumentException
@@ -56,6 +62,7 @@ class Psr extends AbstractWriter
         if ($options instanceof PsrLoggerInterface) {
             $this->setLogger($options);
         }
+
         if ($options instanceof Traversable) {
             $options = iterator_to_array($options);
         }
@@ -63,10 +70,11 @@ class Psr extends AbstractWriter
         if (is_array($options) && isset($options['logger'])) {
             $this->setLogger($options['logger']);
         }
+
         parent::__construct($options);
 
         if (null === $this->logger) {
-            $this->logger = new NullLogger;
+            $this->setLogger(new NullLogger);
         }
     }
 
@@ -82,11 +90,9 @@ class Psr extends AbstractWriter
         $message  = $event['message'];
         $context  = $event['extra'];
 
-        if (isset($this->psrPriorityMap[$priority])) {
-            $level = $this->psrPriorityMap[$priority];
-        } else {
-            $level = $this->defaultLogLevel;
-        }
+        $level = isset($this->psrPriorityMap[$priority])
+            ? $this->psrPriorityMap[$priority]
+            : $this->defaultLogLevel;
 
         $this->logger->log($level, $message, $context);
     }

@@ -25,18 +25,16 @@ use Zend\Log\Writer\Psr as PsrWriter;
 class PsrTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *
      * @covers ::__construct
      */
     public function testConstructWithPsrLogger()
     {
         $psrLogger = $this->getMock(LoggerInterface::class);
-        $writer = new PsrWriter($psrLogger);
+        $writer    = new PsrWriter($psrLogger);
         $this->assertAttributeSame($psrLogger, 'logger', $writer);
     }
 
     /**
-     *
      * @covers ::__construct
      */
     public function testConstructWithOptions()
@@ -45,9 +43,9 @@ class PsrTest extends \PHPUnit_Framework_TestCase
         $formatter = new SimpleFormatter();
         $filter    = new MockFilter();
         $writer = new PsrWriter([
-                'filters'   => $filter,
-                'formatter' => $formatter,
-                'logger'    => $psrLogger,
+            'filters'   => $filter,
+            'formatter' => $formatter,
+            'logger'    => $psrLogger,
         ]);
 
         $this->assertAttributeSame($psrLogger, 'logger', $writer);
@@ -59,7 +57,6 @@ class PsrTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
      * @covers ::__construct
      */
     public function testFallbackLoggerIsNullLogger()
@@ -74,7 +71,7 @@ class PsrTest extends \PHPUnit_Framework_TestCase
     public function testWriteLogMapsLevelsProperly($priority, $logLevel)
     {
         $message = 'foo';
-        $extra = ['bar' => 'baz'];
+        $extra   = ['bar' => 'baz'];
 
         $psrLogger = $this->getMock(LoggerInterface::class);
         $psrLogger->expects($this->once())
@@ -100,14 +97,14 @@ class PsrTest extends \PHPUnit_Framework_TestCase
     public function priorityToLogLevelProvider()
     {
         return [
-            [Logger::EMERG, LogLevel::EMERGENCY],
-            [Logger::ALERT, LogLevel::ALERT],
-            [Logger::CRIT, LogLevel::CRITICAL],
-            [Logger::ERR, LogLevel::ERROR],
-            [Logger::WARN, LogLevel::WARNING],
-            [Logger::NOTICE, LogLevel::NOTICE],
-            [Logger::INFO, LogLevel::INFO],
-            [Logger::DEBUG, LogLevel::DEBUG],
+            'emergency' => [Logger::EMERG, LogLevel::EMERGENCY],
+            'alert'     => [Logger::ALERT, LogLevel::ALERT],
+            'critical'  => [Logger::CRIT, LogLevel::CRITICAL],
+            'error'     => [Logger::ERR, LogLevel::ERROR],
+            'warn'      => [Logger::WARN, LogLevel::WARNING],
+            'notice'    => [Logger::NOTICE, LogLevel::NOTICE],
+            'info'      => [Logger::INFO, LogLevel::INFO],
+            'debug'     => [Logger::DEBUG, LogLevel::DEBUG],
         ];
     }
 }

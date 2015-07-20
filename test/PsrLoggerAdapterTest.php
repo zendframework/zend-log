@@ -44,7 +44,7 @@ class PsrLoggerAdapterTest extends LoggerInterfaceTest
     public function getLogger()
     {
         $this->mockWriter = new MockWriter;
-        $logger = new Logger;
+        $logger           = new Logger;
         $logger->addProcessor('psrplaceholder');
         $logger->addWriter($this->mockWriter);
         return new PsrLoggerAdapter($logger);
@@ -62,12 +62,11 @@ class PsrLoggerAdapterTest extends LoggerInterfaceTest
     public function getLogs()
     {
         $prefixMap = array_flip($this->psrPriorityMap);
-        $convert = function ($event) use ($prefixMap) {
-            $prefix = $prefixMap[$event['priority']];
+        return array_map(function ($event) use ($prefixMap) {
+            $prefix  = $prefixMap[$event['priority']];
             $message = $prefix . ' ' . $event['message'];
             return $message;
-        };
-        return array_map($convert, $this->mockWriter->events);
+        }, $this->mockWriter->events);
     }
 
     public function tearDown()

@@ -27,7 +27,7 @@ class PsrPlaceholderTest extends \PHPUnit_Framework_TestCase
         $psrProcessor = new PsrPlaceholder;
         $event = $psrProcessor->process([
             'message' => '{foo}',
-            'extra' => ['foo' => $val]
+            'extra'   => ['foo' => $val]
         ]);
         $this->assertEquals($expected, $event['message']);
     }
@@ -40,14 +40,14 @@ class PsrPlaceholderTest extends \PHPUnit_Framework_TestCase
     public function pairsProvider()
     {
         return [
-            ['foo', 'foo'],
-            ['3', '3'],
-            [3, '3'],
-            [null, ''],
-            [true, '1'],
-            [false, ''],
-            [new stdClass, '[object stdClass]'],
-            [[], '[array]'],
+            'string'     => ['foo', 'foo'],
+            'string-int' => ['3', '3'],
+            'int'        => [3, '3'],
+            'null'       => [null, ''],
+            'true'       => [true, '1'],
+            'false'      => [false, ''],
+            'stdclass'   => [new stdClass, '[object stdClass]'],
+            'array'      => [[], '[array]'],
         ];
     }
 }

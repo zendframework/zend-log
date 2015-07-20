@@ -10,10 +10,9 @@
 namespace Zend\Log\Processor;
 
 /**
- * Processes a event's message according to PSR-3 rules
- * It replaces {foo} with the value from $extra['foo']
+ * Processes an event message according to PSR-3 rules.
  *
- * @author Jordi Boggiano <j.boggiano@seld.be>
+ * This processor replaces `{foo}` with the value from `$extra['foo']`.
  */
 class PsrPlaceholder implements ProcessorInterface
 {
@@ -26,16 +25,25 @@ class PsrPlaceholder implements ProcessorInterface
         if (false === strpos($event['message'], '{')) {
             return $event;
         }
+
         $replacements = [];
         foreach ($event['extra'] as $key => $val) {
-            if (is_null($val) || is_scalar($val) || (is_object($val) && method_exists($val, "__toString"))) {
+            if (is_null($val)
+                || is_scalar($val)
+                || (is_object($val) && method_exists($val, "__toString"))
+            ) {
                 $replacements['{'.$key.'}'] = $val;
-            } elseif (is_object($val)) {
-                $replacements['{'.$key.'}'] = '[object '.get_class($val).']';
-            } else {
-                $replacements['{'.$key.'}'] = '['.gettype($val).']';
+                continue;
             }
+
+            if (is_object($val)) {
+                $replacements['{'.$key.'}'] = '[object '.get_class($val).']';
+                continue;
+            }
+
+            $replacements['{'.$key.'}'] = '['.gettype($val).']';
         }
+
         $event['message'] = strtr($event['message'], $replacements);
         return $event;
     }

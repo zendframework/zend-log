@@ -11,6 +11,9 @@ namespace Zend\Log;
 
 use Zend\ServiceManager\AbstractPluginManager;
 
+/**
+ * Plugin manager for log processors.
+ */
 class ProcessorPluginManager extends AbstractPluginManager
 {
     /**
@@ -19,9 +22,10 @@ class ProcessorPluginManager extends AbstractPluginManager
      * @var array
      */
     protected $invokableClasses = [
-        'backtrace' => 'Zend\Log\Processor\Backtrace',
-        'referenceid' => 'Zend\Log\Processor\ReferenceId',
-        'requestid' => 'Zend\Log\Processor\RequestId',
+        'backtrace'      => 'Zend\Log\Processor\Backtrace',
+        'psrplaceholder' => 'Zend\Log\Processor\PsrPlaceholder',
+        'referenceid'    => 'Zend\Log\Processor\ReferenceId',
+        'requestid'      => 'Zend\Log\Processor\RequestId',
     ];
 
     /**

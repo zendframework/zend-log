@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.6.0 - TBD
+
+### Added
+
+- [#6](https://github.com/zendframework/zend-log/pull/6) adds
+  [PSR-3](http://www.php-fig.org/psr/psr-3/) support to zend-log:
+  - `Zend\Log\PsrLoggerAdapter` allows you to decorate a
+    `Zend\Log\LoggerInterface` instance so it can be used wherever a PSR-3
+    logger is expected.
+  - `Zend\Log\Writer\Psr` allows you to decorate a PSR-3 logger instance for use
+    as a log writer with `Zend\Log\Logger`.
+  - `Zend\Log\Processor\PsrPlaceholder` allows you to use PSR-3-compliant
+    message placeholders in your log messages; they will be substituted from
+    corresponding keys of values passed in the `$extra` array when logging the
+    message.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
+
 ## 2.5.3 - TBD
 
 ### Added

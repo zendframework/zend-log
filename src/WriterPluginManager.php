@@ -11,6 +11,9 @@ namespace Zend\Log;
 
 use Zend\ServiceManager\AbstractPluginManager;
 
+/**
+ * Plugin manager for log writers.
+ */
 class WriterPluginManager extends AbstractPluginManager
 {
     protected $aliases = [
@@ -31,6 +34,7 @@ class WriterPluginManager extends AbstractPluginManager
         'mail'           => 'Zend\Log\Writer\Mail',
         'mock'           => 'Zend\Log\Writer\Mock',
         'noop'           => 'Zend\Log\Writer\Noop',
+        'psr'            => 'Zend\Log\Writer\Psr',
         'stream'         => 'Zend\Log\Writer\Stream',
         'syslog'         => 'Zend\Log\Writer\Syslog',
         'zendmonitor'    => 'Zend\Log\Writer\ZendMonitor',

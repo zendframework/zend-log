@@ -131,17 +131,12 @@ Zend\Log\Logger::registerErrorHandler($logger);
 If you want to unregister the error handler you can use the `unregisterErrorHandler()` static method.
 
 | Name | Error Handler Parameter | Description |
----------------------------------------------------
+| ---- |------------------------ | ----------- |
 | message |errstr |Contains the error message, as a string. |
-------------------------------------------------------------
 | errno |errno |Contains the level of the error raised, as an integer. |
------------------------------------------------------------------------
 | file |errfile |Contains the filename that the error was raised in, as a string. |
-----------------------------------------------------------------------------------
 | line |errline |Contains the line number the error was raised at, as an integer. |
-----------------------------------------------------------------------------------
 | context |errcontext |(optional) An array that points to the active symbol table at the point the error occurred. In other words, errcontext will contain an array of every variable that existed in the scope the error was triggered in. User error handler must not modify error context.|
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 You can also configure a Logger to intercept Exceptions using the static method
 `registerExceptionHandler($logger)`.

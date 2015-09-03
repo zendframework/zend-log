@@ -27,7 +27,7 @@ class Sample implements FilterInterface
      * If 0.5, only half of the values will be logged.
      * If 0.1 only 1 among 10 values will be logged.
      *
-     * @param  float|int $samplerate Sample rate [0-1].
+     * @param  float|int $sampleRate Sample rate [0-1].
      * @return Priority
      * @throws Exception\InvalidArgumentException
      */

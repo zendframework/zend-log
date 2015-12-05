@@ -9,10 +9,11 @@
 
 namespace ZendTest\Log;
 
+use Zend\Log\LoggerAbstractServiceFactory;
 use Zend\Log\ProcessorPluginManager;
+use Zend\Log\Writer\Noop;
 use Zend\Log\WriterPluginManager;
 use Zend\Log\Writer\Db as DbWriter;
-use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
 
 /**
@@ -32,10 +33,7 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->serviceManager = new ServiceManager(new ServiceManagerConfig([
-            'abstract_factories' => ['Zend\Log\LoggerAbstractServiceFactory'],
-        ]));
-
+        $this->serviceManager = new ServiceManager(['abstract_factories' => [LoggerAbstractServiceFactory::class]]);
         $this->serviceManager->setService('Config', [
             'log' => [
                 'Application\Frontend' => [],
@@ -95,9 +93,8 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
         $db = $this->getMockBuilder('Zend\Db\Adapter\Adapter')
             ->disableOriginalConstructor()
             ->getMock();
-        $serviceManager = new ServiceManager(new ServiceManagerConfig([
-            'abstract_factories' => ['Zend\Log\LoggerAbstractServiceFactory'],
-        ]));
+
+        $serviceManager = new ServiceManager(['abstract_factories' => [LoggerAbstractServiceFactory::class]]);
         $serviceManager->setService('Db\Logger', $db);
         $serviceManager->setService('Config', [
             'log' => [
@@ -117,16 +114,19 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
                 ],
             ],
         ]);
+
         $logger = $serviceManager->get('Application\Log');
         $this->assertInstanceOf('Zend\Log\Logger', $logger);
         $writers = $logger->getWriters();
         $found   = false;
+
         foreach ($writers as $writer) {
             if ($writer instanceof DbWriter) {
                 $found = true;
                 break;
             }
         }
+
         $this->assertTrue($found, 'Did not find expected DB writer');
         $this->assertAttributeSame($db, 'db', $writer);
     }
@@ -136,13 +136,11 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testWillInjectWriterPluginManagerIfAvailable()
     {
-        $writers = new WriterPluginManager();
+        $writers = new WriterPluginManager(new ServiceManager());
         $mockWriter = $this->getMock('Zend\Log\Writer\WriterInterface');
         $writers->setService('CustomWriter', $mockWriter);
 
-        $services = new ServiceManager(new ServiceManagerConfig([
-            'abstract_factories' => ['Zend\Log\LoggerAbstractServiceFactory'],
-        ]));
+        $services = new ServiceManager(['abstract_factories' => [LoggerAbstractServiceFactory::class]]);
         $services->setService('LogWriterManager', $writers);
         $services->setService('Config', [
             'log' => [
@@ -164,18 +162,16 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testWillInjectProcessorPluginManagerIfAvailable()
     {
-        $processors = new ProcessorPluginManager();
+        $processors = new ProcessorPluginManager(new ServiceManager());
         $mockProcessor = $this->getMock('Zend\Log\Processor\ProcessorInterface');
         $processors->setService('CustomProcessor', $mockProcessor);
 
-        $services = new ServiceManager(new ServiceManagerConfig([
-            'abstract_factories' => ['Zend\Log\LoggerAbstractServiceFactory'],
-        ]));
+        $services = new ServiceManager(['abstract_factories' => [LoggerAbstractServiceFactory::class]]);
         $services->setService('LogProcessorManager', $processors);
         $services->setService('Config', [
             'log' => [
                 'Application\Frontend' => [
-                    'writers' => [['name' => 'Null']],
+                    'writers'    => [['name' => Noop::class]],
                     'processors' => [['name' => 'CustomProcessor']],
                 ],
             ],

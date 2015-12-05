@@ -14,6 +14,7 @@ use Zend\Log\ProcessorPluginManager;
 use Zend\Log\Writer\Noop;
 use Zend\Log\WriterPluginManager;
 use Zend\Log\Writer\Db as DbWriter;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceManager;
 
 /**
@@ -76,13 +77,14 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $service
      * @dataProvider providerInvalidLoggerService
-     * @expectedException \Zend\ServiceManager\Exception\ServiceNotFoundException
+     *
+     * @param string $service
      */
     public function testInvalidLoggerService($service)
     {
-        $actual = $this->serviceManager->get($service);
+        $this->setExpectedException(ServiceNotFoundException::class);
+        $this->serviceManager->get($service);
     }
 
     /**

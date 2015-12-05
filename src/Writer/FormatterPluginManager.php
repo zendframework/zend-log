@@ -12,47 +12,40 @@ namespace Zend\Log\Writer;
 use Zend\Log\Exception;
 use Zend\Log\Formatter;
 use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\Exception\InvalidServiceException;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 class FormatterPluginManager extends AbstractPluginManager
 {
-    /**
-     * Default set of formatters
-     *
-     * @var array
-     */
-    protected $invokableClasses = [
-        'base'             => 'Zend\Log\Formatter\Base',
-        'simple'           => 'Zend\Log\Formatter\Simple',
-        'xml'              => 'Zend\Log\Formatter\Xml',
-        'db'               => 'Zend\Log\Formatter\Db',
-        'errorhandler'     => 'Zend\Log\Formatter\ErrorHandler',
-        'exceptionhandler' => 'Zend\Log\Formatter\ExceptionHandler',
+    protected $aliases = [
+        'base'             => Formatter\Base::class,
+        'simple'           => Formatter\Simple::class,
+        'xml'              => Formatter\Xml::class,
+        'db'               => Formatter\Db::class,
+        'errorhandler'     => Formatter\ErrorHandler::class,
+        'exceptionhandler' => Formatter\ExceptionHandler::class,
+    ];
+
+    protected $factories = [
+        Formatter\Base::class             => InvokableFactory::class,
+        Formatter\Simple::class           => InvokableFactory::class,
+        Formatter\Xml::class              => InvokableFactory::class,
+        Formatter\Db::class               => InvokableFactory::class,
+        Formatter\ErrorHandler::class     => InvokableFactory::class,
+        Formatter\ExceptionHandler::class => InvokableFactory::class,
     ];
 
     /**
-     * Allow many filters of the same type
-     *
-     * @var bool
+     * {@inheritdoc}
      */
-    protected $shareByDefault = false;
-
-    /**
-     * Validate the plugin
-     *
-     * Checks that the formatter loaded is an instance of Formatter\FormatterInterface.
-     *
-     * @param  mixed $plugin
-     * @return void
-     * @throws Exception\InvalidArgumentException if invalid
-     */
-    public function validatePlugin($plugin)
+    public function validate($plugin)
     {
         if ($plugin instanceof Formatter\FormatterInterface) {
             // we're okay
             return;
         }
 
-        throw new Exception\InvalidArgumentException(sprintf(
+        throw new InvalidServiceException(sprintf(
             'Plugin of type %s is invalid; must implement %s\Formatter\FormatterInterface',
             (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
             __NAMESPACE__

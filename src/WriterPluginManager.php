@@ -10,6 +10,8 @@
 namespace Zend\Log;
 
 use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\Exception\InvalidServiceException;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 /**
  * Plugin manager for log writers.
@@ -17,53 +19,47 @@ use Zend\ServiceManager\AbstractPluginManager;
 class WriterPluginManager extends AbstractPluginManager
 {
     protected $aliases = [
-        'null'                 => 'noop',
-        'Zend\Log\Writer\Null' => 'noop',
+        'null'             => 'noop',
+        Writer\Null::class => 'noop',
+
+        'chromephp'      => Writer\ChromePhp::class,
+        'db'             => Writer\Db::class,
+        'fingerscrossed' => Writer\FingersCrossed::class,
+        'firephp'        => Writer\FirePhp::class,
+        'mail'           => Writer\Mail::class,
+        'mock'           => Writer\Mock::class,
+        'noop'           => Writer\Noop::class,
+        'psr'            => Writer\Psr::class,
+        'stream'         => Writer\Stream::class,
+        'syslog'         => Writer\Syslog::class,
+        'zendmonitor'    => Writer\ZendMonitor::class,
+    ];
+
+    protected $factories = [
+        Writer\ChromePhp::class      => InvokableFactory::class,
+        Writer\Db::class             => InvokableFactory::class,
+        Writer\FirePhp::class        => InvokableFactory::class,
+        Writer\Mail::class           => InvokableFactory::class,
+        Writer\Mock::class           => InvokableFactory::class,
+        Writer\Noop::class           => InvokableFactory::class,
+        Writer\Psr::class            => InvokableFactory::class,
+        Writer\Stream::class         => InvokableFactory::class,
+        Writer\Syslog::class         => InvokableFactory::class,
+        Writer\FingersCrossed::class => InvokableFactory::class,
+        Writer\ZendMonitor::class    => InvokableFactory::class,
     ];
 
     /**
-     * Default set of writers
-     *
-     * @var array
+     * {@inheritdoc}
      */
-    protected $invokableClasses = [
-        'chromephp'      => 'Zend\Log\Writer\ChromePhp',
-        'db'             => 'Zend\Log\Writer\Db',
-        'fingerscrossed' => 'Zend\Log\Writer\FingersCrossed',
-        'firephp'        => 'Zend\Log\Writer\FirePhp',
-        'mail'           => 'Zend\Log\Writer\Mail',
-        'mock'           => 'Zend\Log\Writer\Mock',
-        'noop'           => 'Zend\Log\Writer\Noop',
-        'psr'            => 'Zend\Log\Writer\Psr',
-        'stream'         => 'Zend\Log\Writer\Stream',
-        'syslog'         => 'Zend\Log\Writer\Syslog',
-        'zendmonitor'    => 'Zend\Log\Writer\ZendMonitor',
-    ];
-
-    /**
-     * Allow many writers of the same type
-     *
-     * @var bool
-     */
-    protected $shareByDefault = false;
-
-    /**
-     * Validate the plugin
-     *
-     * Checks that the writer loaded is an instance of Writer\WriterInterface.
-     *
-     * @param  mixed $plugin
-     * @return void
-     * @throws Exception\InvalidArgumentException if invalid
-     */
-    public function validatePlugin($plugin)
+    public function validate($plugin)
     {
         if ($plugin instanceof Writer\WriterInterface) {
             // we're okay
             return;
         }
 
-        throw new Exception\InvalidArgumentException(sprintf(
+        throw new InvalidServiceException(sprintf(
             'Plugin of type %s is invalid; must implement %s\Writer\WriterInterface',
             (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
             __NAMESPACE__

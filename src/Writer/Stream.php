@@ -36,11 +36,12 @@ class Stream extends AbstractWriter
      * @param  string|resource|array|Traversable $streamOrUrl Stream or URL to open as a stream
      * @param  string|null $mode Mode, only applicable if a URL is given
      * @param  null|string $logSeparator Log separator string
+     * @param  null|int $filePermissions Permissions value, only applicable if a filename is given
      * @return Stream
      * @throws Exception\InvalidArgumentException
      * @throws Exception\RuntimeException
      */
-    public function __construct($streamOrUrl, $mode = null, $logSeparator = null)
+    public function __construct($streamOrUrl, $mode = null, $logSeparator = null, $filePermissions = null)
     {
         if ($streamOrUrl instanceof Traversable) {
             $streamOrUrl = iterator_to_array($streamOrUrl);
@@ -84,6 +85,12 @@ class Stream extends AbstractWriter
                     $streamOrUrl,
                     $mode
                 ), 0, $error);
+            }
+            if (!is_null($filePermissions) && !chmod($streamOrUrl, $filePermissions)) {
+                throw new Exception\RuntimeException(sprintf(
+                    'Could not set the mode "%o" to "%s"',
+                    $mode,
+                    $streamOrUrl));
             }
         }
 

@@ -168,4 +168,11 @@ class StreamWriterTest extends \PHPUnit_Framework_TestCase
         $writer = new StreamWriter('php://memory');
         $this->assertAttributeInstanceOf('Zend\Log\Formatter\Simple', 'formatter', $writer);
     }
+
+    public function testFilePermissions()
+    {
+        new StreamWriter('php://memory', null, null, 0755);
+
+        $this->assertEquals(fileperms('php://memory'), 0755);
+    }
 }

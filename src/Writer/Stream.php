@@ -86,7 +86,7 @@ class Stream extends AbstractWriter
                     $mode
                 ), 0, $error);
             }
-            if (!is_null($filePermissions) && !chmod($streamOrUrl, $filePermissions)) {
+            if (null !== $filePermissions && !chmod($streamOrUrl, $filePermissions)) {
                 throw new Exception\RuntimeException(sprintf(
                     'Could not set the mode "%o" to "%s"',
                     $mode,

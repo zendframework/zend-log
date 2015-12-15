@@ -10,7 +10,6 @@
 namespace Zend\Log;
 
 use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 /**

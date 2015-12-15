@@ -30,7 +30,7 @@ class WriterPluginManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testRegisteringInvalidWriterRaisesException()
     {
-        $this->setExpectedException(InvalidServiceException::class, 'must implement');
+        $this->setExpectedException(InvalidServiceException::class);
         $this->plugins->setService('test', $this);
         $this->plugins->get('test');
     }

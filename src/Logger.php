@@ -12,7 +12,10 @@ namespace Zend\Log;
 use DateTime;
 use ErrorException;
 use Traversable;
+use Zend\Log\Processor\ProcessorInterface;
+use Zend\Log\Writer\WriterInterface;
 use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Stdlib\SplPriorityQueue;
 
@@ -109,14 +112,14 @@ class Logger implements LoggerInterface
     protected $processors;
 
     /**
-     * Writer plugins
+     * Writer writerPlugins
      *
      * @var WriterPluginManager
      */
     protected $writerPlugins;
 
     /**
-     * Processor plugins
+     * Processor writerPlugins
      *
      * @var ProcessorPluginManager
      */
@@ -227,7 +230,7 @@ class Logger implements LoggerInterface
     public function getWriterPluginManager()
     {
         if (null === $this->writerPlugins) {
-            $this->setWriterPluginManager(new WriterPluginManager());
+            $this->setWriterPluginManager(new WriterPluginManager(new ServiceManager()));
         }
         return $this->writerPlugins;
     }
@@ -235,24 +238,13 @@ class Logger implements LoggerInterface
     /**
      * Set writer plugin manager
      *
-     * @param  string|WriterPluginManager $plugins
+     * @param WriterPluginManager $writerPlugins
+     *
      * @return Logger
-     * @throws Exception\InvalidArgumentException
      */
-    public function setWriterPluginManager($plugins)
+    public function setWriterPluginManager(WriterPluginManager $writerPlugins)
     {
-        if (is_string($plugins)) {
-            $plugins = new $plugins;
-        }
-        if (!$plugins instanceof WriterPluginManager) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                'Writer plugin manager must extend %s\WriterPluginManager; received %s',
-                __NAMESPACE__,
-                is_object($plugins) ? get_class($plugins) : gettype($plugins)
-            ));
-        }
-
-        $this->writerPlugins = $plugins;
+        $this->writerPlugins = $writerPlugins;
         return $this;
     }
 
@@ -329,7 +321,7 @@ class Logger implements LoggerInterface
     public function getProcessorPluginManager()
     {
         if (null === $this->processorPlugins) {
-            $this->setProcessorPluginManager(new ProcessorPluginManager());
+            $this->setProcessorPluginManager(new ProcessorPluginManager(new ServiceManager()));
         }
         return $this->processorPlugins;
     }
@@ -456,10 +448,12 @@ class Logger implements LoggerInterface
             'extra'        => $extra,
         ];
 
+        /* @var $processor ProcessorInterface */
         foreach ($this->processors->toArray() as $processor) {
             $event = $processor->process($event);
         }
 
+        /* @var $writer WriterInterface */
         foreach ($this->writers->toArray() as $writer) {
             $writer->write($event);
         }

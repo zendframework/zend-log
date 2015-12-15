@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.0 - TBD
+## 3.0.0 - TBD
 
 ### Added
 
@@ -10,7 +10,12 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Deprecated
 
-- Nothing.
+- [#14](https://github.com/zendframework/zend-log/pull/14) deprecates the
+  following, suggesting the associated replacements:
+  - `Zend\Log\Writer\FilterPluginManager` is deprecated; use
+    `Zend\Log\FilterPluginManager` instead.
+  - `Zend\Log\Writer\FormatterPluginManager` is deprecated; use
+    `Zend\Log\FormatterPluginManager` instead.
 
 ### Removed
 
@@ -18,7 +23,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#14](https://github.com/zendframework/zend-log/pull/14) updates the component
+  to use zend-servicemanager v3.
 
 ## 2.6.1 - TBD
 

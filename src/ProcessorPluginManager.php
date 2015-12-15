@@ -10,51 +10,26 @@
 namespace Zend\Log;
 
 use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 /**
  * Plugin manager for log processors.
  */
 class ProcessorPluginManager extends AbstractPluginManager
 {
-    /**
-     * Default set of processors
-     *
-     * @var array
-     */
-    protected $invokableClasses = [
-        'backtrace'      => 'Zend\Log\Processor\Backtrace',
-        'psrplaceholder' => 'Zend\Log\Processor\PsrPlaceholder',
-        'referenceid'    => 'Zend\Log\Processor\ReferenceId',
-        'requestid'      => 'Zend\Log\Processor\RequestId',
+    protected $aliases = [
+        'backtrace'      => Processor\Backtrace::class,
+        'psrplaceholder' => Processor\PsrPlaceHolder::class,
+        'referenceid'    => Processor\ReferenceId::class,
+        'requestid'      => Processor\RequestId::class
     ];
 
-    /**
-     * Allow many processors of the same type
-     *
-     * @var bool
-     */
-    protected $shareByDefault = false;
+    protected $factories = [
+        Processor\Backtrace::class      => InvokableFactory::class,
+        Processor\PsrPlaceHolder::class => InvokableFactory::class,
+        Processor\ReferenceId::class    => InvokableFactory::class,
+        Processor\RequestId::class      => InvokableFactory::class
+    ];
 
-    /**
-     * Validate the plugin
-     *
-     * Checks that the processor loaded is an instance of Processor\ProcessorInterface.
-     *
-     * @param  mixed $plugin
-     * @return void
-     * @throws Exception\InvalidArgumentException if invalid
-     */
-    public function validatePlugin($plugin)
-    {
-        if ($plugin instanceof Processor\ProcessorInterface) {
-            // we're okay
-            return;
-        }
-
-        throw new Exception\InvalidArgumentException(sprintf(
-            'Plugin of type %s is invalid; must implement %s\Processor\ProcessorInterface',
-            (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
-            __NAMESPACE__
-        ));
-    }
+    protected $instanceOf = Processor\ProcessorInterface::class;
 }

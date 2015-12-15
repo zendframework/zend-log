@@ -15,8 +15,8 @@
     },
     "require": {
         "php": ">=5.5",
-        "zendframework/zend-servicemanager": "~2.5",
-        "zendframework/zend-stdlib": "~2.5",
+        "zendframework/zend-servicemanager": "dev-develop as 2.7.0",
+        "zendframework/zend-stdlib": "~2.7",
         "psr/log": "~1.0"
     },
     "require-dev": {
@@ -43,7 +43,7 @@
     "extra": {
         "branch-alias": {
             "dev-master": "2.6-dev",
-            "dev-develop": "2.7-dev"
+            "dev-develop": "3.0-dev"
         }
     },
     "autoload-dev": {

@@ -10,7 +10,6 @@
 namespace Zend\Log;
 
 use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 class FormatterPluginManager extends AbstractPluginManager
@@ -33,20 +32,5 @@ class FormatterPluginManager extends AbstractPluginManager
         Formatter\ExceptionHandler::class => InvokableFactory::class,
     ];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($plugin)
-    {
-        if ($plugin instanceof Formatter\FormatterInterface) {
-            // we're okay
-            return;
-        }
-
-        throw new InvalidServiceException(sprintf(
-            'Plugin of type %s is invalid; must implement %s\Formatter\FormatterInterface',
-            (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
-            __NAMESPACE__
-        ));
-    }
+    protected $instanceOf = Formatter\FormatterInterface::class;
 }

@@ -10,7 +10,6 @@
 namespace Zend\Log;
 
 use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 class FilterPluginManager extends AbstractPluginManager
@@ -32,19 +31,5 @@ class FilterPluginManager extends AbstractPluginManager
         Filter\Validator::class      => InvokableFactory::class,
     ];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($plugin)
-    {
-        if ($plugin instanceof Filter\FilterInterface) {
-            // we're okay
-            return;
-        }
-
-        throw new InvalidServiceException(sprintf(
-            'Plugin of type %s is invalid; must implement %s\Filter\FilterInterface',
-            (is_object($plugin) ? get_class($plugin) : gettype($plugin))
-        ));
-    }
+    protected $instanceOf = Filter\FilterInterface::class;
 }

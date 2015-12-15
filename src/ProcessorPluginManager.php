@@ -32,20 +32,5 @@ class ProcessorPluginManager extends AbstractPluginManager
         Processor\RequestId::class      => InvokableFactory::class
     ];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($plugin)
-    {
-        if ($plugin instanceof Processor\ProcessorInterface) {
-            // we're okay
-            return;
-        }
-
-        throw new InvalidServiceException(sprintf(
-            'Plugin of type %s is invalid; must implement %s\Processor\ProcessorInterface',
-            (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
-            __NAMESPACE__
-        ));
-    }
+    protected $instanceOf = Processor\ProcessorInterface::class;
 }

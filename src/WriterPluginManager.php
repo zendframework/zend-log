@@ -49,20 +49,5 @@ class WriterPluginManager extends AbstractPluginManager
         Writer\ZendMonitor::class    => InvokableFactory::class,
     ];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($plugin)
-    {
-        if ($plugin instanceof Writer\WriterInterface) {
-            // we're okay
-            return;
-        }
-
-        throw new InvalidServiceException(sprintf(
-            'Plugin of type %s is invalid; must implement %s\Writer\WriterInterface',
-            (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
-            __NAMESPACE__
-        ));
-    }
+    protected $instanceOf = Writer\WriterInterface::class;
 }

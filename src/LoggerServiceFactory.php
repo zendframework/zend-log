@@ -9,20 +9,41 @@
 
 namespace Zend\Log;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Logger.
+ * Factory for logger instances.
  */
 class LoggerServiceFactory implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    /**
+     * Factory for zend-servicemanager v3.
+     *
+     * @param ContainerInterface $container
+     * @param string $name
+     * @param null|array $options
+     * @return Logger
+     */
+    public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
         // Configure the logger
-        $config = $serviceLocator->get('Config');
+        $config = $container->get('config');
         $logConfig = isset($config['log']) ? $config['log'] : [];
-        $logger = new Logger($logConfig);
-        return $logger;
+        return new Logger($logConfig);
+    }
+
+    /**
+     * Factory for zend-servicemanager v2.
+     *
+     * Proxies to `__invoke()`.
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return Logger
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return $this($serviceLocator, Logger::class);
     }
 }

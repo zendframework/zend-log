@@ -10,8 +10,9 @@
 namespace Zend\Log;
 
 use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Logger abstract service factory.
@@ -33,9 +34,9 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
     protected $configKey = 'log';
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function canCreateServiceWithName(ContainerInterface $container, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         $config = $this->getConfig($container);
         if (empty($config)) {
@@ -43,6 +44,14 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
         }
 
         return isset($config[$requestedName]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function canCreateServiceWithName(ServiceLocatorInterface $container, $name, $requestedName)
+    {
+        return $this->canCreate($container, $requestedName);
     }
 
     /**
@@ -59,6 +68,14 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function createServiceWithName(ServiceLocatorInterface $container, $name, $requestedName)
+    {
+        return $this($container, $requestedName);
+    }
+
+    /**
      * Retrieve configuration for loggers, if any
      *
      * @param ContainerInterface $services
@@ -71,13 +88,13 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
             return $this->config;
         }
 
-        if (!$services->has('Config')) {
+        if (!$services->has('config')) {
             $this->config = [];
 
             return $this->config;
         }
 
-        $config = $services->get('Config');
+        $config = $services->get('config');
         if (!isset($config[$this->configKey])) {
             $this->config = [];
 
@@ -89,6 +106,12 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
         return $this->config;
     }
 
+    /**
+     * Process and return the configuration from the container.
+     *
+     * @param array $config Passed by reference
+     * @param ContainerInterface $services
+     */
     protected function processConfig(&$config, ContainerInterface $services)
     {
         if (isset($config['writer_plugin_manager'])

@@ -9,14 +9,14 @@
 namespace Zend\Log\Writer;
 
 use Traversable;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\ArrayUtils;
 use Zend\Log\Exception;
 use Zend\Log\Filter\FilterInterface;
 use Zend\Log\Filter\Priority as PriorityFilter;
 use Zend\Log\Formatter\FormatterInterface;
 use Zend\Log\Logger;
 use Zend\Log\WriterPluginManager;
+use Zend\ServiceManager\ServiceManager;
+use Zend\Stdlib\ArrayUtils;
 
 /**
  * Buffers all events until the strategy determines to flush them.

@@ -9,6 +9,8 @@
 
 namespace ZendTest\Log\Writer;
 
+require_once 'vfsStream/vfsStream.php';
+
 use Zend\Log\Writer\Stream as StreamWriter;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
 
@@ -17,6 +19,10 @@ use Zend\Log\Formatter\Simple as SimpleFormatter;
  */
 class StreamWriterTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp(){
+        vfsStreamWrapper::register();
+    }
+
     public function testConstructorThrowsWhenResourceIsNotStream()
     {
         $resource = xml_parser_create();
@@ -167,5 +173,12 @@ class StreamWriterTest extends \PHPUnit_Framework_TestCase
     {
         $writer = new StreamWriter('php://memory');
         $this->assertAttributeInstanceOf('Zend\Log\Formatter\Simple', 'formatter', $writer);
+    }
+
+    public function testFilePermissions()
+    {
+        new StreamWriter('foo', null, null, 0755);
+
+        $this->assertEquals(fileperms('foo'), 0755);
     }
 }

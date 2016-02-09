@@ -10,6 +10,7 @@
 namespace Zend\Log;
 
 use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 class FilterPluginManager extends AbstractPluginManager
@@ -29,7 +30,56 @@ class FilterPluginManager extends AbstractPluginManager
         Filter\Regex::class          => InvokableFactory::class,
         Filter\SuppressFilter::class => InvokableFactory::class,
         Filter\Validator::class      => InvokableFactory::class,
+        // Legacy (v2) due to alias resolution; canonical form of resolved
+        // alias is used to look up the factory, while the non-normalized
+        // resolved alias is used as the requested name passed to the factory.
+        'zendlogfiltermock'           => InvokableFactory::class,
+        'zendlogfilterpriority'       => InvokableFactory::class,
+        'zendlogfilterregex'          => InvokableFactory::class,
+        'zendlogfiltersuppressfilter' => InvokableFactory::class,
+        'zendlogfiltervalidator'      => InvokableFactory::class,
     ];
 
     protected $instanceOf = Filter\FilterInterface::class;
+
+    /**
+     * Validate the plugin is of the expected type (v3).
+     *
+     * Validates against `$instanceOf`.
+     *
+     * @param mixed $instance
+     * @throws InvalidServiceException
+     */
+    public function validate($instance)
+    {
+        if (! $instance instanceof $this->instanceOf) {
+            throw new InvalidServiceException(sprintf(
+                '%s can only create instances of %s; %s is invalid',
+                get_class($this),
+                $this->instanceOf,
+                (is_object($instance) ? get_class($instance) : gettype($instance))
+            ));
+        }
+    }
+
+    /**
+     * Validate the plugin is of the expected type (v2).
+     *
+     * Proxies to `validate()`.
+     *
+     * @param mixed $plugin
+     * @throws InvalidServiceException
+     */
+    public function validatePlugin($plugin)
+    {
+        try {
+            $this->validate($plugin);
+        } catch (InvalidServiceException $e) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Plugin of type %s is invalid; must implement %s\Filter\FilterInterface',
+                (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
+                __NAMESPACE__
+            ));
+        }
+    }
 }

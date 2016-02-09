@@ -10,6 +10,7 @@
 namespace Zend\Log;
 
 use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 /**
@@ -18,9 +19,6 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 class WriterPluginManager extends AbstractPluginManager
 {
     protected $aliases = [
-        'null'             => 'noop',
-        Writer\Null::class => 'noop',
-
         'chromephp'      => Writer\ChromePhp::class,
         'db'             => Writer\Db::class,
         'fingerscrossed' => Writer\FingersCrossed::class,
@@ -32,6 +30,13 @@ class WriterPluginManager extends AbstractPluginManager
         'stream'         => Writer\Stream::class,
         'syslog'         => Writer\Syslog::class,
         'zendmonitor'    => Writer\ZendMonitor::class,
+
+        // The following are for backwards compatibility only; users
+        // should update their code to use the noop writer instead.
+        'null'              => Writer\Noop::class,
+        Writer\Null::class  => Writer\Noop::class,
+        'zendlogwriternull' => Writer\Noop::class,
+
     ];
 
     protected $factories = [
@@ -46,7 +51,62 @@ class WriterPluginManager extends AbstractPluginManager
         Writer\Syslog::class         => InvokableFactory::class,
         Writer\FingersCrossed::class => InvokableFactory::class,
         Writer\ZendMonitor::class    => InvokableFactory::class,
+        // Legacy (v2) due to alias resolution; canonical form of resolved
+        // alias is used to look up the factory, while the non-normalized
+        // resolved alias is used as the requested name passed to the factory.
+        'zendlogwriterchromephp'      => InvokableFactory::class,
+        'zendlogwriterdb'             => InvokableFactory::class,
+        'zendlogwriterfirephp'        => InvokableFactory::class,
+        'zendlogwritermail'           => InvokableFactory::class,
+        'zendlogwritermock'           => InvokableFactory::class,
+        'zendlogwriternoop'           => InvokableFactory::class,
+        'zendlogwriterpsr'            => InvokableFactory::class,
+        'zendlogwriterstream'         => InvokableFactory::class,
+        'zendlogwritersyslog'         => InvokableFactory::class,
+        'zendlogwriterfingerscrossed' => InvokableFactory::class,
+        'zendlogwriterzendmonitor'    => InvokableFactory::class,
     ];
 
     protected $instanceOf = Writer\WriterInterface::class;
+
+    /**
+     * Validate the plugin is of the expected type (v3).
+     *
+     * Validates against `$instanceOf`.
+     *
+     * @param mixed $instance
+     * @throws InvalidServiceException
+     */
+    public function validate($instance)
+    {
+        if (! $instance instanceof $this->instanceOf) {
+            throw new InvalidServiceException(sprintf(
+                '%s can only create instances of %s; %s is invalid',
+                get_class($this),
+                $this->instanceOf,
+                (is_object($instance) ? get_class($instance) : gettype($instance))
+            ));
+        }
+    }
+
+    /**
+     * Validate the plugin is of the expected type (v2).
+     *
+     * Proxies to `validate()`.
+     *
+     * @param mixed $plugin
+     * @throws InvalidServiceException
+     */
+    public function validatePlugin($plugin)
+    {
+        try {
+            $this->validate($plugin);
+        } catch (InvalidServiceException $e) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Plugin of type %s is invalid; must implement %s\Writer\WriterInterface',
+                (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
+                __NAMESPACE__
+            ));
+        }
+    }
 }

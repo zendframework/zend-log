@@ -10,7 +10,6 @@
 namespace ZendTest\Log;
 
 use Zend\Log\WriterPluginManager;
-use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\ServiceManager;
 
 /**
@@ -26,13 +25,6 @@ class WriterPluginManagerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->plugins = new WriterPluginManager(new ServiceManager());
-    }
-
-    public function testRegisteringInvalidWriterRaisesException()
-    {
-        $this->setExpectedException(InvalidServiceException::class);
-        $this->plugins->setService('test', $this);
-        $this->plugins->get('test');
     }
 
     public function testInvokableClassFirephp()

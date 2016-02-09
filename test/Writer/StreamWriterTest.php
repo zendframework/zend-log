@@ -9,6 +9,7 @@
 
 namespace ZendTest\Log\Writer;
 
+use org\bovigo\vfs\vfsStream;
 use Zend\Log\Writer\Stream as StreamWriter;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
 
@@ -17,6 +18,11 @@ use Zend\Log\Formatter\Simple as SimpleFormatter;
  */
 class StreamWriterTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        $this->root = vfsStream::setup('zend-log');
+    }
+
     public function testConstructorThrowsWhenResourceIsNotStream()
     {
         $resource = xml_parser_create();
@@ -167,5 +173,29 @@ class StreamWriterTest extends \PHPUnit_Framework_TestCase
     {
         $writer = new StreamWriter('php://memory');
         $this->assertAttributeInstanceOf('Zend\Log\Formatter\Simple', 'formatter', $writer);
+    }
+
+    public function testCanSpecifyFilePermsViaChmodOption()
+    {
+        $filter    = new \Zend\Log\Filter\Mock();
+        $formatter = new \Zend\Log\Formatter\Simple();
+        $file      = $this->root->url() . '/foo';
+        $writer = new StreamWriter([
+                'filters'       => $filter,
+                'formatter'     => $formatter,
+                'stream'        => $file,
+                'mode'          => 'w+',
+                'chmod'         => 0664,
+                'log_separator' => '::',
+        ]);
+
+        $this->assertEquals(0664, $this->root->getChild('foo')->getPermissions());
+    }
+
+    public function testCanSpecifyFilePermsViaConstructorArgument()
+    {
+        $file = $this->root->url() . '/foo';
+        new StreamWriter($file, null, null, 0755);
+        $this->assertEquals(0755, $this->root->getChild('foo')->getPermissions());
     }
 }

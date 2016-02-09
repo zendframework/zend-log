@@ -13,33 +13,34 @@ use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
-/**
- * Plugin manager for log processors.
- */
-class ProcessorPluginManager extends AbstractPluginManager
+class FilterPluginManager extends AbstractPluginManager
 {
     protected $aliases = [
-        'backtrace'      => Processor\Backtrace::class,
-        'psrplaceholder' => Processor\PsrPlaceHolder::class,
-        'referenceid'    => Processor\ReferenceId::class,
-        'requestid'      => Processor\RequestId::class
+        'mock'           => Filter\Mock::class,
+        'priority'       => Filter\Priority::class,
+        'regex'          => Filter\Regex::class,
+        'suppress'       => Filter\SuppressFilter::class,
+        'suppressfilter' => Filter\SuppressFilter::class,
+        'validator'      => Filter\Validator::class,
     ];
 
     protected $factories = [
-        Processor\Backtrace::class      => InvokableFactory::class,
-        Processor\PsrPlaceHolder::class => InvokableFactory::class,
-        Processor\ReferenceId::class    => InvokableFactory::class,
-        Processor\RequestId::class      => InvokableFactory::class,
+        Filter\Mock::class           => InvokableFactory::class,
+        Filter\Priority::class       => InvokableFactory::class,
+        Filter\Regex::class          => InvokableFactory::class,
+        Filter\SuppressFilter::class => InvokableFactory::class,
+        Filter\Validator::class      => InvokableFactory::class,
         // Legacy (v2) due to alias resolution; canonical form of resolved
         // alias is used to look up the factory, while the non-normalized
         // resolved alias is used as the requested name passed to the factory.
-        'zendlogprocessorbacktrace'      => InvokableFactory::class,
-        'zendlogprocessorpsrplaceholder' => InvokableFactory::class,
-        'zendlogprocessorreferenceid'    => InvokableFactory::class,
-        'zendlogprocessorrequestid'      => InvokableFactory::class,
+        'zendlogfiltermock'           => InvokableFactory::class,
+        'zendlogfilterpriority'       => InvokableFactory::class,
+        'zendlogfilterregex'          => InvokableFactory::class,
+        'zendlogfiltersuppressfilter' => InvokableFactory::class,
+        'zendlogfiltervalidator'      => InvokableFactory::class,
     ];
 
-    protected $instanceOf = Processor\ProcessorInterface::class;
+    protected $instanceOf = Filter\FilterInterface::class;
 
     /**
      * Validate the plugin is of the expected type (v3).
@@ -75,7 +76,7 @@ class ProcessorPluginManager extends AbstractPluginManager
             $this->validate($plugin);
         } catch (InvalidServiceException $e) {
             throw new Exception\InvalidArgumentException(sprintf(
-                'Plugin of type %s is invalid; must implement %s\Processor\ProcessorInterface',
+                'Plugin of type %s is invalid; must implement %s\Filter\FilterInterface',
                 (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
                 __NAMESPACE__
             ));

@@ -9,53 +9,9 @@
 
 namespace Zend\Log\Writer;
 
-use Zend\Log\Exception;
-use Zend\Log\Filter;
-use Zend\ServiceManager\AbstractPluginManager;
-
-class FilterPluginManager extends AbstractPluginManager
+/**
+ * @deprecated has simply be moved to the parent directory
+ */
+class FilterPluginManager extends \Zend\Log\FilterPluginManager
 {
-    /**
-     * Default set of filters
-     *
-     * @var array
-     */
-    protected $invokableClasses = [
-        'mock'           => 'Zend\Log\Filter\Mock',
-        'priority'       => 'Zend\Log\Filter\Priority',
-        'regex'          => 'Zend\Log\Filter\Regex',
-        'suppress'       => 'Zend\Log\Filter\SuppressFilter',
-        'suppressfilter' => 'Zend\Log\Filter\SuppressFilter',
-        'validator'      => 'Zend\Log\Filter\Validator',
-    ];
-
-    /**
-     * Allow many filters of the same type
-     *
-     * @var bool
-     */
-    protected $shareByDefault = false;
-
-    /**
-     * Validate the plugin
-     *
-     * Checks that the filter loaded is an instance of Filter\FilterInterface.
-     *
-     * @param  mixed $plugin
-     * @return void
-     * @throws Exception\InvalidArgumentException if invalid
-     */
-    public function validatePlugin($plugin)
-    {
-        if ($plugin instanceof Filter\FilterInterface) {
-            // we're okay
-            return;
-        }
-
-        throw new Exception\InvalidArgumentException(sprintf(
-            'Plugin of type %s is invalid; must implement %s\Filter\FilterInterface',
-            (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
-            __NAMESPACE__
-        ));
-    }
 }

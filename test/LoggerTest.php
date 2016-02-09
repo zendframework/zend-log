@@ -11,6 +11,7 @@ namespace ZendTest\Log;
 
 use Exception;
 use ErrorException;
+use Zend\Log\Exception\RuntimeException;
 use Zend\Log\Logger;
 use Zend\Log\Processor\Backtrace;
 use Zend\Log\Writer\Mock as MockWriter;
@@ -42,29 +43,6 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Zend\Log\WriterPluginManager', $this->logger->getWriterPluginManager());
     }
 
-    public function testPassingValidStringClassToSetPluginManager()
-    {
-        $this->logger->setWriterPluginManager('Zend\Log\WriterPluginManager');
-        $this->assertInstanceOf('Zend\Log\WriterPluginManager', $this->logger->getWriterPluginManager());
-    }
-
-    public static function provideInvalidClasses()
-    {
-        return [
-            ['stdClass'],
-            [new \stdClass()],
-        ];
-    }
-
-    /**
-     * @dataProvider provideInvalidClasses
-     */
-    public function testPassingInvalidArgumentToSetPluginManagerRaisesException($plugins)
-    {
-        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException');
-        $this->logger->setWriterPluginManager($plugins);
-    }
-
     public function testPassingShortNameToPluginReturnsWriterByThatName()
     {
         $writer = $this->logger->writerPlugin('mock');
@@ -78,18 +56,9 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Zend\Stdlib\SplPriorityQueue', $writers);
     }
 
-    /**
-     * @dataProvider provideInvalidClasses
-     */
-    public function testPassingInvalidArgumentToAddWriterRaisesException($writer)
-    {
-        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'must implement');
-        $this->logger->addWriter($writer);
-    }
-
     public function testEmptyWriter()
     {
-        $this->setExpectedException('Zend\Log\Exception\RuntimeException', 'No log writer specified');
+        $this->setExpectedException(RuntimeException::class, 'No log writer specified');
         $this->logger->log(Logger::INFO, 'test');
     }
 
@@ -188,11 +157,18 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function provideTestFilters()
     {
-        return [
+        $data = [
             ['priority', ['priority' => Logger::INFO]],
             ['regex', [ 'regex' => '/[0-9]+/' ]],
-            ['validator', ['validator' => new DigitsFilter]],
         ];
+
+        // Conditionally enabled until zend-validator is forwards-compatible
+        // with zend-servicemanager v3.
+        if (class_exists(DigitsFilter::class)) {
+            $data[] = ['validator', ['validator' => new DigitsFilter]];
+        }
+
+        return $data;
     }
 
     /**

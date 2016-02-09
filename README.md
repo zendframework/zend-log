@@ -9,4 +9,4 @@ logged.
 
 
 - File issues at https://github.com/zendframework/zend-log/issues
-- Documentation is at http://framework.zend.com/manual/current/en/index.html#zend-log
+- Documentation is at https://zendframework.github.io/zend-log/

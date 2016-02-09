@@ -9,6 +9,7 @@
 
 namespace Zend\Log;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -33,14 +34,11 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
     protected $configKey = 'log';
 
     /**
-     * @param  ServiceLocatorInterface $services
-     * @param  string                  $name
-     * @param  string                  $requestedName
-     * @return bool
+     * {@inheritDoc}
      */
-    public function canCreateServiceWithName(ServiceLocatorInterface $services, $name, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
-        $config = $this->getConfig($services);
+        $config = $this->getConfig($container);
         if (empty($config)) {
             return false;
         }
@@ -49,47 +47,72 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
     }
 
     /**
-     * @param  ServiceLocatorInterface $services
-     * @param  string                  $name
-     * @param  string                  $requestedName
-     * @return Logger
+     * {@inheritdoc}
      */
-    public function createServiceWithName(ServiceLocatorInterface $services, $name, $requestedName)
+    public function canCreateServiceWithName(ServiceLocatorInterface $container, $name, $requestedName)
     {
-        $config  = $this->getConfig($services);
-        $config  = $config[$requestedName];
-        $this->processConfig($config, $services);
+        return $this->canCreate($container, $requestedName);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        $config = $this->getConfig($container);
+        $config = $config[$requestedName];
+
+        $this->processConfig($config, $container);
+
         return new Logger($config);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createServiceWithName(ServiceLocatorInterface $container, $name, $requestedName)
+    {
+        return $this($container, $requestedName);
     }
 
     /**
      * Retrieve configuration for loggers, if any
      *
-     * @param  ServiceLocatorInterface $services
+     * @param ContainerInterface $services
+     *
      * @return array
      */
-    protected function getConfig(ServiceLocatorInterface $services)
+    protected function getConfig(ContainerInterface $services)
     {
         if ($this->config !== null) {
             return $this->config;
         }
 
-        if (!$services->has('Config')) {
+        if (!$services->has('config')) {
             $this->config = [];
+
             return $this->config;
         }
 
-        $config = $services->get('Config');
+        $config = $services->get('config');
         if (!isset($config[$this->configKey])) {
             $this->config = [];
+
             return $this->config;
         }
 
         $this->config = $config[$this->configKey];
+
         return $this->config;
     }
 
-    protected function processConfig(&$config, ServiceLocatorInterface $services)
+    /**
+     * Process and return the configuration from the container.
+     *
+     * @param array $config Passed by reference
+     * @param ContainerInterface $services
+     */
+    protected function processConfig(&$config, ContainerInterface $services)
     {
         if (isset($config['writer_plugin_manager'])
             && is_string($config['writer_plugin_manager'])
@@ -99,7 +122,7 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
         }
 
         if ((!isset($config['writer_plugin_manager'])
-            || ! $config['writer_plugin_manager'] instanceof AbstractPluginManager)
+                || !$config['writer_plugin_manager'] instanceof AbstractPluginManager)
             && $services->has('LogWriterManager')
         ) {
             $config['writer_plugin_manager'] = $services->get('LogWriterManager');
@@ -113,7 +136,7 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
         }
 
         if ((!isset($config['processor_plugin_manager'])
-            || ! $config['processor_plugin_manager'] instanceof AbstractPluginManager)
+                || !$config['processor_plugin_manager'] instanceof AbstractPluginManager)
             && $services->has('LogProcessorManager')
         ) {
             $config['processor_plugin_manager'] = $services->get('LogProcessorManager');

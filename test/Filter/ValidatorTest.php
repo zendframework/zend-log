@@ -19,6 +19,16 @@ use Zend\Validator\NotEmpty as NotEmptyFilter;
  */
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        if (! class_exists(ValidatorChain::class)) {
+            $this->markTestSkipped(
+                'zend-validator related tests are disabled when testing zend-servicemanager v3 '
+                . 'forwards compatibility, until zend-validator is also forwards compatible'
+            );
+        }
+    }
+
     public function testValidatorFilter()
     {
         $filter = new Validator(new DigitsFilter());

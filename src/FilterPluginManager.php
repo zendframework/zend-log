@@ -30,6 +30,14 @@ class FilterPluginManager extends AbstractPluginManager
         Filter\Regex::class          => InvokableFactory::class,
         Filter\SuppressFilter::class => InvokableFactory::class,
         Filter\Validator::class      => InvokableFactory::class,
+        // Legacy (v2) due to alias resolution; canonical form of resolved
+        // alias is used to look up the factory, while the non-normalized
+        // resolved alias is used as the requested name passed to the factory.
+        'zendlogfiltermock'           => InvokableFactory::class,
+        'zendlogfilterpriority'       => InvokableFactory::class,
+        'zendlogfilterregex'          => InvokableFactory::class,
+        'zendlogfiltersuppressfilter' => InvokableFactory::class,
+        'zendlogfiltervalidator'      => InvokableFactory::class,
     ];
 
     protected $instanceOf = Filter\FilterInterface::class;
@@ -59,11 +67,19 @@ class FilterPluginManager extends AbstractPluginManager
      *
      * Proxies to `validate()`.
      *
-     * @param mixed $instance
+     * @param mixed $plugin
      * @throws InvalidServiceException
      */
-    public function validatePlugin($instance)
+    public function validatePlugin($plugin)
     {
-        $this->validate($instance);
+        try {
+            $this->validate($plugin);
+        } catch (InvalidServiceException $e) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Plugin of type %s is invalid; must implement %s\Filter\FilterInterface',
+                (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
+                __NAMESPACE__
+            ));
+        }
     }
 }

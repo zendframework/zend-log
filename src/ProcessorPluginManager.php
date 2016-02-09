@@ -29,7 +29,14 @@ class ProcessorPluginManager extends AbstractPluginManager
         Processor\Backtrace::class      => InvokableFactory::class,
         Processor\PsrPlaceHolder::class => InvokableFactory::class,
         Processor\ReferenceId::class    => InvokableFactory::class,
-        Processor\RequestId::class      => InvokableFactory::class
+        Processor\RequestId::class      => InvokableFactory::class,
+        // Legacy (v2) due to alias resolution; canonical form of resolved
+        // alias is used to look up the factory, while the non-normalized
+        // resolved alias is used as the requested name passed to the factory.
+        'zendlogprocessorbacktrace'      => InvokableFactory::class,
+        'zendlogprocessorpsrplaceholder' => InvokableFactory::class,
+        'zendlogprocessorreferenceid'    => InvokableFactory::class,
+        'zendlogprocessorrequestid'      => InvokableFactory::class,
     ];
 
     protected $instanceOf = Processor\ProcessorInterface::class;
@@ -59,11 +66,19 @@ class ProcessorPluginManager extends AbstractPluginManager
      *
      * Proxies to `validate()`.
      *
-     * @param mixed $instance
+     * @param mixed $plugin
      * @throws InvalidServiceException
      */
-    public function validatePlugin($instance)
+    public function validatePlugin($plugin)
     {
-        $this->validate($instance);
+        try {
+            $this->validate($plugin);
+        } catch (InvalidServiceException $e) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Plugin of type %s is invalid; must implement %s\Processor\ProcessorInterface',
+                (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
+                __NAMESPACE__
+            ));
+        }
     }
 }

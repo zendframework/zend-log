@@ -6,7 +6,13 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#7](https://github.com/zendframework/zend-log/pull/7) adds a new option to
+  `Zend\Log\Writer\Stream`, `chmod`; when passed in the associative array of
+  options for the writer, it will be used to set the permissions mask for the
+  log.
+- [#10](https://github.com/zendframework/zend-log/pull/10) adds `array` to the
+  expected return types from `Zend\Log\Formatter\FormatterInterface::format()`,
+  codifying what we're already allowing.
 
 ### Deprecated
 
@@ -16,10 +22,6 @@ All notable changes to this project will be documented in this file, in reverse 
     `Zend\Log\FilterPluginManager` instead.
   - `Zend\Log\Writer\FormatterPluginManager` is deprecated; use
     `Zend\Log\FormatterPluginManager` instead.
-- [#7](https://github.com/zendframework/zend-log/pull/7) adds a new option to
-  `Zend\Log\Writer\Stream`, `chmod`; when passed in the associative array of
-  options for the writer, it will be used to set the permissions mask for the
-  log.
 
 ### Removed
 

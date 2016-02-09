@@ -37,23 +37,24 @@ class Stream extends AbstractWriter
      * @param  string|resource|array|Traversable $streamOrUrl Stream or URL to open as a stream
      * @param  string|null $mode Mode, only applicable if a URL is given
      * @param  null|string $logSeparator Log separator string
+     * @param  null|int $filePermissions Permissions value, only applicable if a filename is given;
+     *     when $streamOrUrl is an array of options, use the 'chmod' key to specify this.
      * @return Stream
      * @throws Exception\InvalidArgumentException
      * @throws Exception\RuntimeException
      */
-    public function __construct($streamOrUrl, $mode = null, $logSeparator = null)
+    public function __construct($streamOrUrl, $mode = null, $logSeparator = null, $filePermissions = null)
     {
-        $chmod = null;
         if ($streamOrUrl instanceof Traversable) {
             $streamOrUrl = iterator_to_array($streamOrUrl);
         }
 
         if (is_array($streamOrUrl)) {
             parent::__construct($streamOrUrl);
-            $mode         = isset($streamOrUrl['mode'])          ? $streamOrUrl['mode']          : null;
-            $logSeparator = isset($streamOrUrl['log_separator']) ? $streamOrUrl['log_separator'] : null;
-            $chmod        = isset($streamOrUrl['chmod'])         ? $streamOrUrl['chmod']         : null;
-            $streamOrUrl  = isset($streamOrUrl['stream'])        ? $streamOrUrl['stream']        : null;
+            $mode            = isset($streamOrUrl['mode'])          ? $streamOrUrl['mode']          : null;
+            $logSeparator    = isset($streamOrUrl['log_separator']) ? $streamOrUrl['log_separator'] : null;
+            $filePermissions = isset($streamOrUrl['chmod'])         ? $streamOrUrl['chmod']         : $filePermissions;
+            $streamOrUrl     = isset($streamOrUrl['stream'])        ? $streamOrUrl['stream']        : null;
         }
 
         // Setting the default mode
@@ -79,14 +80,6 @@ class Stream extends AbstractWriter
             $this->stream = $streamOrUrl;
         } else {
             ErrorHandler::start();
-            if (null !== $chmod && !file_exists($streamOrUrl) && is_writable(dirname($streamOrUrl))) {
-                try {
-                    touch($streamOrUrl);
-                    chmod($streamOrUrl, $chmod);
-                } catch (ErrorException $e) {
-                    // Silently ignore exceptions
-                }
-            }
             $this->stream = fopen($streamOrUrl, $mode, false);
             $error = ErrorHandler::stop();
             if (!$this->stream) {
@@ -95,6 +88,13 @@ class Stream extends AbstractWriter
                     $streamOrUrl,
                     $mode
                 ), 0, $error);
+            }
+            if (null !== $filePermissions && !chmod($streamOrUrl, $filePermissions)) {
+                throw new Exception\RuntimeException(sprintf(
+                    'Could not set the mode "%o" for the log file "%s"',
+                    $filePermissions,
+                    $streamOrUrl
+                ));
             }
         }
 

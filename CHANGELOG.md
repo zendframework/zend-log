@@ -2,14 +2,15 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.0.0 - TBD
+## 2.7.0 - TBD
 
 ### Added
 
-- [#7](https://github.com/zendframework/zend-log/pull/7) adds a new option to
-  `Zend\Log\Writer\Stream`, `chmod`; when passed in the associative array of
-  options for the writer, it will be used to set the permissions mask for the
-  log.
+- [#7](https://github.com/zendframework/zend-log/pull/7) and
+  [#15](https://github.com/zendframework/zend-log/pull/15) add a new argument
+  and option to `Zend\Log\Writer\Stream` to allow setting the permission mode
+  for the stream. You can pass it as the optional fourth argument to the
+  constructor, or as the `chmod` option if using an options array.
 - [#10](https://github.com/zendframework/zend-log/pull/10) adds `array` to the
   expected return types from `Zend\Log\Formatter\FormatterInterface::format()`,
   codifying what we're already allowing.

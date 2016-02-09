@@ -37,24 +37,6 @@ All notable changes to this project will be documented in this file, in reverse 
   [#17](https://github.com/zendframework/zend-log/pull/17) update the component
   to be forwards-compatible with zend-stdlib and zend-servicemanager v3.
 
-## 2.6.1 - TBD
-
-### Added
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
 ## 2.6.0 - 2015-07-20
 
 ### Added

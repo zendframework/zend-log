@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    <title>Filters - zend-log</title>
+
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic,700&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/zf.css" rel="stylesheet">
+    <link href="../css/prism-zf.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <span class="navbar-brand">
+              <a href="http://framework.zend.com"><img src="../img/zf-logo-mark.png" height="28" alt="Zend Framework" /></a>
+              <a href="..">zend-log</a>
+            </span>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../intro/">Introduction</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../writers/">Writers</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Filters</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../formatters/">Formatters</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../processors/">Processors</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../psr3/">PSR-3 Support</a>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="prev" href="../writers/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="next" href="../formatters/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a href="https://github.com/zendframework/zend-log">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <!-- content:begin -->
+    <div class="container">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#filters">Filters</a></li>
+        
+            <li><a href="#available-filters">Available filters</a></li>
+        
+    
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
+  <li><a href="..">Docs</a> &raquo;</li>
+  
+    
+      
+        <li>Reference &raquo;</li>
+      
+    
+  
+  <li class="active">Filters</li>
+</ol>
+
+<nav class="hidden-lg">
+  <ul class="pager">
+    <li class="previous">
+      <a rel="prev" href="../writers/"><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../formatters/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav>
+
+<h1 id="filters">Filters</h1>
+<p>A <em>filter</em> prevents a message from being written to the log.</p>
+<p>You can add a filter to a specific writer using the <code>addFilter()</code> method of the
+writer:</p>
+<pre class="codehilite"><code class="language-php">use Zend\Log\Logger;
+
+$logger = new Logger();
+
+$writer1 = new Zend\Log\Writer\Stream('/path/to/first/logfile');
+$logger-&gt;addWriter($writer1);
+
+$writer2 = new Zend\Log\Writer\Stream('/path/to/second/logfile');
+$logger-&gt;addWriter($writer2);
+
+// add a filter only to writer2
+$filter = new Zend\Log\Filter\Priority(Logger::CRIT);
+$writer2-&gt;addFilter($filter);
+
+// logged to writer1, blocked from writer2
+$logger-&gt;info('Informational message');
+
+// logged by both writers
+$logger-&gt;emerg('Emergency message');</code></pre>
+
+
+<h2 id="available-filters">Available filters</h2>
+<table>
+<thead>
+<tr>
+<th>Filter Class</th>
+<th>Short Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Zend\Log\Filter\Priority</code></td>
+<td>Priority</td>
+<td>Filter logging by <code>$priority</code>. By default, it will accept any log event whose priority value is less than or equal to <code>$priority</code>.</td>
+</tr>
+<tr>
+<td><code>Zend\Log\Filter\Regex</code></td>
+<td>Regex</td>
+<td>Filter out any log messages not matching the regex pattern. This filter uses the <code>preg_match()</code> function.</td>
+</tr>
+<tr>
+<td><code>Zend\Log\Filter\Timestamp</code></td>
+<td>Timestamp</td>
+<td>Filters log events based on the time when they were triggered. It can be configured by specifying either <code>idate()</code>-compliant format characters along with the desired value, or a full <code>DateTime</code> instance. An appropriate comparison operator must be supplied in either case.</td>
+</tr>
+<tr>
+<td><code>Zend\Log\Filter\SuppressFilter</code></td>
+<td>SuppressFilter</td>
+<td>A simple boolean filter; a boolean <code>true</code> value passed to the constructor suppresses all log events, while a boolean <code>false</code> value accepts all log events.</td>
+</tr>
+<tr>
+<td><code>Zend\Log\Filter\Validator</code></td>
+<td>Validator</td>
+<td>Filter any log messages that fail validaton by the composed <code>Zend\Validator\ValidatorInterface</code> implementation.</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<nav>
+  <ul class="pager">
+    <li class="previous">
+      <a rel="prev" href="../writers/"><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../formatters/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav></div>
+        
+    </div>
+    <!-- content:end -->
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Copyright (c) 2016 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a><br></small>
+        </p>
+        <p><small><a href="http://framework.zend.com">Learn more about Zend Framework</a></small></p>
+    </footer>
+
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../js/prism-zf.js"></script>
+
+    <script>var base_url = '..';</script>
+    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+    <script src="../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>

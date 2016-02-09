@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    <title>Formatters - zend-log</title>
+
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic,700&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/zf.css" rel="stylesheet">
+    <link href="../css/prism-zf.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <span class="navbar-brand">
+              <a href="http://framework.zend.com"><img src="../img/zf-logo-mark.png" height="28" alt="Zend Framework" /></a>
+              <a href="..">zend-log</a>
+            </span>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../intro/">Introduction</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../writers/">Writers</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../filters/">Filters</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Formatters</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../processors/">Processors</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../psr3/">PSR-3 Support</a>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="prev" href="../filters/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="next" href="../processors/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a href="https://github.com/zendframework/zend-log">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <!-- content:begin -->
+    <div class="container">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#formatters">Formatters</a></li>
+        
+            <li><a href="#simple-formatting">Simple Formatting</a></li>
+        
+            <li><a href="#formatting-to-xml">Formatting to XML</a></li>
+        
+            <li><a href="#formatting-to-firephp">Formatting to FirePhp</a></li>
+        
+    
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
+  <li><a href="..">Docs</a> &raquo;</li>
+  
+    
+      
+        <li>Reference &raquo;</li>
+      
+    
+  
+  <li class="active">Formatters</li>
+</ol>
+
+<nav class="hidden-lg">
+  <ul class="pager">
+    <li class="previous">
+      <a rel="prev" href="../filters/"><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../processors/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav>
+
+<h1 id="formatters">Formatters</h1>
+<p>A <strong><em>formatter</em></strong> is an object that is responsible for taking an <code>event</code> array
+describing a log event and outputting a string with a formatted log line.</p>
+<p>Some writers are not line-oriented, such as the <code>Db</code>, <code>FirePhp</code>, and
+<code>ChromePhp</code> writers. For these writers, formatters ensure the individual values
+in the event array are formatted properly for the writer.</p>
+<h2 id="simple-formatting">Simple Formatting</h2>
+<p><code>Zend\Log\Formatter\Simple</code> is the default formatter. It is configured automatically when you
+specify no formatter. The default configuration is equivalent to the following:</p>
+<pre class="codehilite"><code class="language-php">$format = '%timestamp% %priorityName% (%priority%): %message%' . PHP_EOL;
+$formatter = new Zend\Log\Formatter\Simple($format);</code></pre>
+
+
+<p>A formatter is set on an individual writer object using the writer's <code>setFormatter()</code> method:</p>
+<pre class="codehilite"><code class="language-php">$writer = new Zend\Log\Writer\Stream('php://output');
+$formatter = new Zend\Log\Formatter\Simple('hello %message%' . PHP_EOL);
+$writer-&gt;setFormatter($formatter);
+
+$logger = new Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+$logger-&gt;info('there');
+
+// outputs &quot;hello there&quot;</code></pre>
+
+
+<p>The constructor of <code>Zend\Log\Formatter\Simple</code> accepts a single parameter: the
+format string. This string contains keys surrounded by percent signs (e.g.
+<code>%message%</code>). The format string may contain any key from the event data array.
+You can retrieve the default keys by using the <code>DEFAULT_FORMAT</code> constant from
+<code>Zend\Log\Formatter\Simple</code>.</p>
+<h2 id="formatting-to-xml">Formatting to XML</h2>
+<p><code>Zend\Log\Formatter\Xml</code> formats log data into XML strings. By default, it
+automatically logs all items in the event array:</p>
+<pre class="codehilite"><code class="language-php">$writer = new Zend\Log\Writer\Stream('php://output');
+$formatter = new Zend\Log\Formatter\Xml();
+$writer-&gt;setFormatter($formatter);
+
+$logger = new Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+$logger-&gt;info('informational message');</code></pre>
+
+
+<p>The code above outputs the following XML (space added for clarity):</p>
+<pre class="codehilite"><code class="language-php">&lt;logEntry&gt;
+  &lt;timestamp&gt;2007-04-06T07:24:37-07:00&lt;/timestamp&gt;
+  &lt;message&gt;informational message&lt;/message&gt;
+  &lt;priority&gt;6&lt;/priority&gt;
+  &lt;priorityName&gt;INFO&lt;/priorityName&gt;
+&lt;/logEntry&gt;</code></pre>
+
+
+<p>It's possible to customize the root element, as well as specify a mapping of
+XML elements to the items in the event data array. The constructor of
+<code>Zend\Log\Formatter\Xml</code> accepts a string with the name of the root element as
+the first parameter, and an associative array with the element mapping as the
+second parameter:</p>
+<pre class="codehilite"><code class="language-php">$writer = new Zend\Log\Writer\Stream('php://output');
+$formatter = new Zend\Log\Formatter\Xml('log', [
+    'msg' =&gt; 'message',
+    'level' =&gt; 'priorityName',
+]);
+$writer-&gt;setFormatter($formatter);
+
+$logger = new Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+$logger-&gt;info('informational message');</code></pre>
+
+
+<p>The code above changes the root element from its default of <code>logEntry</code> to
+<code>log</code>. It also maps the element <code>msg</code> to the event data item <code>message</code>. This
+results in the following output:</p>
+<pre class="codehilite"><code class="language-php">&lt;log&gt;
+  &lt;msg&gt;informational message&lt;/msg&gt;
+  &lt;level&gt;INFO&lt;/level&gt;
+&lt;/log&gt;</code></pre>
+
+
+<h2 id="formatting-to-firephp">Formatting to FirePhp</h2>
+<p><code>Zend\Log\Formatter\FirePhp</code> formats log data for the <a href="http://getfirebug.com/">Firebug</a> extension
+for Firefox.</p>
+
+<hr />
+
+<nav>
+  <ul class="pager">
+    <li class="previous">
+      <a rel="prev" href="../filters/"><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../processors/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav></div>
+        
+    </div>
+    <!-- content:end -->
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Copyright (c) 2016 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a><br></small>
+        </p>
+        <p><small><a href="http://framework.zend.com">Learn more about Zend Framework</a></small></p>
+    </footer>
+
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../js/prism-zf.js"></script>
+
+    <script>var base_url = '..';</script>
+    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+    <script src="../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>

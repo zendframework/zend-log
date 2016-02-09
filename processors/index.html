@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    <title>Processors - zend-log</title>
+
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic,700&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/zf.css" rel="stylesheet">
+    <link href="../css/prism-zf.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <span class="navbar-brand">
+              <a href="http://framework.zend.com"><img src="../img/zf-logo-mark.png" height="28" alt="Zend Framework" /></a>
+              <a href="..">zend-log</a>
+            </span>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../intro/">Introduction</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../writers/">Writers</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../filters/">Filters</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../formatters/">Formatters</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Processors</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../psr3/">PSR-3 Support</a>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="prev" href="../formatters/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="next" href="../psr3/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a href="https://github.com/zendframework/zend-log">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <!-- content:begin -->
+    <div class="container">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#processors">Processors</a></li>
+        
+            <li><a href="#processor-interface">Processor interface</a></li>
+        
+            <li><a href="#adding-processors">Adding processors</a></li>
+        
+            <li><a href="#available-processors">Available processors</a></li>
+        
+    
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
+  <li><a href="..">Docs</a> &raquo;</li>
+  
+    
+      
+        <li>Reference &raquo;</li>
+      
+    
+  
+  <li class="active">Processors</li>
+</ol>
+
+<nav class="hidden-lg">
+  <ul class="pager">
+    <li class="previous">
+      <a rel="prev" href="../formatters/"><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../psr3/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav>
+
+<h1 id="processors">Processors</h1>
+<p><strong><em>Processors</em></strong> allow you to provide additional information to logs in an
+automated fashion. They are called from the logger before the event is passed
+to the writers; they receive the event array, and return an event array on
+completion.</p>
+<p>Use cases include:</p>
+<ul>
+<li>Providing exception backtrace information.</li>
+<li>Injecting substitutions into the message.</li>
+<li>Injecting a request identifier (in order to later inspect logs for a specific
+  identifier)</li>
+</ul>
+<h2 id="processor-interface">Processor interface</h2>
+<p>All processors must implement <code>Zend\Log\Processor\ProcessorInterface</code>:</p>
+<pre class="codehilite"><code class="language-php">namespace Zend\Log\Processor;
+
+interface ProcessorInterface
+{
+    /**
+     * Processes a log message before it is given to the writers
+     *
+     * @param  array $event
+     * @return array
+     */
+    public function process(array $event);
+}</code></pre>
+
+
+<h2 id="adding-processors">Adding processors</h2>
+<p>To add a processor to a <code>Logger</code> instance, inject it using the <code>addProcessor()</code> method:</p>
+<pre class="codehilite"><code class="language-php">$logger-&gt;addProcessor(new Zend\Log\Processor\Backtrace());</code></pre>
+
+
+<h2 id="available-processors">Available processors</h2>
+<p>The following processors are available.</p>
+<h3 id="backtrace">Backtrace</h3>
+<p><code>Zend\Log\Processor\Backtrace</code> calls <code>debug_backtrace()</code> for every log event,
+injecting the details into the event's <code>extra</code> array:</p>
+<pre class="codehilite"><code class="language-php">$event = [
+    // ... standard elements ...
+    'extra' =&gt; [
+        'file' =&gt; 'SomeFile.php',
+        'line' =&gt; 1337,
+        'class' =&gt; 'Foo\MyClass',
+        'function' =&gt; 'myMethod',
+    ],
+];</code></pre>
+
+
+<h3 id="psrplaceholder">PsrPlaceholder</h3>
+<p><code>Zend\Log\Processor\PsrPlaceholder</code> replaces <a href="http://www.php-fig.org/psr/psr-3/">PSR-3</a>-formatted
+message placeholders with the values found in the <code>extra</code> array.</p>
+<p>As an example:</p>
+<pre class="codehilite"><code class="language-php">$logger-&gt;addProcessor(new Zend\Log\Processor\PsrPlaceholder());
+$logger-&gt;warn('Invalid plugin {plugin}', ['plugin' =&gt; 'My\Plugins\FooPlugin']);</code></pre>
+
+
+<p>will output:</p>
+<pre class="codehilite"><code>Invalid plugin My\Plugins\FooPlugin</code></pre>
+
+
+<p>This feature allows compatibility with PSR-3, and provides a simple way to
+provide string substitutions without needing to resort to <code>sprintf()</code> in
+your userland code.</p>
+<h3 id="referenceid">ReferenceId</h3>
+<p><code>Zend\Log\Processor\ReferenceId</code> allows you to specify a static reference
+identifier to inject in all log messages; typically, you will generate a new
+one for each request, to allow querying logs for the given reference
+identifier later.</p>
+<p>Given the following:</p>
+<pre class="codehilite"><code class="language-php">$processor = new Zend\Log\Processor\ReferenceId();
+$processor-&gt;setIdentifier(microtime(true) . '_' . uniqid());
+$logger-&gt;addProcessor($processor);
+$logger-&gt;info('Log event');</code></pre>
+
+
+<p>The event will contain:</p>
+<pre class="codehilite"><code class="language-php">$event = [
+    /* ... standard values ... */
+    'extra' =&gt; [
+        'referenceId' =&gt; '1455057110.6284_56ba68ebe1244',
+    ],
+];</code></pre>
+
+
+<h3 id="requestid">RequestId</h3>
+<p><code>Zend\Log\Processor\RequestId</code> is similar to <code>ReferenceId</code> with one key
+difference: if you do not set an identifier, one is automatically
+generated for you using hashed information from <code>$_SERVER</code>, including
+<code>REQUEST_TIME_FLOAT</code>, <code>HTTP_X_FORWARDED_FOR</code>, and/or <code>REMOTE_ADDR</code>.</p>
+
+<hr />
+
+<nav>
+  <ul class="pager">
+    <li class="previous">
+      <a rel="prev" href="../formatters/"><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../psr3/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav></div>
+        
+    </div>
+    <!-- content:end -->
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Copyright (c) 2016 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a><br></small>
+        </p>
+        <p><small><a href="http://framework.zend.com">Learn more about Zend Framework</a></small></p>
+    </footer>
+
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../js/prism-zf.js"></script>
+
+    <script>var base_url = '..';</script>
+    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+    <script src="../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>

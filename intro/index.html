@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    <title>Introduction - zend-log</title>
+
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic,700&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/zf.css" rel="stylesheet">
+    <link href="../css/prism-zf.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <span class="navbar-brand">
+              <a href="http://framework.zend.com"><img src="../img/zf-logo-mark.png" height="28" alt="Zend Framework" /></a>
+              <a href="..">zend-log</a>
+            </span>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="active">
+                        <a href="./">Introduction</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../writers/">Writers</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../filters/">Filters</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../formatters/">Formatters</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../processors/">Processors</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="../psr3/">PSR-3 Support</a>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="prev" href="..">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="next" href="../writers/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a href="https://github.com/zendframework/zend-log">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <!-- content:begin -->
+    <div class="container">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#overview">Overview</a></li>
+        
+            <li><a href="#creating-a-log">Creating a Log</a></li>
+        
+            <li><a href="#logging-messages">Logging Messages</a></li>
+        
+            <li><a href="#destroying-a-log">Destroying a Log</a></li>
+        
+            <li><a href="#using-built-in-priorities">Using Built-in Priorities</a></li>
+        
+            <li><a href="#understanding-log-events">Understanding Log Events</a></li>
+        
+            <li><a href="#log-php-errors">Log PHP Errors</a></li>
+        
+    
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
+  <li><a href="..">Docs</a> &raquo;</li>
+  
+    
+  
+  <li class="active">Introduction</li>
+</ol>
+
+<nav class="hidden-lg">
+  <ul class="pager">
+    <li class="previous">
+      <a rel="prev" href=".."><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../writers/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav>
+
+<h1 id="overview">Overview</h1>
+<p><code>Zend\Log\Logger</code> is a component for general purpose logging. It supports
+multiple log backends, formatting messages sent to the log, and filtering
+messages from being logged. These functions are divided into the following
+objects:</p>
+<ul>
+<li>A <strong>logger</strong> (instance of <code>Zend\Log\Logger</code>) is the object that your application
+  uses the most. You can have as many logger objects as you like; they do not
+  interact. A logger object must contain at least one <em>writer</em>, and can optionally
+  contain one or more <em>filters</em>.</li>
+<li>A <strong>writer</strong> (inherits from <code>Zend\Log\Writer\AbstractWriter</code>) writes data to
+  an underlying storage implementation.</li>
+<li>A <strong>filter</strong> (implements <code>Zend\Log\Filter\FilterInterface</code>) filters (blocks)
+  log data from being saved. A filter is applied to an individual writer.
+  Filters can be chained.</li>
+<li>A <strong>formatter</strong> (implements <code>Zend\Log\Formatter\FormatterInterface</code>) formats
+  the log data before it is written by a writer. Each writer has exactly one
+  formatter.</li>
+<li>A <strong>processor</strong> (implements <code>Zend\Log\Processor\ProcessorInterface</code>) processes
+  the log event prior to filtering or writing, allowing the ability to
+  substitute, add, remove, or modify data to be logged.</li>
+</ul>
+<h2 id="creating-a-log">Creating a Log</h2>
+<p>To get started logging, instantiate a writer and then pass it to a logger instance:</p>
+<pre class="codehilite"><code class="language-php">$logger = new Zend\Log\Logger;
+$writer = new Zend\Log\Writer\Stream('php://output');
+
+$logger-&gt;addWriter($writer);</code></pre>
+
+
+<p>It is important to note that the logger must have at least one writer. You can
+add any number of writers using the logger's <code>addWriter()</code> method.</p>
+<p>You can also add a priority to each writer. The priority is specified as an
+integer and passed as the second argument in the <code>addWriter()</code> method.</p>
+<p>Another way to add a writer to a logger is to use the name of the writer as
+follow:</p>
+<pre class="codehilite"><code class="language-php">$logger = new Zend\Log\Logger;
+
+$logger-&gt;addWriter('stream', null, ['stream' =&gt; 'php://output']);</code></pre>
+
+
+<p>In this example we passed the stream <code>php://output</code> as a parameter (via an
+options array).</p>
+<h2 id="logging-messages">Logging Messages</h2>
+<p>To log a message, call the <code>log()</code> method of a <code>Logger</code> instance and pass it the
+message priority and the message:</p>
+<pre class="codehilite"><code class="language-php">$logger-&gt;log(Zend\Log\Logger::INFO, 'Informational message');</code></pre>
+
+
+<p>The first parameter of the <code>log()</code> method is the integer <code>priority</code> and the
+second parameter is the string <code>message</code>. The priority must be one of the
+priorities recognized by the <code>Logger</code> instance (explained in the next section).
+There is also an optional third parameter used to pass extra
+information/metadata to the writer.</p>
+<p>Instead of using the <code>log()</code> method, you can optionally call methods named after
+the various supported priorities, which allows you to omit the <code>priority</code>
+argument:</p>
+<pre class="codehilite"><code class="language-php">$logger-&gt;log(Zend\Log\Logger::INFO, 'Informational message');
+$logger-&gt;info('Informational message');
+
+$logger-&gt;log(Zend\Log\Logger::EMERG, 'Emergency message');
+$logger-&gt;emerg('Emergency message');</code></pre>
+
+
+<h2 id="destroying-a-log">Destroying a Log</h2>
+<p>If the <code>Logger</code> instance is no longer needed, set the variable containing it to
+<code>NULL</code> to destroy it.  This will automatically call the <code>shutdown()</code> instance
+method of each attached writer before the <code>Logger</code> instance is destroyed.</p>
+<pre class="codehilite"><code class="language-php">$logger = null;</code></pre>
+
+
+<p>Explicitly destroying the log in this way is optional and is performed
+automatically at PHP shutdown.</p>
+<h2 id="using-built-in-priorities">Using Built-in Priorities</h2>
+<p>The <code>Zend\Log\Logger</code> class defines the following priorities:</p>
+<pre class="codehilite"><code class="language-php">EMERG   = 0;  // Emergency: system is unusable
+ALERT   = 1;  // Alert: action must be taken immediately
+CRIT    = 2;  // Critical: critical conditions
+ERR     = 3;  // Error: error conditions
+WARN    = 4;  // Warning: warning conditions
+NOTICE  = 5;  // Notice: normal but significant condition
+INFO    = 6;  // Informational: informational messages
+DEBUG   = 7;  // Debug: debug messages</code></pre>
+
+
+<p>These priorities are always available, and a convenience method of the same name
+(but lowercased) is available for each one.</p>
+<p>The priorities are not arbitrary. They come from the BSD syslog protocol, which
+is described in <a href="http://tools.ietf.org/html/rfc3164">RFC-3164</a>. The names and
+corresponding priority numbers are also compatible with another PHP logging
+system, <a href="http://pear.php.net/package/log">PEAR Log</a>, which perhaps promotes
+interoperability between it and <code>Zend\Log\Logger</code>;
+<a href="http://www.php-fig.org/psr/psr-3/">PSR-3</a> uses similar semantics, but without
+the explicit priority integers.</p>
+<p>Priority numbers descend in order of importance. <code>EMERG</code> (0) is the most
+important priority. <code>DEBUG</code> (7) is the least important priority of the built-in
+priorities. You may define priorities of lower importance than <code>DEBUG</code>. When
+selecting the priority for your log message, be aware of this priority hierarchy
+and choose appropriately.</p>
+<h2 id="understanding-log-events">Understanding Log Events</h2>
+<p>When you call the <code>log()</code> method or one of its shortcuts, a log event is
+created. This is simply an associative array with data describing the event that
+is passed to the writers. The following keys are always created in this array:</p>
+<ul>
+<li><code>timestamp</code></li>
+<li><code>message</code></li>
+<li><code>priority</code></li>
+<li><code>priorityName</code></li>
+</ul>
+<p>The creation of the <code>event</code> array is an internal detail of implementation.</p>
+<h2 id="log-php-errors">Log PHP Errors</h2>
+<p><code>Zend\Log\Logger</code> can also be used to log PHP errors and intercept exceptions.
+Calling the static method <code>registerErrorHandler($logger)</code> will register the
+<code>$logger</code> instance to log errors; it returns a boolean <code>false</code> ensuring that it
+returns delegation to any other error handlers registered, including the default
+PHP error handler.</p>
+<pre class="codehilite"><code class="language-php">$logger = new Zend\Log\Logger;
+$writer = new Zend\Log\Writer\Stream('php://output');
+
+$logger-&gt;addWriter($writer);
+
+Zend\Log\Logger::registerErrorHandler($logger);</code></pre>
+
+
+<p>If you want to unregister the error handler, can use the <code>unregisterErrorHandler()</code> static
+method.</p>
+<p>You can also configure a logger to intercept exceptions using the static method
+<code>registerExceptionHandler($logger)</code>.</p>
+
+<hr />
+
+<nav>
+  <ul class="pager">
+    <li class="previous">
+      <a rel="prev" href=".."><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../writers/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav></div>
+        
+    </div>
+    <!-- content:end -->
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Copyright (c) 2016 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a><br></small>
+        </p>
+        <p><small><a href="http://framework.zend.com">Learn more about Zend Framework</a></small></p>
+    </footer>
+
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../js/prism-zf.js"></script>
+
+    <script>var base_url = '..';</script>
+    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+    <script src="../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>

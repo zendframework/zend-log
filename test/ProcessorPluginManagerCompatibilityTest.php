@@ -10,7 +10,6 @@
 namespace ZendTest\Log;
 
 use PHPUnit_Framework_TestCase as TestCase;
-use ReflectionProperty;
 use Zend\Log\Exception\InvalidArgumentException;
 use Zend\Log\Processor;
 use Zend\Log\ProcessorPluginManager;

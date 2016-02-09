@@ -22,7 +22,8 @@ interface FormatterInterface
      * Formats data into a single line to be written by the writer.
      *
      * @param array $event event data
-     * @return string formatted line to write to the log
+     * @return string|array Either a formatted line to write to the log, or the
+     *     updated event information to provide to the writer.
      */
     public function format($event);
 

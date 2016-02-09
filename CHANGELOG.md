@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.0 - TBD
+## 2.7.0 - 2016-02-09
 
 ### Added
 
@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#10](https://github.com/zendframework/zend-log/pull/10) adds `array` to the
   expected return types from `Zend\Log\Formatter\FormatterInterface::format()`,
   codifying what we're already allowing.
+- [#24](https://github.com/zendframework/zend-log/pull/24) prepares the
+  documentation for publication, adds a chapter on processors, and publishes it
+  to https://zendframework.github.io/zend-log/
 
 ### Deprecated
 

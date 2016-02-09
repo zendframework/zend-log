@@ -9,6 +9,8 @@
 
 namespace ZendTest\Log\Writer;
 
+require_once 'vfsStream/vfsStream.php';
+
 use Zend\Log\Writer\Stream as StreamWriter;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
 
@@ -19,14 +21,7 @@ class StreamWriterTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->tmp = null;
-    }
-
-    public function tearDown()
-    {
-        if ($this->tmp) {
-            unlink($this->tmp);
-        }
+        vfsStreamWrapper::register();
     }
 
     public function testConstructorThrowsWhenResourceIsNotStream()
@@ -181,22 +176,25 @@ class StreamWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeInstanceOf('Zend\Log\Formatter\Simple', 'formatter', $writer);
     }
 
-    public function testCanSpecifyFileMaskForStreamViaOptions()
+    public function testCanSpecifyFilePermsViaChmodOption()
     {
-        $this->tmp = sprintf('%s/%s', sys_get_temp_dir(), uniqid('zendlog'));
         $formatter = new \Zend\Log\Formatter\Simple();
         $filter    = new \Zend\Log\Filter\Mock();
         $writer = new StreamWriter([
                 'filters'       => $filter,
                 'formatter'     => $formatter,
-                'stream'        => $this->tmp,
+                'stream'        => 'foo',
                 'mode'          => 'w+',
                 'chmod'         => 0664,
                 'log_separator' => '::',
-
         ]);
 
-        $this->assertTrue(file_exists($this->tmp));
-        $this->assertEquals(sprintf('%o', 0664), substr(sprintf('%o', fileperms($this->tmp)), -4));
+        $this->assertEquals(0664, fileperms('foo'));
+    }
+
+    public function testCanSpecifyFilePermsViaConstructorArgument()
+    {
+        new StreamWriter('foo', null, null, 0755);
+        $this->assertEquals(0755, fileperms('foo'));
     }
 }

@@ -157,11 +157,18 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function provideTestFilters()
     {
-        return [
+        $data = [
             ['priority', ['priority' => Logger::INFO]],
             ['regex', [ 'regex' => '/[0-9]+/' ]],
-            ['validator', ['validator' => new DigitsFilter]],
         ];
+
+        // Conditionally enabled until zend-validator is forwards-compatible
+        // with zend-servicemanager v3.
+        if (class_exists(DigitsFilter::class)) {
+            $data[] = ['validator', ['validator' => new DigitsFilter]];
+        }
+
+        return $data;
     }
 
     /**

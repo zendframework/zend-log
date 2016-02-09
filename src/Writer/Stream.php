@@ -9,6 +9,7 @@
 
 namespace Zend\Log\Writer;
 
+use ErrorException;
 use Traversable;
 use Zend\Log\Exception;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
@@ -42,6 +43,7 @@ class Stream extends AbstractWriter
      */
     public function __construct($streamOrUrl, $mode = null, $logSeparator = null)
     {
+        $chmod = null;
         if ($streamOrUrl instanceof Traversable) {
             $streamOrUrl = iterator_to_array($streamOrUrl);
         }
@@ -50,6 +52,7 @@ class Stream extends AbstractWriter
             parent::__construct($streamOrUrl);
             $mode         = isset($streamOrUrl['mode'])          ? $streamOrUrl['mode']          : null;
             $logSeparator = isset($streamOrUrl['log_separator']) ? $streamOrUrl['log_separator'] : null;
+            $chmod        = isset($streamOrUrl['chmod'])         ? $streamOrUrl['chmod']         : null;
             $streamOrUrl  = isset($streamOrUrl['stream'])        ? $streamOrUrl['stream']        : null;
         }
 
@@ -76,6 +79,14 @@ class Stream extends AbstractWriter
             $this->stream = $streamOrUrl;
         } else {
             ErrorHandler::start();
+            if (null !== $chmod && !file_exists($streamOrUrl) && is_writable(dirname($streamOrUrl))) {
+                try {
+                    touch($streamOrUrl);
+                    chmod($streamOrUrl, $chmod);
+                } catch (ErrorException $e) {
+                    // Silently ignore exceptions
+                }
+            }
             $this->stream = fopen($streamOrUrl, $mode, false);
             $error = ErrorHandler::stop();
             if (!$this->stream) {

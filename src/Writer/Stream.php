@@ -9,7 +9,6 @@
 
 namespace Zend\Log\Writer;
 
-use ErrorException;
 use Traversable;
 use Zend\Log\Exception;
 use Zend\Log\Formatter\Simple as SimpleFormatter;

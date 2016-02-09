@@ -31,6 +31,15 @@ class FormatterPluginManager extends AbstractPluginManager
         Formatter\Db::class               => InvokableFactory::class,
         Formatter\ErrorHandler::class     => InvokableFactory::class,
         Formatter\ExceptionHandler::class => InvokableFactory::class,
+        // Legacy (v2) due to alias resolution; canonical form of resolved
+        // alias is used to look up the factory, while the non-normalized
+        // resolved alias is used as the requested name passed to the factory.
+        'zendlogformatterbase'             => InvokableFactory::class,
+        'zendlogformattersimple'           => InvokableFactory::class,
+        'zendlogformatterxml'              => InvokableFactory::class,
+        'zendlogformatterdb'               => InvokableFactory::class,
+        'zendlogformattererrorhandler'     => InvokableFactory::class,
+        'zendlogformatterexceptionhandler' => InvokableFactory::class,
     ];
 
     protected $instanceOf = Formatter\FormatterInterface::class;
@@ -60,11 +69,19 @@ class FormatterPluginManager extends AbstractPluginManager
      *
      * Proxies to `validate()`.
      *
-     * @param mixed $instance
-     * @throws InvalidServiceException
+     * @param mixed $plugin
+     * @throws Exception\InvalidArgumentException
      */
-    public function validatePlugin($instance)
+    public function validatePlugin($plugin)
     {
-        $this->validate($instance);
+        try {
+            $this->validate($plugin);
+        } catch (InvalidServiceException $e) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                'Plugin of type %s is invalid; must implement %s\Formatter\FormatterInterface',
+                (is_object($plugin) ? get_class($plugin) : gettype($plugin)),
+                __NAMESPACE__
+            ));
+        }
     }
 }

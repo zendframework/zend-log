@@ -28,13 +28,6 @@ class WriterPluginManagerTest extends \PHPUnit_Framework_TestCase
         $this->plugins = new WriterPluginManager(new ServiceManager());
     }
 
-    public function testRegisteringInvalidWriterRaisesException()
-    {
-        $this->setExpectedException(InvalidServiceException::class);
-        $this->plugins->setService('test', $this);
-        $this->plugins->get('test');
-    }
-
     public function testInvokableClassFirephp()
     {
         $firephp = $this->plugins->get('firephp');

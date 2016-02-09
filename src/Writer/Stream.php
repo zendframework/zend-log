@@ -79,11 +79,12 @@ class Stream extends AbstractWriter
             $this->stream = $streamOrUrl;
         } else {
             ErrorHandler::start();
-            if (isset($chmod) && !file_exists($streamOrUrl) && is_writable(dirname($streamOrUrl))) {
+            if (null !== $chmod && !file_exists($streamOrUrl) && is_writable(dirname($streamOrUrl))) {
                 try {
                     touch($streamOrUrl);
                     chmod($streamOrUrl, $chmod);
                 } catch (ErrorException $e) {
+                    // Silently ignore exceptions
                 }
             }
             $this->stream = fopen($streamOrUrl, $mode, false);

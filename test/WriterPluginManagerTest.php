@@ -10,7 +10,6 @@
 namespace ZendTest\Log;
 
 use Zend\Log\WriterPluginManager;
-use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\ServiceManager;
 
 /**

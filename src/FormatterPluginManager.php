@@ -45,6 +45,18 @@ class FormatterPluginManager extends AbstractPluginManager
     protected $instanceOf = Formatter\FormatterInterface::class;
 
     /**
+     * Allow many formatters of the same type (v2)
+     * @param bool
+     */
+    protected $shareByDefault = false;
+
+    /**
+     * Allow many formatters of the same type (v3)
+     * @param bool
+     */
+    protected $sharedByDefault = false;
+
+    /**
      * Validate the plugin is of the expected type (v3).
      *
      * Validates against `$instanceOf`.

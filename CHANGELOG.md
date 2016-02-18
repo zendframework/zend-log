@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - Nothing.
 
-## 2.7.1 - TBD
+## 2.7.1 - 2016-02-18
 
 ### Added
 
@@ -36,7 +36,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#28](https://github.com/zendframework/zend-log/pull/28) restores the "share
+  by default" flag settings of all plugin managers back to boolean `false`,
+  allowing multiple instances of each plugin type. (This restores backwards
+  compatibility with versions prior to 2.7.)
 
 ## 2.7.0 - 2016-02-09
 

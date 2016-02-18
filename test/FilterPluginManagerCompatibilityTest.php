@@ -20,6 +20,7 @@ use Zend\ServiceManager\Test\CommonPluginManagerTrait;
 class FilterPluginManagerCompatibilityTest extends TestCase
 {
     use CommonPluginManagerTrait;
+    use ServicesNotSharedByDefaultTrait;
 
     protected function getPluginManager()
     {

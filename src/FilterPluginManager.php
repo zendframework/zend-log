@@ -43,6 +43,18 @@ class FilterPluginManager extends AbstractPluginManager
     protected $instanceOf = Filter\FilterInterface::class;
 
     /**
+     * Allow many filters of the same type (v2)
+     * @param bool
+     */
+    protected $shareByDefault = false;
+
+    /**
+     * Allow many filters of the same type (v3)
+     * @param bool
+     */
+    protected $sharedByDefault = false;
+
+    /**
      * Validate the plugin is of the expected type (v3).
      *
      * Validates against `$instanceOf`.

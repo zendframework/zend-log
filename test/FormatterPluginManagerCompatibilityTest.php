@@ -19,6 +19,7 @@ use Zend\ServiceManager\Test\CommonPluginManagerTrait;
 class FormatterPluginManagerCompatibilityTest extends TestCase
 {
     use CommonPluginManagerTrait;
+    use ServicesNotSharedByDefaultTrait;
 
     protected function getPluginManager()
     {

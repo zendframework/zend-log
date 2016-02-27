@@ -39,7 +39,7 @@ The constructor of `Zend\Log\Writer\Stream` also accepts an existing stream reso
 ```php
 $stream = @fopen('/path/to/logfile', 'a', false);
 if (! $stream) {
-    throw new Exception('Failed to open stream');
+throw new Exception('Failed to open stream');
 }
 
 $writer = new Zend\Log\Writer\Stream($stream);
@@ -57,7 +57,7 @@ constructing a `Stream` instance; when doing so, the `stream` key is required:
 
 ```php
 $writer = new Zend\Log\Writer\Stream([
-    'stream' => 'php://output',
+'stream' => 'php://output',
 ]);
 $logger = new Zend\Log\Logger();
 $logger->addWriter($writer);
@@ -85,9 +85,9 @@ separator for the log array:
 
 ```php
 $dbconfig = [
-    // Sqlite Configuration
-    'driver' => 'Pdo',
-    'dsn' => 'sqlite:' . __DIR__ . '/tmp/sqlite.db',
+// Sqlite Configuration
+'driver' => 'Pdo',
+'dsn' => 'sqlite:' . __DIR__ . '/tmp/sqlite.db',
 ];
 $db = new Zend\Db\Adapter\Adapter($dbconfig);
 
@@ -107,16 +107,16 @@ store only to the selected fields in the database:
 
 ```php
 $dbconfig = [
-    // Sqlite Configuration
-    'driver' => 'Pdo',
-    'dsn' => 'sqlite:' . __DIR__ . '/tmp/sqlite.db',
+// Sqlite Configuration
+'driver' => 'Pdo',
+'dsn' => 'sqlite:' . __DIR__ . '/tmp/sqlite.db',
 ];
 $db = new Zend\Db\Adapter\Adapter($dbconfig);
 
 $mapping = [
-    'timestamp' => 'date',
-    'priority'  => 'type',
-    'message'   => 'event',
+'timestamp' => 'date',
+'priority'  => 'type',
+'message'   => 'event',
 ];
 $writer = new Zend\Log\Writer\Db($db, 'log_table_name', $mapping);
 $logger = new Zend\Log\Logger();
@@ -164,7 +164,54 @@ $ composer require ccampbell/chromephp
 
 ## Writing to Mail
 
-- TODO
+`Zend\Log\Writer\Mail` requires a configuration array or `Zend\Mail\Message`. The configuration array accepts:
+
+```php
+[
+'subject_prepend_text' => '',
+'transport' => Transport\TransportInterface
+'mail' => MailMessage | array
+]
+```
+
+Array Index | Accepted Values | Description
+----------- | --------------- | -----------
+`subject_prepend_text` | string | Mail message
+`transport` | `Transport\TransportInterface` |
+`mail` | `Zend\Mail\Message` |
+| array | `Zend\Mail\Message` factory array
+
+By default `sendmail` is used to send mail messages.
+
+```php
+$writer = new Zend\Log\Writer\Mail($mail);
+
+$logger = new Zend\Log\Logger();
+$logger->addWriter($writer);
+
+$logger->info('Informational message');
+```
+
+You can provide a Transport configuration during construction.
+
+```php
+$writer = new Zend\Log\Writer\Mail($mail, $transport);
+```
+
+Mail transports available include:
+- Sendmail
+- SMTP
+- File
+- In Memory
+
+For configuration options checkout the `Zend\Mail\Transport` documentation.
+
+The following table details all allowed constructor arguments and their corresponding configuration options.
+
+Constructor Argument | Option Name | Default | Description
+-------------------- | ----------- | ------- | -----------
+`$mail` | mail | None; required | Mail message
+`$transport` | transport | null | Mail transport to use
 
 ## Writing to MongoDB
 
@@ -257,4 +304,4 @@ which means that:
 
 - higher integer values indicate higher priority (triggered earliest);
 - lower integer values (including negative values) have lower priority
-  (triggered last).
+(triggered last).

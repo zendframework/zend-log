@@ -168,9 +168,9 @@ $ composer require ccampbell/chromephp
 
 ```php
 [
-'subject_prepend_text' => '',
-'transport' => Transport\TransportInterface
-'mail' => MailMessage | array
+    'subject_prepend_text' => '',
+    'transport' => Transport\TransportInterface
+    'mail' => MailMessage | array
 ]
 ```
 
@@ -179,7 +179,7 @@ Array Index | Accepted Values | Description
 `subject_prepend_text` | string | Mail message
 `transport` | `Transport\TransportInterface` |
 `mail` | `Zend\Mail\Message` |
-| array | `Zend\Mail\Message` factory array
+ | array | `Zend\Mail\Message` factory array
 
 By default `sendmail` is used to send mail messages.
 
@@ -205,13 +205,6 @@ Mail transports available include:
 - In Memory
 
 For configuration options checkout the `Zend\Mail\Transport` documentation.
-
-The following table details all allowed constructor arguments and their corresponding configuration options.
-
-Constructor Argument | Option Name | Default | Description
--------------------- | ----------- | ------- | -----------
-`$mail` | mail | None; required | Mail message
-`$transport` | transport | null | Mail transport to use
 
 ## Writing to MongoDB
 

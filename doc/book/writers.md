@@ -39,7 +39,7 @@ The constructor of `Zend\Log\Writer\Stream` also accepts an existing stream reso
 ```php
 $stream = @fopen('/path/to/logfile', 'a', false);
 if (! $stream) {
-throw new Exception('Failed to open stream');
+    throw new Exception('Failed to open stream');
 }
 
 $writer = new Zend\Log\Writer\Stream($stream);
@@ -57,7 +57,7 @@ constructing a `Stream` instance; when doing so, the `stream` key is required:
 
 ```php
 $writer = new Zend\Log\Writer\Stream([
-'stream' => 'php://output',
+    'stream' => 'php://output',
 ]);
 $logger = new Zend\Log\Logger();
 $logger->addWriter($writer);
@@ -85,9 +85,9 @@ separator for the log array:
 
 ```php
 $dbconfig = [
-// Sqlite Configuration
-'driver' => 'Pdo',
-'dsn' => 'sqlite:' . __DIR__ . '/tmp/sqlite.db',
+    // Sqlite Configuration
+    'driver' => 'Pdo',
+    'dsn' => 'sqlite:' . __DIR__ . '/tmp/sqlite.db',
 ];
 $db = new Zend\Db\Adapter\Adapter($dbconfig);
 
@@ -107,16 +107,16 @@ store only to the selected fields in the database:
 
 ```php
 $dbconfig = [
-// Sqlite Configuration
-'driver' => 'Pdo',
-'dsn' => 'sqlite:' . __DIR__ . '/tmp/sqlite.db',
+    // Sqlite Configuration
+    'driver' => 'Pdo',
+    'dsn' => 'sqlite:' . __DIR__ . '/tmp/sqlite.db',
 ];
 $db = new Zend\Db\Adapter\Adapter($dbconfig);
 
 $mapping = [
-'timestamp' => 'date',
-'priority'  => 'type',
-'message'   => 'event',
+    'timestamp' => 'date',
+    'priority'  => 'type',
+    'message'   => 'event',
 ];
 $writer = new Zend\Log\Writer\Db($db, 'log_table_name', $mapping);
 $logger = new Zend\Log\Logger();
@@ -218,15 +218,13 @@ $transport = new \Zend\Mail\Transport\Smtp();
 $message = new \Zend\Mail\Message();
 // TODO configure the Mail message
 
-$writer = new \Zend\Log\Writer\Mail(
-    [
-        'subject_prepend_text' => 'Start of the subject',
-        'transport' => $transport,
-        'mail' => $mail,
-        'filters' => [],
-        'formatter' => []
-    ]
-);
+$writer = new \Zend\Log\Writer\Mail([
+    'subject_prepend_text' => 'Start of the subject',
+    'transport' => $transport,
+    'mail' => $mail,
+    'filters' => [],
+    'formatter' => []
+]);
 
 $logger = new \Zend\Log\Logger();
 $logger->addWriter($writer);
@@ -241,17 +239,15 @@ To use the `Zend\Mail\Message` factory array construction will look like:
 $transport = new \Zend\Mail\Transport\Smtp();
 // TODO configure the SMTP transport
 
-$writer = new \Zend\Log\Writer\Mail(
-    [
-        'subject_prepend_text' => 'Start of the subject',
-        'transport' => $transport,
-        'mail' => [
-            'to' => 'email@example.com'
-        ],
-        'filters' => [],
-        'formatter' => []
-    ]
-);
+$writer = new \Zend\Log\Writer\Mail([
+    'subject_prepend_text' => 'Start of the subject',
+    'transport' => $transport,
+    'mail' => [
+        'to' => 'email@example.com'
+    ],
+    'filters' => [],
+    'formatter' => []
+]);
 
 $logger = new \Zend\Log\Logger();
 $logger->addWriter($writer);
@@ -291,16 +287,14 @@ And `Zend\Log\Writer\MongoDB` is used like this:
 ```php
 $mongo = new MongoClient();
 
-$writer = new \Zend\Log\Writer\MongoDB(
-    [
-        'save_options' => [], //MongoDB Driver Options
-        'collection' => 'collectionName',
-        'database' => 'databaseName',
-        'mongo' => $mongo,
-        'filters' => [],
-        'formatter' => []
-    ]
-);
+$writer = new \Zend\Log\Writer\MongoDB([
+    'save_options' => [], //MongoDB Driver Options
+    'collection' => 'collectionName',
+    'database' => 'databaseName',
+    'mongo' => $mongo,
+    'filters' => [],
+    'formatter' => []
+]);
 
 $logger = new \Zend\Log\Logger();
 $logger->addWriter($writer);
@@ -348,14 +342,12 @@ Array Index | Accepted Values | Description
 `formatter` | array, string, Zend\Log\Formatter\FormatterInterface | Log formatter(s)
 
 ```php
-$writer = new \Zend\Log\Writer\Syslog(
-    [
-        'application' => '',
-        'facility' => '',
-        'filters' => [],
-        'formatter' => []
-    ]
-);
+$writer = new \Zend\Log\Writer\Syslog([
+    'application' => '',
+    'facility' => '',
+    'filters' => [],
+    'formatter' => []
+]);
 
 $logger = new \Zend\Log\Logger();
 $logger->addWriter($writer);
@@ -385,12 +377,10 @@ Array Index | Accepted Values | Description
 `formatter` | array, string, Zend\Log\Formatter\FormatterInterface | Log formatter(s)
 
 ```php
-$writer = new \Zend\Log\Writer\ZendMonitor(
-    [
-        'filters' => [],
-        'formatter' => []
-    ]
-);
+$writer = new \Zend\Log\Writer\ZendMonitor([
+    'filters' => [],
+    'formatter' => []
+]);
 
 $logger = new \Zend\Log\Logger();
 $logger->addWriter($writer);

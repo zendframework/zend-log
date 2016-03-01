@@ -31,13 +31,6 @@ class MailTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        if (! class_exists(MailMessage::class)) {
-            $this->markTestSkipped(
-                'zend-mail related tests are disabled when testing zend-servicemanager v3 '
-                . 'forwards compatibility, until zend-mail is also forwards compatible'
-            );
-        }
-
         $message = new MailMessage();
         $transport = new Transport\File();
         $options   = new Transport\FileOptions([

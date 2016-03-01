@@ -22,13 +22,6 @@ class DbTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (! class_exists('Zend\Db\Adapter\Adapter')) {
-            $this->markTestSkipped(
-                'zend-db related tests are disabled when testing zend-servicemanager v3 '
-                . 'forwards compatibility, until zend-db is also forwards compatible'
-            );
-        }
-
         $this->tableName = 'db-table-name';
 
         $this->db     = new MockDbAdapter();

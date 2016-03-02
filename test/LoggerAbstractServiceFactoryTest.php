@@ -99,13 +99,6 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetrievesDatabaseServiceFromServiceManagerWhenEncounteringDbWriter()
     {
-        if (! class_exists('Zend\Db\Adapter\Adapter')) {
-            $this->markTestSkipped(
-                'zend-db related tests are disabled when testing zend-servicemanager v3 '
-                . 'forwards compatibility, until zend-db is also forwards compatible'
-            );
-        }
-
         $db = $this->getMockBuilder('Zend\Db\Adapter\Adapter')
             ->disableOriginalConstructor()
             ->getMock();

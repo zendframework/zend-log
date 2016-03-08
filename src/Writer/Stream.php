@@ -10,9 +10,11 @@
 namespace Zend\Log\Writer;
 
 use Traversable;
+use Zend\Db\Adapter\Exception\ErrorException;
 use Zend\Log\Exception;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
 use Zend\Stdlib\ErrorHandler;
+use Zend\Stdlib\Err;
 
 class Stream extends AbstractWriter
 {
@@ -79,6 +81,10 @@ class Stream extends AbstractWriter
             $this->stream = $streamOrUrl;
         } else {
             ErrorHandler::start();
+            if (isset($filePermissions) && !file_exists($streamOrUrl) && is_writable(dirname($streamOrUrl))) {
+                touch($streamOrUrl);
+                chmod($streamOrUrl, $filePermissions);
+            }
             $this->stream = fopen($streamOrUrl, $mode, false);
             $error = ErrorHandler::stop();
             if (!$this->stream) {
@@ -87,13 +93,6 @@ class Stream extends AbstractWriter
                     $streamOrUrl,
                     $mode
                 ), 0, $error);
-            }
-            if (null !== $filePermissions && !chmod($streamOrUrl, $filePermissions)) {
-                throw new Exception\RuntimeException(sprintf(
-                    'Could not set the mode "%o" for the log file "%s"',
-                    $filePermissions,
-                    $streamOrUrl
-                ));
             }
         }
 

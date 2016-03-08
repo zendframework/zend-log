@@ -192,10 +192,47 @@ class StreamWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0664, $this->root->getChild('foo')->getPermissions());
     }
 
+    public function testFilePermsDoNotThrowErrors()
+    {
+        // Make the chmod() override emit a warning.
+        $GLOBALS['chmod_throw_error'] = true;
+
+        $filter    = new \Zend\Log\Filter\Mock();
+        $formatter = new \Zend\Log\Formatter\Simple();
+        $file      = $this->root->url() . '/foo';
+        $writer = new StreamWriter([
+            'filters'       => $filter,
+            'formatter'     => $formatter,
+            'stream'        => $file,
+            'mode'          => 'w+',
+            'chmod'         => 0777,
+        ]);
+
+        $this->assertEquals(0666, $this->root->getChild('foo')->getPermissions());
+    }
+
     public function testCanSpecifyFilePermsViaConstructorArgument()
     {
         $file = $this->root->url() . '/foo';
         new StreamWriter($file, null, null, 0755);
         $this->assertEquals(0755, $this->root->getChild('foo')->getPermissions());
     }
+}
+
+namespace Zend\Log\Writer;
+
+/**
+ * chmod() override in for tests to emulate a warning.
+ *
+ * @param string $filename
+ * @param int $mode
+ * @return bool
+ * @throws \ErrorException  if $GLOBALS['chmod_throw_error'] is truthy.
+ */
+function chmod($filename, $mode) {
+    if (!empty($GLOBALS['chmod_throw_error'])) {
+        trigger_error('some_error', E_WARNING);
+        return false;
+    }
+    return \chmod($filename, $mode);
 }

@@ -10,11 +10,9 @@
 namespace Zend\Log\Writer;
 
 use Traversable;
-use Zend\Db\Adapter\Exception\ErrorException;
 use Zend\Log\Exception;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
 use Zend\Stdlib\ErrorHandler;
-use Zend\Stdlib\Err;
 
 class Stream extends AbstractWriter
 {

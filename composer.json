@@ -44,6 +44,10 @@
         "branch-alias": {
             "dev-master": "2.7-dev",
             "dev-develop": "2.8-dev"
+        },
+        "zf": {
+            "component": "Zend\\Log",
+            "config-provider": "Zend\\Log\\ConfigProvider"
         }
     },
     "autoload-dev": {

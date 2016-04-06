@@ -60,7 +60,7 @@ class WriterPluginManagerCompatibilityTest extends TestCase
                     // intentionally fall-through
                 case Writer\FingersCrossed::class:
                     // intentionally fall-through
-                case Writer\Mongo::class:
+                case Writer\MongoDB::class:
                     // intentionally fall-through
                 case Writer\Stream::class:
                     // always skip; these implementations have required arguments

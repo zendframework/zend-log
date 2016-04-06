@@ -14,6 +14,7 @@ use Zend\Log\ProcessorPluginManager;
 use Zend\Log\Writer\Noop;
 use Zend\Log\WriterPluginManager;
 use Zend\Log\Writer\Db as DbWriter;
+use Zend\Log\Writer\MongoDB as MongoDBWriter;
 use Zend\ServiceManager\Config;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceManager;
@@ -144,6 +145,53 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($found, 'Did not find expected DB writer');
         $this->assertAttributeSame($db, 'db', $writer);
+    }
+
+    public function testRetrievesMongoDBServiceFromServiceManagerWhenEncounteringMongoDbWriter()
+    {
+        $mongoClient = $this->getMockBuilder('MongoClient')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $config = new Config([
+            'abstract_factories' => [LoggerAbstractServiceFactory::class],
+            'services' => [
+                'mongo_client' => $mongoClient,
+                'config' => [
+                    'log' => [
+                        'Application\Log' => [
+                            'writers' => [
+                                [
+                                    'name'     => 'mongodb',
+                                    'priority' => 1,
+                                    'options'  => [
+                                        'database'     => 'applicationdb',
+                                        'collection'   => 'applicationlog',
+                                        'mongo'        => 'mongo_client',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+        $serviceManager = new ServiceManager();
+        $config->configureServiceManager($serviceManager);
+
+        $logger = $serviceManager->get('Application\Log');
+        $this->assertInstanceOf('Zend\Log\Logger', $logger);
+        $writers = $logger->getWriters();
+        $found   = false;
+
+        foreach ($writers as $writer) {
+            if ($writer instanceof MongoDBWriter) {
+                $found = true;
+                break;
+            }
+        }
+
+        $this->assertTrue($found, 'Did not find expected MongoDB writer');
     }
 
     /**

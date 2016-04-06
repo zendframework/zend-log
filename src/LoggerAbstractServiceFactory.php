@@ -147,19 +147,27 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
         }
 
         foreach ($config['writers'] as $index => $writerConfig) {
-            if (!isset($writerConfig['options']['db'])
-                || !is_string($writerConfig['options']['db'])
+            if (isset($writerConfig['options']['db'])
+                && is_string($writerConfig['options']['db'])
+                && $services->has($writerConfig['options']['db'])
             ) {
-                continue;
-            }
-            if (!$services->has($writerConfig['options']['db'])) {
+                // Retrieve the DB service from the service locator, and
+                // inject it into the configuration.
+                $db = $services->get($writerConfig['options']['db']);
+                $config['writers'][$index]['options']['db'] = $db;
                 continue;
             }
 
-            // Retrieve the DB service from the service locator, and
-            // inject it into the configuration.
-            $db = $services->get($writerConfig['options']['db']);
-            $config['writers'][$index]['options']['db'] = $db;
+            if (isset($writerConfig['options']['mongo'])
+                && is_string($writerConfig['options']['mongo'])
+                && $services->has($writerConfig['options']['mongo'])
+            ) {
+                // Retrieve the MongoDB service from the service locator, and
+                // inject it into the configuration.
+                $mongoClient = $services->get($writerConfig['options']['mongo']);
+                $config['writers'][$index]['options']['mongo'] = $mongoClient;
+                continue;
+            }
         }
     }
 }

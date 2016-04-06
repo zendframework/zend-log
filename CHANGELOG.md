@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.8.0 - TBD
+
+### Added
+
+- [#39](https://github.com/zendframework/zend-log/pull/39) adds the following
+  factory classes for the exposed plugin managers in the component:
+  - `Zend\Log\FilterPluginManagerFactory`, which returns `FilterPluginManager` instances.
+  - `Zend\Log\FormatterPluginManagerFactory`, which returns `FormatterPluginManager` instances.
+  - `Zend\Log\ProcessorPluginManagerFactory`, which returns `ProcessorPluginManager` instances.
+  - `Zend\Log\WriterPluginManagerFactory`, which returns `WriterPluginManager` instances.
+- [#39](https://github.com/zendframework/zend-log/pull/39) exposes the
+  package as a ZF component and/or generic configuration provider, by adding the
+  following:
+  - `ConfigProvider`, which maps the available plugin managers to the
+    corresponding factories as listed above, maps the `Logger` class to the
+    `LoggerServiceFactory`, and registers the `LoggerAbstractServiceFactory` as
+    an abstract factory.
+  - `Module`, which does the same as `ConfigProvider`, but specifically for
+    zend-mvc applications. It also provices a specifications to
+    `Zend\ModuleManager\Listener\ServiceListener` to allow modules to provide
+    configuration for log filters, formatters, processors, and writers.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
+
 ## 2.7.2 - 2016-04-06
 
 ### Added

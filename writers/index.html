@@ -267,7 +267,7 @@ $logger-&gt;info('Informational message');</code></pre>
 
 <p>The following table details all allowed constructor arguments and their
 corresponding configuration options.</p>
-<table>
+<div class="table-responsive"><table>
 <thead>
 <tr>
 <th>Constructor Argument</th>
@@ -302,7 +302,7 @@ corresponding configuration options.</p>
 <td>Permissions mode to use for stream resource; defaults to existing file/stream permissions</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h2 id="writing-to-databases">Writing to Databases</h2>
 <p><code>Zend\Log\Writer\Db</code> writes log information to a database table using
 <code>Zend\Db\Adapter\Adapter</code>. The constructor of <code>Zend\Log\Writer\Db</code> receives a
@@ -375,21 +375,306 @@ Library</a> library in your application. Use
 
 
 <h2 id="writing-to-mail">Writing to Mail</h2>
-<ul>
-<li>TODO</li>
-</ul>
+<p><code>Zend\Log\Writer\Mail</code> takes a configuration array or <code>Zend\Mail\Message</code>. Basic usage looks like</p>
+<pre class="codehilite"><code class="language-php">$message = new \Zend\Mail\Message();
+$message-&gt;setTo('email@example.com');
+
+$writer = new \Zend\Log\Writer\Mail($message);
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to mail message
+$logger-&gt;info('Informational message');</code></pre>
+
+
+<p>An email of the logged information will be sent via <code>sendmail</code> by default. You may also provide a <code>Zend\Mail\Transport</code>
+during construction. For configuration options checkout the <code>Zend\Mail\Transport</code> documentation.</p>
+<pre class="codehilite"><code class="language-php">$writer = new Zend\Log\Writer\Mail($mail, $transport);</code></pre>
+
+
+<p><code>Zend\Log\Writer\mail</code> may also be constructed with a configuration array. The configuration array accepts the following
+keys:</p>
+<pre class="codehilite"><code class="language-php">[
+    'subject_prepend_text' =&gt; '',
+    'transport' =&gt; $transport
+    'mail' =&gt; $mail,
+    'filters' =&gt; [],
+    'formatter' =&gt; []
+]</code></pre>
+
+
+<p>And expects the following data:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Array Index</th>
+<th>Accepted Values</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>subject_prepend_text</code></td>
+<td>string</td>
+<td>Mail message</td>
+</tr>
+<tr>
+<td><code>transport</code></td>
+<td><code>Transport\TransportInterface</code></td>
+<td>Transport method</td>
+</tr>
+<tr>
+<td><code>mail</code></td>
+<td><code>Zend\Mail\Message</code></td>
+<td>mail message</td>
+</tr>
+<tr>
+<td><code>mail</code></td>
+<td><code>array</code></td>
+<td><code>Zend\Mail\Message</code> factory array</td>
+</tr>
+<tr>
+<td><code>filters</code></td>
+<td>array, int, string, Zend\Log\Filter\FilterInterface</td>
+<td>Log filter(s)</td>
+</tr>
+<tr>
+<td><code>formatter</code></td>
+<td>array, string, Zend\Log\Formatter\FormatterInterface</td>
+<td>Log formatter(s)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Basic usage of the configuration array looks like:</p>
+<pre class="codehilite"><code class="language-php">$transport = new \Zend\Mail\Transport\Smtp();
+// TODO configure the SMTP transport
+
+$message = new \Zend\Mail\Message();
+// TODO configure the Mail message
+
+$writer = new \Zend\Log\Writer\Mail([
+    'subject_prepend_text' =&gt; 'Start of the subject',
+    'transport' =&gt; $transport,
+    'mail' =&gt; $mail,
+    'filters' =&gt; [],
+    'formatter' =&gt; []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to mail message
+$logger-&gt;info('Informational message');</code></pre>
+
+
+<p>To use the <code>Zend\Mail\Message</code> factory array construction will look like:</p>
+<pre class="codehilite"><code class="language-php">$transport = new \Zend\Mail\Transport\Smtp();
+// TODO configure the SMTP transport
+
+$writer = new \Zend\Log\Writer\Mail([
+    'subject_prepend_text' =&gt; 'Start of the subject',
+    'transport' =&gt; $transport,
+    'mail' =&gt; [
+        'to' =&gt; 'email@example.com'
+    ],
+    'filters' =&gt; [],
+    'formatter' =&gt; []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to mail message
+$logger-&gt;info('Informational message');</code></pre>
+
+
 <h2 id="writing-to-mongodb">Writing to MongoDB</h2>
-<ul>
-<li>TODO</li>
-</ul>
+<p>In this example <code>Zend\Log\Writer\MongoDB</code> uses an array for construction. Available keys include:</p>
+<pre class="codehilite"><code class="language-php">[
+    'save_options' =&gt; [],
+    'collection' =&gt; '',
+    'database' =&gt; '',
+    'mongo' =&gt; $mongo,
+    'filters' =&gt; [],
+    'formatter' =&gt; []
+]</code></pre>
+
+
+<p><code>collection</code>, <code>database</code>, and <code>mongo</code> are required. Each key accepts:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Array Index</th>
+<th>Accepted Values</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>save_options</code></td>
+<td>array</td>
+<td>MongoDB driver options</td>
+</tr>
+<tr>
+<td><code>collection</code></td>
+<td>string</td>
+<td>collection name</td>
+</tr>
+<tr>
+<td><code>database</code></td>
+<td>string</td>
+<td>database name</td>
+</tr>
+<tr>
+<td><code>mongo</code></td>
+<td><code>Mongo</code> or <code>MongoClient</code></td>
+<td>MongoDB connection object</td>
+</tr>
+<tr>
+<td><code>filters</code></td>
+<td>array, int, string, Zend\Log\Filter\FilterInterface</td>
+<td>Log filter(s)</td>
+</tr>
+<tr>
+<td><code>formatter</code></td>
+<td>array, string, Zend\Log\Formatter\FormatterInterface</td>
+<td>Log formatter(s)</td>
+</tr>
+</tbody>
+</table></div>
+<p>And <code>Zend\Log\Writer\MongoDB</code> is used like this:</p>
+<pre class="codehilite"><code class="language-php">$mongo = new MongoClient();
+
+$writer = new \Zend\Log\Writer\MongoDB([
+    'save_options' =&gt; [], //MongoDB Driver Options
+    'collection' =&gt; 'collectionName',
+    'database' =&gt; 'databaseName',
+    'mongo' =&gt; $mongo,
+    'filters' =&gt; [],
+    'formatter' =&gt; []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to Mongo DB
+$logger-&gt;info('Informational message');</code></pre>
+
+
+<p>It may also be constructed by passing the arguments directly</p>
+<pre class="codehilite"><code class="language-php">$mongo = new MongoClient();
+$database = 'databaseName';
+$collection = 'collectionName';
+$saveOptions = [];
+
+$writer = new \Zend\Log\Writer\MongoDB($mongo, $database, $collection, $saveOptions);
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to Mongo DB
+$logger-&gt;info('Informational message');</code></pre>
+
+
 <h2 id="writing-to-syslog">Writing to Syslog</h2>
-<ul>
-<li>TODO</li>
-</ul>
+<p><code>Zend\Log\Writer\Syslog</code> is a writer generates system log messages from the data it receives.</p>
+<pre class="codehilite"><code class="language-php">$writer = new \Zend\Log\Writer\Syslog();
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to system log
+$logger-&gt;info('Informational message');</code></pre>
+
+
+<p>The application name and syslog facility may be set</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Array Index</th>
+<th>Accepted Values</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>application</code></td>
+<td>string</td>
+<td>application name</td>
+</tr>
+<tr>
+<td><code>facility</code></td>
+<td>string</td>
+<td>syslog facility (list of facilities)[http://php.net/openlog]</td>
+</tr>
+<tr>
+<td><code>filters</code></td>
+<td>array, int, string, Zend\Log\Filter\FilterInterface</td>
+<td>Log filter(s)</td>
+</tr>
+<tr>
+<td><code>formatter</code></td>
+<td>array, string, Zend\Log\Formatter\FormatterInterface</td>
+<td>Log formatter(s)</td>
+</tr>
+</tbody>
+</table></div>
+<pre class="codehilite"><code class="language-php">$writer = new \Zend\Log\Writer\Syslog([
+    'application' =&gt; '',
+    'facility' =&gt; '',
+    'filters' =&gt; [],
+    'formatter' =&gt; []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+$logger-&gt;info('Informational message');</code></pre>
+
+
 <h2 id="writing-to-zend-monitor">Writing to Zend Monitor</h2>
-<ul>
-<li>TODO</li>
-</ul>
+<p><code>Zend\Log\Writer\ZendMonitor</code> writes log data to the Zend Monitor on a Zend Server. If the web server is not a Zend
+Server or Zend Monitor is not enabled it will fail silently.</p>
+<pre class="codehilite"><code class="language-php">$writer = new \Zend\Log\Writer\ZendMonitor();
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to Zend Monitor
+$logger-&gt;info('Informational message');</code></pre>
+
+
+<p><code>Zend\Log\Writer\AbstractWriter</code> options are available.</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Array Index</th>
+<th>Accepted Values</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>filters</code></td>
+<td>array, int, string, Zend\Log\Filter\FilterInterface</td>
+<td>Log filter(s)</td>
+</tr>
+<tr>
+<td><code>formatter</code></td>
+<td>array, string, Zend\Log\Formatter\FormatterInterface</td>
+<td>Log formatter(s)</td>
+</tr>
+</tbody>
+</table></div>
+<pre class="codehilite"><code class="language-php">$writer = new \Zend\Log\Writer\ZendMonitor([
+    'filters' =&gt; [],
+    'formatter' =&gt; []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to Zend Monitor
+$logger-&gt;info('Informational message');</code></pre>
+
+
 <h2 id="stubbing-out-the-writer">Stubbing Out the Writer</h2>
 <p><code>Zend\Log\Writer\Noop</code> is a stub that does not write log data to anything; it is
 useful for disabling logging or stubbing out logging during tests:</p>
@@ -454,7 +739,7 @@ which means that:</p>
 <ul>
 <li>higher integer values indicate higher priority (triggered earliest);</li>
 <li>lower integer values (including negative values) have lower priority
-  (triggered last).</li>
+(triggered last).</li>
 </ul>
 
 <hr />

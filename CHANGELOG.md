@@ -40,7 +40,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#30](https://github.com/zendframework/zend-log/pull/30) adds documentation
+  for each of the supported log writers.
 
 ### Deprecated
 

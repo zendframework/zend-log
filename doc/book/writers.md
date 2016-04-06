@@ -164,19 +164,230 @@ $ composer require ccampbell/chromephp
 
 ## Writing to Mail
 
-- TODO
+`Zend\Log\Writer\Mail` takes a configuration array or `Zend\Mail\Message`. Basic usage looks like
+
+```php
+$message = new \Zend\Mail\Message();
+$message->setTo('email@example.com');
+
+$writer = new \Zend\Log\Writer\Mail($message);
+$logger = new \Zend\Log\Logger();
+$logger->addWriter($writer);
+
+// goes to mail message
+$logger->info('Informational message');
+```
+
+An email of the logged information will be sent via `sendmail` by default. You may also provide a `Zend\Mail\Transport`
+during construction. For configuration options checkout the `Zend\Mail\Transport` documentation.
+
+```php
+$writer = new Zend\Log\Writer\Mail($mail, $transport);
+```
+
+`Zend\Log\Writer\mail` may also be constructed with a configuration array. The configuration array accepts the following
+keys:
+
+```php
+[
+    'subject_prepend_text' => '',
+    'transport' => $transport
+    'mail' => $mail,
+    'filters' => [],
+    'formatter' => []
+]
+```
+
+And expects the following data:
+
+Array Index | Accepted Values | Description
+----------- | --------------- | -----------
+`subject_prepend_text` | string | Mail message
+`transport` | `Transport\TransportInterface` | Transport method
+`mail` | `Zend\Mail\Message` | mail message
+`mail` | `array` | `Zend\Mail\Message` factory array
+`filters` | array, int, string, Zend\Log\Filter\FilterInterface | Log filter(s)
+`formatter` | array, string, Zend\Log\Formatter\FormatterInterface | Log formatter(s)
+
+Basic usage of the configuration array looks like:
+
+```php
+$transport = new \Zend\Mail\Transport\Smtp();
+// TODO configure the SMTP transport
+
+$message = new \Zend\Mail\Message();
+// TODO configure the Mail message
+
+$writer = new \Zend\Log\Writer\Mail([
+    'subject_prepend_text' => 'Start of the subject',
+    'transport' => $transport,
+    'mail' => $mail,
+    'filters' => [],
+    'formatter' => []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger->addWriter($writer);
+
+// goes to mail message
+$logger->info('Informational message');
+```
+
+To use the `Zend\Mail\Message` factory array construction will look like:
+
+```php
+$transport = new \Zend\Mail\Transport\Smtp();
+// TODO configure the SMTP transport
+
+$writer = new \Zend\Log\Writer\Mail([
+    'subject_prepend_text' => 'Start of the subject',
+    'transport' => $transport,
+    'mail' => [
+        'to' => 'email@example.com'
+    ],
+    'filters' => [],
+    'formatter' => []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger->addWriter($writer);
+
+// goes to mail message
+$logger->info('Informational message');
+```
 
 ## Writing to MongoDB
 
-- TODO
+In this example `Zend\Log\Writer\MongoDB` uses an array for construction. Available keys include:
+
+```php
+[
+    'save_options' => [],
+    'collection' => '',
+    'database' => '',
+    'mongo' => $mongo,
+    'filters' => [],
+    'formatter' => []
+]
+```
+
+`collection`, `database`, and `mongo` are required. Each key accepts:
+
+Array Index | Accepted Values | Description
+----------- | --------------- | -----------
+`save_options` | array | MongoDB driver options
+`collection` | string | collection name
+`database` | string | database name
+`mongo` | `Mongo` or `MongoClient` | MongoDB connection object
+`filters` | array, int, string, Zend\Log\Filter\FilterInterface | Log filter(s)
+`formatter` | array, string, Zend\Log\Formatter\FormatterInterface | Log formatter(s)
+
+And `Zend\Log\Writer\MongoDB` is used like this:
+
+```php
+$mongo = new MongoClient();
+
+$writer = new \Zend\Log\Writer\MongoDB([
+    'save_options' => [], //MongoDB Driver Options
+    'collection' => 'collectionName',
+    'database' => 'databaseName',
+    'mongo' => $mongo,
+    'filters' => [],
+    'formatter' => []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger->addWriter($writer);
+
+// goes to Mongo DB
+$logger->info('Informational message');
+```
+
+It may also be constructed by passing the arguments directly
+
+```php
+$mongo = new MongoClient();
+$database = 'databaseName';
+$collection = 'collectionName';
+$saveOptions = [];
+
+$writer = new \Zend\Log\Writer\MongoDB($mongo, $database, $collection, $saveOptions);
+$logger = new \Zend\Log\Logger();
+$logger->addWriter($writer);
+
+// goes to Mongo DB
+$logger->info('Informational message');
+```
 
 ## Writing to Syslog
 
-- TODO
+`Zend\Log\Writer\Syslog` is a writer generates system log messages from the data it receives.
+
+```php
+$writer = new \Zend\Log\Writer\Syslog();
+$logger = new \Zend\Log\Logger();
+$logger->addWriter($writer);
+
+// goes to system log
+$logger->info('Informational message');
+```
+
+The application name and syslog facility may be set
+
+Array Index | Accepted Values | Description
+----------- | --------------- | -----------
+`application` | string | application name
+`facility` | string | syslog facility (list of facilities)[http://php.net/openlog]
+`filters` | array, int, string, Zend\Log\Filter\FilterInterface | Log filter(s)
+`formatter` | array, string, Zend\Log\Formatter\FormatterInterface | Log formatter(s)
+
+```php
+$writer = new \Zend\Log\Writer\Syslog([
+    'application' => '',
+    'facility' => '',
+    'filters' => [],
+    'formatter' => []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger->addWriter($writer);
+
+$logger->info('Informational message');
+```
 
 ## Writing to Zend Monitor
 
-- TODO
+`Zend\Log\Writer\ZendMonitor` writes log data to the Zend Monitor on a Zend Server. If the web server is not a Zend
+Server or Zend Monitor is not enabled it will fail silently.
+
+```php
+$writer = new \Zend\Log\Writer\ZendMonitor();
+$logger = new \Zend\Log\Logger();
+$logger->addWriter($writer);
+
+// goes to Zend Monitor
+$logger->info('Informational message');
+```
+
+`Zend\Log\Writer\AbstractWriter` options are available.
+
+Array Index | Accepted Values | Description
+----------- | --------------- | -----------
+`filters` | array, int, string, Zend\Log\Filter\FilterInterface | Log filter(s)
+`formatter` | array, string, Zend\Log\Formatter\FormatterInterface | Log formatter(s)
+
+```php
+$writer = new \Zend\Log\Writer\ZendMonitor([
+    'filters' => [],
+    'formatter' => []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger->addWriter($writer);
+
+// goes to Zend Monitor
+$logger->info('Informational message');
+```
 
 ## Stubbing Out the Writer
 
@@ -257,4 +468,4 @@ which means that:
 
 - higher integer values indicate higher priority (triggered earliest);
 - lower integer values (including negative values) have lower priority
-  (triggered last).
+(triggered last).

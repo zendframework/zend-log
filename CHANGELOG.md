@@ -20,11 +20,13 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - Nothing.
 
-## 2.8.1 - TBD
+## 2.8.1 - 2016-04-06
 
 ### Added
 
-- Nothing.
+- [#40](https://github.com/zendframework/zend-log/pull/40) adds the
+  `LogFilterProviderInterface` and `LogFormatterProviderInterface` referenced in
+  the `Module` class starting in 2.8.0.
 
 ### Deprecated
 

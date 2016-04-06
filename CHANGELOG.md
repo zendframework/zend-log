@@ -53,7 +53,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#33](https://github.com/zendframework/zend-log/pull/33) fixes an issue with
+  executing `chmod` on files mounted via NFS on an NTFS partition when using the
+  stream writer.
 
 ## 2.7.1 - 2016-02-18
 

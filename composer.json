@@ -53,6 +53,9 @@
     "autoload-dev": {
         "psr-4": {
             "ZendTest\\Log\\": "test/"
-        }
+        },
+        "files": [
+            "test/Writer/TestAsset/chmod.php"
+        ]
     }
 }

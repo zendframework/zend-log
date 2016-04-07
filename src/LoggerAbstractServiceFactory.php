@@ -162,10 +162,21 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
                 && is_string($writerConfig['options']['mongo'])
                 && $services->has($writerConfig['options']['mongo'])
             ) {
-                // Retrieve the MongoDB service from the service locator, and
+                // Retrieve the Mongo service from the service locator, and
                 // inject it into the configuration.
                 $mongoClient = $services->get($writerConfig['options']['mongo']);
                 $config['writers'][$index]['options']['mongo'] = $mongoClient;
+                continue;
+            }
+
+            if (isset($writerConfig['options']['manager'])
+                && is_string($writerConfig['options']['manager'])
+                && $services->has($writerConfig['options']['manager'])
+            ) {
+                // Retrieve the MongoDB Manager service from the service locator, and
+                // inject it into the configuration.
+                $manager = $services->get($writerConfig['options']['manager']);
+                $config['writers'][$index]['options']['manager'] = $manager;
                 continue;
             }
         }

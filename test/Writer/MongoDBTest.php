@@ -11,7 +11,7 @@
 namespace ZendTest\Log\Writer;
 
 use DateTime;
-use MongoDate;
+use MongoDB\Driver\Manager;
 use Zend\Log\Writer\MongoDB as MongoDBWriter;
 
 /**
@@ -21,34 +21,19 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (!extension_loaded('mongo')) {
-            $this->markTestSkipped('The mongo PHP extension is not available');
+        if (!extension_loaded('mongodb')) {
+            $this->markTestSkipped('The mongodb PHP extension is not available');
         }
 
         $this->database = 'zf2_test';
         $this->collection = 'logs';
 
-        $mongoClass = (version_compare(phpversion('mongo'), '1.3.0', '<')) ? 'Mongo' : 'MongoClient';
-
-        $this->mongo = $this->getMockBuilder($mongoClass)
-            ->disableOriginalConstructor()
-            ->setMethods(['selectCollection'])
-            ->getMock();
-
-        $this->mongoCollection = $this->getMockBuilder('MongoCollection')
-            ->disableOriginalConstructor()
-            ->setMethods(['save'])
-            ->getMock();
-
-        $this->mongo->expects($this->any())
-            ->method('selectCollection')
-            ->with($this->database, $this->collection)
-            ->will($this->returnValue($this->mongoCollection));
+        $this->manager = new Manager('mongodb://localhost:27017');
     }
 
     public function testFormattingIsNotSupported()
     {
-        $writer = new MongoDBWriter($this->mongo, $this->database, $this->collection);
+        $writer = new MongoDBWriter($this->manager, $this->database, $this->collection);
 
         $writer->setFormatter($this->getMock('Zend\Log\Formatter\FormatterInterface'));
         $this->assertAttributeEmpty('formatter', $writer);
@@ -58,25 +43,17 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     {
         $event = ['message'=> 'foo', 'priority' => 42];
 
-        $this->mongoCollection->expects($this->once())
-            ->method('save')
-            ->with($event, []);
-
-        $writer = new MongoDBWriter($this->mongo, $this->database, $this->collection);
+        $writer = new MongoDBWriter($this->manager, $this->database, $this->collection);
 
         $writer->write($event);
     }
 
-    public function testWriteWithCustomSaveOptions()
+    public function testWriteWithCustomWriteConcern()
     {
         $event = ['message' => 'foo', 'priority' => 42];
-        $saveOptions = ['safe' => false, 'fsync' => false, 'timeout' => 100];
+        $writeConcern = ['journal' => false, 'wtimeout' => 100, 'wstring' => 1];
 
-        $this->mongoCollection->expects($this->once())
-            ->method('save')
-            ->with($event, $saveOptions);
-
-        $writer = new MongoDBWriter($this->mongo, $this->database, $this->collection, $saveOptions);
+        $writer = new MongoDBWriter($this->manager, $this->database, $this->collection, $writeConcern);
 
         $writer->write($event);
     }
@@ -86,11 +63,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
         $date = new DateTime();
         $event = ['timestamp'=> $date];
 
-        $this->mongoCollection->expects($this->once())
-            ->method('save')
-            ->with($this->contains(new MongoDate($date->getTimestamp()), false));
-
-        $writer = new MongoDBWriter($this->mongo, $this->database, $this->collection);
+        $writer = new MongoDBWriter($this->manager, $this->database, $this->collection);
 
         $writer->write($event);
     }

@@ -147,7 +147,12 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
         }
 
         foreach ($config['writers'] as $index => $writerConfig) {
-            if (isset($writerConfig['options']['db'])
+            if (isset($writerConfig['name'])
+                && ('db' === $writerConfig['name']
+                    || Writer\Db::class === $writerConfig['name']
+                    || 'zendlogwriterdb' === $writerConfig['name']
+                )
+                && isset($writerConfig['options']['db'])
                 && is_string($writerConfig['options']['db'])
                 && $services->has($writerConfig['options']['db'])
             ) {
@@ -158,7 +163,12 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
                 continue;
             }
 
-            if (isset($writerConfig['options']['mongo'])
+            if (isset($writerConfig['name'])
+                && ('mongo' === $writerConfig['name']
+                    || Writer\Mongo::class === $writerConfig['name']
+                    || 'zendlogwritermongo' === $writerConfig['name']
+                )
+                && isset($writerConfig['options']['mongo'])
                 && is_string($writerConfig['options']['mongo'])
                 && $services->has($writerConfig['options']['mongo'])
             ) {
@@ -169,7 +179,12 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
                 continue;
             }
 
-            if (isset($writerConfig['options']['manager'])
+            if (isset($writerConfig['name'])
+                && ('mongodb' === $writerConfig['name']
+                    || Writer\MongoDB::class === $writerConfig['name']
+                    || 'zendlogwritermongodb' === $writerConfig['name']
+                )
+                && isset($writerConfig['options']['manager'])
                 && is_string($writerConfig['options']['manager'])
                 && $services->has($writerConfig['options']['manager'])
             ) {

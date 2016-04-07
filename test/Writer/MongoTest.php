@@ -19,9 +19,9 @@ use Zend\Log\Writer\Mongo as MongoWriter;
  */
 class MongoTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
-        if (!extension_loaded('mongo')) {
+        if (! extension_loaded('mongo')) {
             $this->markTestSkipped('The mongo PHP extension is not available');
         }
 

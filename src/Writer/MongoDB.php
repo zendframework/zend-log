@@ -29,7 +29,7 @@ class MongoDB extends AbstractWriter
      * @var Manager
      */
     protected $manager;
-    
+
     /**
      * @var string
      */
@@ -54,7 +54,7 @@ class MongoDB extends AbstractWriter
         if (!extension_loaded('mongodb')) {
             throw new Exception\ExtensionNotLoadedException('Missing ext/mongodb');
         }
-        
+
         if ($manager instanceof Traversable) {
             // Configuration may be multi-dimensional due to save options
             $manager = ArrayUtils::iteratorToArray($manager);
@@ -124,15 +124,13 @@ class MongoDB extends AbstractWriter
         }
 
         if (isset($event['timestamp']) && $event['timestamp'] instanceof DateTimeInterface) {
-            $millis = $event['timestamp']->getTimestamp() * 1000;
-            $micros = $event['timestamp']->format('u');
-            $millis = $millis + (int) floor((int) $micros / 1000);
+            $millis = (int) floor((float) $event['timestamp']->format('U.u') * 1000);
             $event['timestamp'] = new UTCDateTime($millis);
         }
 
         $bulkWrite = new BulkWrite();
         $bulkWrite->insert($event);
-        
+
         $this->manager->executeBulkWrite($this->database, $bulkWrite, $this->writeConcern);
     }
 }

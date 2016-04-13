@@ -7,6 +7,11 @@
 
 namespace Zend\Log;
 
+use Zend\Log\Filter\LogFilterProviderInterface;
+use Zend\Log\Formatter\LogFormatterProviderInterface;
+use Zend\Log\Processor\LogProcessorProviderInterface;
+use Zend\Log\Writer\LogWriterProviderInterface;
+
 class Module
 {
     /**
@@ -35,28 +40,28 @@ class Module
         $serviceListener->addServiceManager(
             'LogProcessorManager',
             'log_processors',
-            'Zend\ModuleManager\Feature\LogProcessorProviderInterface',
+            LogProcessorProviderInterface::class,
             'getLogProcessorConfig'
         );
 
         $serviceListener->addServiceManager(
             'LogWriterManager',
             'log_writers',
-            'Zend\ModuleManager\Feature\LogWriterProviderInterface',
+            LogWriterProviderInterface::class,
             'getLogWriterConfig'
         );
 
         $serviceListener->addServiceManager(
             'LogFilterManager',
             'log_filters',
-            'Zend\Log\Filter\LogFilterProviderInterface',
+            LogFilterProviderInterface::class,
             'getLogFilterConfig'
         );
 
         $serviceListener->addServiceManager(
             'LogFormatterManager',
             'log_formatters',
-            'Zend\Log\Filter\LogFormatterProviderInterface',
+            LogFormatterProviderInterface::class,
             'getLogFormatterConfig'
         );
     }

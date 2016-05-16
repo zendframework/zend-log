@@ -30,6 +30,9 @@
         "phpunit/PHPUnit": "~4.0",
         "mikey179/vfsStream": "^1.6"
     },
+    "provide": {
+        "psr/log-implementation": "1.0.0"
+    },
     "suggest": {
         "ext-mongo": "mongodb extension to use MongoDB writer",
         "zendframework/zend-console": "Zend\\Console component to use the RequestID log processor",

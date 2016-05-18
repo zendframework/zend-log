@@ -12,7 +12,9 @@ namespace Zend\Log\Writer;
 use Traversable;
 use Zend\Log\Exception;
 use Zend\Log\Filter;
+use Zend\Log\FilterPluginManager;
 use Zend\Log\Formatter;
+use Zend\Log\FormatterPluginManager;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ErrorHandler;
 
@@ -77,6 +79,14 @@ abstract class AbstractWriter implements WriterInterface
         }
 
         if (is_array($options)) {
+            if (isset($options['filter_manager'])) {
+                $this->setFilterPluginManager($options['filter_manager']);
+            }
+
+            if (isset($options['formatter_manager'])) {
+                $this->setFormatterPluginManager($options['formatter_manager']);
+            }
+
             if (isset($options['filters'])) {
                 $filters = $options['filters'];
                 if (is_int($filters) || is_string($filters) || $filters instanceof Filter\FilterInterface) {

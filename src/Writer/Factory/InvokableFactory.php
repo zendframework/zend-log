@@ -10,6 +10,7 @@
 namespace Zend\Log\Writer\Factory;
 
 use Interop\Container\ContainerInterface;
+use Zend\Log\Exception\InvalidArgumentException;
 use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -59,6 +60,22 @@ final class InvokableFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        if (!isset($options['filter_manager'])) {
+            if (!$container->has('LogFilterManager')) {
+                throw new InvalidArgumentException('The formatter manager "LogFilterManager" does not exists.');
+            }
+
+            $options['filter_manager'] = $container->get('LogFilterManager');
+        }
+
+        if (!isset($options['formatter_manager'])) {
+            if (!$container->has('LogFormatterManager')) {
+                throw new InvalidArgumentException('The formatter manager "LogFormatterManager" does not exists.');
+            }
+
+            $options['formatter_manager'] = $container->get('LogFormatterManager');
+        }
+
         return (null === $options) ? new $requestedName : new $requestedName($options);
     }
 
@@ -90,20 +107,12 @@ final class InvokableFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator, $canonicalName = null, $requestedName = null)
     {
-        if (!isset($this->creationOptions['filter_manager'])) {
-            $this->creationOptions['filter_manager'] = $serviceLocator->getServiceLocator()->get('LogFilterManager');
-        }
-
-        if (!isset($this->creationOptions['formatter_manager'])) {
-            $this->creationOptions['formatter_manager'] = $serviceLocator->getServiceLocator()->get('LogFormatterManager');
-        }
-
         if (class_exists($canonicalName)) {
-            return $this($serviceLocator, $canonicalName, $this->creationOptions);
+            return $this($serviceLocator->getServiceLocator(), $canonicalName, $this->creationOptions);
         }
 
         if (is_string($requestedName) && class_exists($requestedName)) {
-            return $this($serviceLocator, $requestedName, $this->creationOptions);
+            return $this($serviceLocator->getServiceLocator(), $requestedName, $this->creationOptions);
         }
 
         throw new InvalidServiceException(sprintf(

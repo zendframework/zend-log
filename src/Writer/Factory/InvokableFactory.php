@@ -68,8 +68,8 @@ final class InvokableFactory implements FactoryInterface
 
         if (isset($options['formatter_manager']) && is_string($options['formatter_manager'])) {
             $options['formatter_manager'] = $container->get($options['formatter_manager']);
-        } elseif (!isset($options['filter_manager']) && $container->has('LogFilterManager')) {
-            $options['formatter_manager'] = $container->get('LogFilterManager');
+        } elseif (!isset($options['formatter_manager']) && $container->has('LogFormatterManager')) {
+            $options['formatter_manager'] = $container->get('LogFormatterManager');
         }
 
         return (null === $options) ? new $requestedName : new $requestedName($options);

@@ -12,26 +12,52 @@ namespace ZendTest\Log\Writer\Factory;
 use Interop\Container\ContainerInterface;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Log\Writer\Factory\InvokableFactory;
+use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZendTest\Log\Writer\TestAsset\InvokableObject;
 
 class InvokableFactoryTest extends TestCase
 {
     /**
+     * @covers \Zend\Log\Writer\Factory\InvokableFactory::setCreationOptions
+     */
+    public function testSetCreationOptions()
+    {
+        // Arrange
+        $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
+
+        $pluginManager = $this->prophesize(AbstractPluginManager::class);
+        $pluginManager->getServiceLocator()->willReturn($container);
+        $pluginManager = $pluginManager->reveal();
+
+        $factory = new InvokableFactory();
+        $factory->setCreationOptions(['foo' => 'bar']);
+
+        // Act
+        $object = $factory->createService($pluginManager, InvokableObject::class, InvokableObject::class);
+
+        // Assert
+        $this->assertInstanceOf(InvokableObject::class, $object);
+        $this->assertEquals(['foo' => 'bar'], $object->options);
+    }
+
+    /**
      * @covers \Zend\Log\Writer\Factory\InvokableFactory::__construct
      * @covers \Zend\Log\Writer\Factory\InvokableFactory::createService
      */
-    public function testConstructorWithoutOptions()
+    public function testCreateServiceWithoutCreationOptions()
     {
         // Arrange
-        $container = $this->prophesize(ServiceLocatorInterface::class);
-        $container->willImplement(ContainerInterface::class);
-        $container->getServiceLocator()->willReturn(null);
+        $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
+
+        $pluginManager = $this->prophesize(AbstractPluginManager::class);
+        $pluginManager->getServiceLocator()->willReturn($container);
+        $pluginManager = $pluginManager->reveal();
 
         $factory = new InvokableFactory();
 
         // Act
-        $object = $factory->createService($container, InvokableObject::class, InvokableObject::class);
+        $object = $factory->createService($pluginManager, InvokableObject::class, InvokableObject::class);
 
         // Assert
         $this->assertInstanceOf(InvokableObject::class, $object);
@@ -42,14 +68,42 @@ class InvokableFactoryTest extends TestCase
      * @covers \Zend\Log\Writer\Factory\InvokableFactory::__construct
      * @covers \Zend\Log\Writer\Factory\InvokableFactory::createService
      */
-    public function TODOtestConstructorWithOptions()
+    public function testCreateServiceWithCreationOptions()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
+
+        $pluginManager = $this->prophesize(AbstractPluginManager::class);
+        $pluginManager->getServiceLocator()->willReturn($container);
+        $pluginManager = $pluginManager->reveal();
+
         $factory = new InvokableFactory(['foo' => 'bar']);
 
         // Act
-        $object = $factory->createService($container, InvokableObject::class, InvokableObject::class);
+        $object = $factory->createService($pluginManager, InvokableObject::class, InvokableObject::class);
+
+        // Assert
+        $this->assertInstanceOf(InvokableObject::class, $object);
+        $this->assertEquals(['foo' => 'bar'], $object->options);
+    }
+
+    /**
+     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__construct
+     * @covers \Zend\Log\Writer\Factory\InvokableFactory::createService
+     */
+    public function testCreateServiceWithValidRequestName()
+    {
+        // Arrange
+        $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
+
+        $pluginManager = $this->prophesize(AbstractPluginManager::class);
+        $pluginManager->getServiceLocator()->willReturn($container);
+        $pluginManager = $pluginManager->reveal();
+
+        $factory = new InvokableFactory();
+
+        // Act
+        $object = $factory->createService($pluginManager, 'invalid', InvokableObject::class);
 
         // Assert
         $this->assertInstanceOf(InvokableObject::class, $object);
@@ -58,13 +112,38 @@ class InvokableFactoryTest extends TestCase
 
     /**
      * @covers \Zend\Log\Writer\Factory\InvokableFactory::__construct
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     * @covers \Zend\Log\Writer\Factory\InvokableFactory::createService
+     * @expectedException \Zend\ServiceManager\Exception\InvalidServiceException
+     * @expectedExceptionMessage Zend\Log\Writer\Factory\InvokableFactory requires that the requested
+     * name is provided on invocation; please update your tests or consuming container
      */
-    public function testInvoke()
+    public function testCreateServiceInvalidNames()
     {
         // Arrange
         $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
-        $factory = new InvokableFactory(['foo' => 'bar']);
+
+        $pluginManager = $this->prophesize(AbstractPluginManager::class);
+        $pluginManager->getServiceLocator()->willReturn($container);
+        $pluginManager = $pluginManager->reveal();
+
+        $factory = new InvokableFactory();
+
+        // Act
+        $object = $factory->createService($pluginManager, 'invalid', 'invalid');
+
+        // Assert
+        $this->assertInstanceOf(InvokableObject::class, $object);
+        $this->assertEquals([], $object->options);
+    }
+
+    /**
+     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     */
+    public function testInvokeWithoutOptions()
+    {
+        // Arrange
+        $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
+        $factory = new InvokableFactory();
 
         // Act
         $object = $factory($container, InvokableObject::class, []);
@@ -72,5 +151,140 @@ class InvokableFactoryTest extends TestCase
         // Assert
         $this->assertInstanceOf(InvokableObject::class, $object);
         $this->assertEquals([], $object->options);
+    }
+
+    /**
+     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     */
+    public function testInvokeWithInvalidFilterManagerAsString()
+    {
+        // Arrange
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $factory = new InvokableFactory();
+
+        // Act
+        $object = $factory($container, InvokableObject::class, [
+            'filter_manager' => 'my_manager',
+        ]);
+
+        // Assert
+        $this->assertInstanceOf(InvokableObject::class, $object);
+        $this->assertEquals([
+            'filter_manager' => null,
+        ], $object->options);
+    }
+
+    /**
+     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     */
+    public function testInvokeWithValidFilterManagerAsString()
+    {
+        // Arrange
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container->expects($this->once())->method('get')->with($this->equalTo('my_manager'))->willReturn(123);
+
+        $factory = new InvokableFactory();
+
+        // Act
+        $object = $factory($container, InvokableObject::class, [
+            'filter_manager' => 'my_manager',
+        ]);
+
+        // Assert
+        $this->assertInstanceOf(InvokableObject::class, $object);
+        $this->assertEquals([
+            'filter_manager' => 123,
+        ], $object->options);
+    }
+
+    /**
+     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     */
+    public function testInvokeWithoutFilterManager()
+    {
+        // Arrange
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container->expects($this->at(0))->method('has')->with($this->equalTo('LogFilterManager'))->willReturn(true);
+        $container->expects($this->at(1))->method('get')->with($this->equalTo('LogFilterManager'))->willReturn(123);
+
+        $factory = new InvokableFactory();
+
+        // Act
+        $object = $factory($container, InvokableObject::class, []);
+
+        // Assert
+        $this->assertInstanceOf(InvokableObject::class, $object);
+        $this->assertEquals([
+            'filter_manager' => 123,
+        ], $object->options);
+    }
+
+    /**
+     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     */
+    public function testInvokeWithInvalidFormatterManagerAsString()
+    {
+        // Arrange
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $factory = new InvokableFactory();
+
+        // Act
+        $object = $factory($container, InvokableObject::class, [
+            'formatter_manager' => 'my_manager',
+        ]);
+
+        // Assert
+        $this->assertInstanceOf(InvokableObject::class, $object);
+        $this->assertEquals([
+            'formatter_manager' => null,
+        ], $object->options);
+    }
+
+    /**
+     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     */
+    public function testInvokeWithValidFormatterManagerAsString()
+    {
+        // Arrange
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container->expects($this->once())->method('get')->with($this->equalTo('my_manager'))->willReturn(123);
+
+        $factory = new InvokableFactory();
+
+        // Act
+        $object = $factory($container, InvokableObject::class, [
+            'formatter_manager' => 'my_manager',
+        ]);
+
+        // Assert
+        $this->assertInstanceOf(InvokableObject::class, $object);
+        $this->assertEquals([
+            'formatter_manager' => 123,
+        ], $object->options);
+    }
+
+    /**
+     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     */
+    public function testInvokeWithoutFormatterManager()
+    {
+        // Arrange
+        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container->expects($this->at(0))->method('has')->with($this->equalTo('LogFilterManager'))->willReturn(true);
+        $container->expects($this->at(1))->method('get')->with($this->equalTo('LogFilterManager'))->willReturn(null);
+        $container->expects($this->at(2))->method('has')->with($this->equalTo('LogFormatterManager'))->willReturn(true);
+        $container->expects($this->at(3))->method('get')->with($this->equalTo('LogFormatterManager'))->willReturn(123);
+
+        $factory = new InvokableFactory();
+
+        // Act
+        $object = $factory($container, InvokableObject::class, []);
+
+        // Assert
+        $this->assertInstanceOf(InvokableObject::class, $object);
+        $this->assertEquals([
+            'filter_manager' => null,
+            'formatter_manager' => 123,
+        ], $object->options);
     }
 }

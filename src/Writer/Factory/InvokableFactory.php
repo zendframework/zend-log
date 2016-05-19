@@ -60,19 +60,11 @@ final class InvokableFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if (!isset($options['filter_manager'])) {
-            if (!$container->has('LogFilterManager')) {
-                throw new InvalidArgumentException('The formatter manager "LogFilterManager" does not exists.');
-            }
-
+        if (!isset($options['filter_manager']) && $container->has('LogFilterManager')) {
             $options['filter_manager'] = $container->get('LogFilterManager');
         }
 
-        if (!isset($options['formatter_manager'])) {
-            if (!$container->has('LogFormatterManager')) {
-                throw new InvalidArgumentException('The formatter manager "LogFormatterManager" does not exists.');
-            }
-
+        if (!isset($options['formatter_manager']) && $container->has('LogFormatterManager')) {
             $options['formatter_manager'] = $container->get('LogFormatterManager');
         }
 

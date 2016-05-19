@@ -60,12 +60,16 @@ final class InvokableFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        if (!isset($options['filter_manager']) && $container->has('LogFilterManager')) {
+        if (isset($options['filter_manager']) && is_string($options['filter_manager'])) {
+            $options['filter_manager'] = $container->get($options['filter_manager']);
+        } elseif (!isset($options['filter_manager']) && $container->has('LogFilterManager')) {
             $options['filter_manager'] = $container->get('LogFilterManager');
         }
 
-        if (!isset($options['formatter_manager']) && $container->has('LogFormatterManager')) {
-            $options['formatter_manager'] = $container->get('LogFormatterManager');
+        if (isset($options['formatter_manager']) && is_string($options['formatter_manager'])) {
+            $options['formatter_manager'] = $container->get($options['formatter_manager']);
+        } elseif (!isset($options['filter_manager']) && $container->has('LogFilterManager')) {
+            $options['formatter_manager'] = $container->get('LogFilterManager');
         }
 
         return (null === $options) ? new $requestedName : new $requestedName($options);

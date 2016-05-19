@@ -11,15 +11,15 @@ namespace ZendTest\Log\Writer\Factory;
 
 use Interop\Container\ContainerInterface;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Log\Writer\Factory\InvokableFactory;
+use Zend\Log\Writer\Factory\WriterFactory;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZendTest\Log\Writer\TestAsset\InvokableObject;
 
-class InvokableFactoryTest extends TestCase
+class WriterFactoryTest extends TestCase
 {
     /**
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::setCreationOptions
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::setCreationOptions
      */
     public function testSetCreationOptions()
     {
@@ -30,7 +30,7 @@ class InvokableFactoryTest extends TestCase
         $pluginManager->getServiceLocator()->willReturn($container);
         $pluginManager = $pluginManager->reveal();
 
-        $factory = new InvokableFactory();
+        $factory = new WriterFactory();
         $factory->setCreationOptions(['foo' => 'bar']);
 
         // Act
@@ -42,8 +42,8 @@ class InvokableFactoryTest extends TestCase
     }
 
     /**
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__construct
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::createService
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::__construct
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::createService
      */
     public function testCreateServiceWithoutCreationOptions()
     {
@@ -54,7 +54,7 @@ class InvokableFactoryTest extends TestCase
         $pluginManager->getServiceLocator()->willReturn($container);
         $pluginManager = $pluginManager->reveal();
 
-        $factory = new InvokableFactory();
+        $factory = new WriterFactory();
 
         // Act
         $object = $factory->createService($pluginManager, InvokableObject::class, InvokableObject::class);
@@ -65,8 +65,8 @@ class InvokableFactoryTest extends TestCase
     }
 
     /**
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__construct
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::createService
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::__construct
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::createService
      */
     public function testCreateServiceWithCreationOptions()
     {
@@ -77,7 +77,7 @@ class InvokableFactoryTest extends TestCase
         $pluginManager->getServiceLocator()->willReturn($container);
         $pluginManager = $pluginManager->reveal();
 
-        $factory = new InvokableFactory(['foo' => 'bar']);
+        $factory = new WriterFactory(['foo' => 'bar']);
 
         // Act
         $object = $factory->createService($pluginManager, InvokableObject::class, InvokableObject::class);
@@ -88,8 +88,8 @@ class InvokableFactoryTest extends TestCase
     }
 
     /**
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__construct
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::createService
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::__construct
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::createService
      */
     public function testCreateServiceWithValidRequestName()
     {
@@ -100,7 +100,7 @@ class InvokableFactoryTest extends TestCase
         $pluginManager->getServiceLocator()->willReturn($container);
         $pluginManager = $pluginManager->reveal();
 
-        $factory = new InvokableFactory();
+        $factory = new WriterFactory();
 
         // Act
         $object = $factory->createService($pluginManager, 'invalid', InvokableObject::class);
@@ -111,10 +111,10 @@ class InvokableFactoryTest extends TestCase
     }
 
     /**
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__construct
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::createService
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::__construct
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::createService
      * @expectedException \Zend\ServiceManager\Exception\InvalidServiceException
-     * @expectedExceptionMessage Zend\Log\Writer\Factory\InvokableFactory requires that the requested
+     * @expectedExceptionMessage Zend\Log\Writer\Factory\WriterFactory requires that the requested
      * name is provided on invocation; please update your tests or consuming container
      */
     public function testCreateServiceInvalidNames()
@@ -126,7 +126,7 @@ class InvokableFactoryTest extends TestCase
         $pluginManager->getServiceLocator()->willReturn($container);
         $pluginManager = $pluginManager->reveal();
 
-        $factory = new InvokableFactory();
+        $factory = new WriterFactory();
 
         // Act
         $object = $factory->createService($pluginManager, 'invalid', 'invalid');
@@ -137,13 +137,13 @@ class InvokableFactoryTest extends TestCase
     }
 
     /**
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::__invoke
      */
     public function testInvokeWithoutOptions()
     {
         // Arrange
         $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
-        $factory = new InvokableFactory();
+        $factory = new WriterFactory();
 
         // Act
         $object = $factory($container, InvokableObject::class, []);
@@ -154,13 +154,13 @@ class InvokableFactoryTest extends TestCase
     }
 
     /**
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::__invoke
      */
     public function testInvokeWithInvalidFilterManagerAsString()
     {
         // Arrange
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $factory = new InvokableFactory();
+        $factory = new WriterFactory();
 
         // Act
         $object = $factory($container, InvokableObject::class, [
@@ -175,7 +175,7 @@ class InvokableFactoryTest extends TestCase
     }
 
     /**
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::__invoke
      */
     public function testInvokeWithValidFilterManagerAsString()
     {
@@ -183,7 +183,7 @@ class InvokableFactoryTest extends TestCase
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->expects($this->once())->method('get')->with($this->equalTo('my_manager'))->willReturn(123);
 
-        $factory = new InvokableFactory();
+        $factory = new WriterFactory();
 
         // Act
         $object = $factory($container, InvokableObject::class, [
@@ -198,7 +198,7 @@ class InvokableFactoryTest extends TestCase
     }
 
     /**
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::__invoke
      */
     public function testInvokeWithoutFilterManager()
     {
@@ -207,7 +207,7 @@ class InvokableFactoryTest extends TestCase
         $container->expects($this->at(0))->method('has')->with($this->equalTo('LogFilterManager'))->willReturn(true);
         $container->expects($this->at(1))->method('get')->with($this->equalTo('LogFilterManager'))->willReturn(123);
 
-        $factory = new InvokableFactory();
+        $factory = new WriterFactory();
 
         // Act
         $object = $factory($container, InvokableObject::class, []);
@@ -220,13 +220,13 @@ class InvokableFactoryTest extends TestCase
     }
 
     /**
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::__invoke
      */
     public function testInvokeWithInvalidFormatterManagerAsString()
     {
         // Arrange
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $factory = new InvokableFactory();
+        $factory = new WriterFactory();
 
         // Act
         $object = $factory($container, InvokableObject::class, [
@@ -241,7 +241,7 @@ class InvokableFactoryTest extends TestCase
     }
 
     /**
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::__invoke
      */
     public function testInvokeWithValidFormatterManagerAsString()
     {
@@ -249,7 +249,7 @@ class InvokableFactoryTest extends TestCase
         $container = $this->getMockForAbstractClass(ContainerInterface::class);
         $container->expects($this->once())->method('get')->with($this->equalTo('my_manager'))->willReturn(123);
 
-        $factory = new InvokableFactory();
+        $factory = new WriterFactory();
 
         // Act
         $object = $factory($container, InvokableObject::class, [
@@ -264,7 +264,7 @@ class InvokableFactoryTest extends TestCase
     }
 
     /**
-     * @covers \Zend\Log\Writer\Factory\InvokableFactory::__invoke
+     * @covers \Zend\Log\Writer\Factory\WriterFactory::__invoke
      */
     public function testInvokeWithoutFormatterManager()
     {
@@ -275,7 +275,7 @@ class InvokableFactoryTest extends TestCase
         $container->expects($this->at(2))->method('has')->with($this->equalTo('LogFormatterManager'))->willReturn(true);
         $container->expects($this->at(3))->method('get')->with($this->equalTo('LogFormatterManager'))->willReturn(123);
 
-        $factory = new InvokableFactory();
+        $factory = new WriterFactory();
 
         // Act
         $object = $factory($container, InvokableObject::class, []);

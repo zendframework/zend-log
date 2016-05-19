@@ -18,7 +18,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 /**
  * Factory for instantiating classes with no dependencies or which accept a single array.
  *
- * The InvokableFactory can be used for any class that:
+ * The WriterFactory can be used for any class that:
  *
  * - has no constructor arguments;
  * - accepts a single array of arguments via the constructor.
@@ -27,7 +27,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * service manager, and can also be used in v2 code for forwards compatibility
  * with v3.
  */
-final class InvokableFactory implements FactoryInterface
+final class WriterFactory implements FactoryInterface
 {
     /**
      * Options to pass to the constructor (when used in v2), if any.

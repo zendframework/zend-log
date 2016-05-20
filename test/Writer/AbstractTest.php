@@ -147,6 +147,23 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Zend\Log\Writer\AbstractWriter::__construct
      */
+    public function testConstructorWithInvalidFormatterManager()
+    {
+        // Arrange
+        // ...
+
+        // Act
+        $writer = new ConcreteWriter([
+            'formatter_manager' => 123,
+        ]);
+
+        // Assert
+        $this->assertInstanceOf(FormatterPluginManager::class, $writer->getFormatterPluginManager());
+    }
+
+    /**
+     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     */
     public function testConstructorWithFilterManager()
     {
         // Arrange
@@ -159,6 +176,23 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($pluginManager, $writer->getFilterPluginManager());
+    }
+
+    /**
+     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     */
+    public function testConstructorWithInvalidFilterManager()
+    {
+        // Arrange
+        // ...
+
+        // Act
+        $writer = new ConcreteWriter([
+            'filter_manager' => 123,
+        ]);
+
+        // Assert
+        $this->assertInstanceOf(FilterPluginManager::class, $writer->getFilterPluginManager());
     }
 
     /**

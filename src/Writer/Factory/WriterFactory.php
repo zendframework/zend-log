@@ -10,7 +10,6 @@
 namespace Zend\Log\Writer\Factory;
 
 use Interop\Container\ContainerInterface;
-use Zend\Log\Exception\InvalidArgumentException;
 use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;

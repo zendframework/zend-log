@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.8.3 - TBD
+## 2.8.4 - TBD
 
 ### Added
 
@@ -19,6 +19,24 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Fixed
 
 - Nothing.
+
+## 2.8.3 - 2016-05-25
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Corrected licence headers across files within the project
 
 ## 2.8.2 - 2016-04-18
 

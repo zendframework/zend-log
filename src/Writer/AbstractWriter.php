@@ -79,11 +79,11 @@ abstract class AbstractWriter implements WriterInterface
         }
 
         if (is_array($options)) {
-            if (isset($options['filter_manager']) && $options['filter_manager'] instanceof FilterPluginManager) {
+            if (isset($options['filter_manager'])) {
                 $this->setFilterPluginManager($options['filter_manager']);
             }
 
-            if (isset($options['formatter_manager']) && $options['formatter_manager'] instanceof FormatterPluginManager) {
+            if (isset($options['formatter_manager'])) {
                 $this->setFormatterPluginManager($options['formatter_manager']);
             }
 

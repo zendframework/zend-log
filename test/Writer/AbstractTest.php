@@ -146,6 +146,8 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Zend\Log\Writer\AbstractWriter::__construct
+     * @expectedException Zend\Log\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Writer plugin manager must extend Zend\Log\Writer\FormatterPluginManager; received integer
      */
     public function testConstructorWithInvalidFormatterManager()
     {
@@ -180,6 +182,8 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Zend\Log\Writer\AbstractWriter::__construct
+     * @expectedException Zend\Log\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Writer plugin manager must extend Zend\Log\Writer\FilterPluginManager; received integer
      */
     public function testConstructorWithInvalidFilterManager()
     {

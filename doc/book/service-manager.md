@@ -8,8 +8,8 @@ formatters or processors.
 ## LoggerAbstractServiceFactory
 
 When you register the abstract factory called `Zend\Log\LoggerAbstractServiceFactory`,
-you will be able to setup loggers via the configuration. Simply register the 
-abstract factory in the service manager like this:
+you will be able to setup loggers via the configuration. The abstract factory can be
+registered in the service manager like this:
 
 ```php
 // module.config.php

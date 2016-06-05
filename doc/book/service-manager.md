@@ -1,7 +1,7 @@
 # Service Manager
 
-The `zend-log` package provides several components which can be used to
-in combination with the service managaer. These components make it possible
+The `zend-log` package provides several components which can be used in 
+combination with the service manager. These components make it possible
 to quickly setup a logger instance or to provide custom writers, filters,
 formatters or processors.
 

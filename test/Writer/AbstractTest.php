@@ -152,7 +152,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
     public function testConstructorWithInvalidFormatterManager()
     {
         // Arrange
-        // ...
+        // There is nothing to arrange.
 
         // Act
         $writer = new ConcreteWriter([
@@ -160,7 +160,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // Assert
-        $this->assertInstanceOf(FormatterPluginManager::class, $writer->getFormatterPluginManager());
+        // No assert needed, expecting an exception.
     }
 
     /**
@@ -188,7 +188,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
     public function testConstructorWithInvalidFilterManager()
     {
         // Arrange
-        // ...
+        // There is nothing to arrange.
 
         // Act
         $writer = new ConcreteWriter([
@@ -196,7 +196,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // Assert
-        $this->assertInstanceOf(FilterPluginManager::class, $writer->getFilterPluginManager());
+        // Nothing to assert, expecting an exception.
     }
 
     /**

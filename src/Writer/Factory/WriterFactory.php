@@ -55,6 +55,8 @@ final class WriterFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        $options = (array)$options;
+
         if (isset($options['filter_manager']) && is_string($options['filter_manager'])) {
             $options['filter_manager'] = $container->get($options['filter_manager']);
         } elseif (!isset($options['filter_manager']) && $container->has('LogFilterManager')) {
@@ -67,7 +69,7 @@ final class WriterFactory implements FactoryInterface
             $options['formatter_manager'] = $container->get('LogFormatterManager');
         }
 
-        return (null === $options) ? new $requestedName : new $requestedName($options);
+        return new $requestedName($options);
     }
 
     /**

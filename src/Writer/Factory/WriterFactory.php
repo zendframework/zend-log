@@ -36,17 +36,13 @@ final class WriterFactory implements FactoryInterface
     private $creationOptions;
 
     /**
-     * @param null|array|Traversable $creationOptions
-     * @throws InvalidServiceException if $creationOptions cannot be coerced to
-     *     an array.
+     * @param array $creationOptions
      */
-    public function __construct($creationOptions = null)
+    public function __construct(array $creationOptions = null)
     {
-        if (null === $creationOptions) {
-            return;
+        if (is_array($creationOptions)) {
+            $this->setCreationOptions($creationOptions);
         }
-
-        $this->setCreationOptions($creationOptions);
     }
 
     /**
@@ -102,7 +98,7 @@ final class WriterFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator, $canonicalName = null, $requestedName = null)
     {
-        if (class_exists($canonicalName)) {
+        if (is_string($canonicalName) && class_exists($canonicalName)) {
             return $this($serviceLocator->getServiceLocator(), $canonicalName, $this->creationOptions);
         }
 

@@ -57,19 +57,27 @@ final class WriterFactory implements FactoryInterface
     {
         $options = (array)$options;
 
-        if (isset($options['filter_manager']) && is_string($options['filter_manager'])) {
-            $options['filter_manager'] = $container->get($options['filter_manager']);
-        } elseif (!isset($options['filter_manager']) && $container->has('LogFilterManager')) {
-            $options['filter_manager'] = $container->get('LogFilterManager');
-        }
-
-        if (isset($options['formatter_manager']) && is_string($options['formatter_manager'])) {
-            $options['formatter_manager'] = $container->get($options['formatter_manager']);
-        } elseif (!isset($options['formatter_manager']) && $container->has('LogFormatterManager')) {
-            $options['formatter_manager'] = $container->get('LogFormatterManager');
-        }
+        $this->populateOptions($options, $container, 'filter_manager', 'LogFilterManager');
+        $this->populateOptions($options, $container, 'formatter_manager', 'LogFormatterManager');
 
         return new $requestedName($options);
+    }
+
+    /**
+     * Populates the options array with the correct container value.
+     *
+     * @param array $options
+     * @param ContainerInterface $container
+     * @param string $name
+     * @param string $defaultService
+     */
+    private function populateOptions(&$options, ContainerInterface $container, $name, $defaultService)
+    {
+        if (isset($options[$name]) && is_string($options[$name])) {
+            $options[$name] = $container->get($options[$name]);
+        } elseif (!isset($options[$name]) && $container->has($defaultService)) {
+            $options[$name] = $container->get($defaultService);
+        }
     }
 
     /**

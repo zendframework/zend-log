@@ -13,6 +13,7 @@ use Interop\Container\ContainerInterface;
 use PHPUnit_Framework_TestCase as TestCase;
 use Zend\Log\Writer\Factory\WriterFactory;
 use Zend\ServiceManager\AbstractPluginManager;
+use Zend\ServiceManager\Exception\InvalidServiceException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZendTest\Log\Writer\TestAsset\InvokableObject;
 
@@ -24,7 +25,9 @@ class WriterFactoryTest extends TestCase
     public function testSetCreationOptions()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
+        $container = $this->prophesize(ServiceLocatorInterface::class);
+        $container->willImplement(ContainerInterface::class);
+        $container = $container->reveal();
 
         $pluginManager = $this->prophesize(AbstractPluginManager::class);
         $pluginManager->getServiceLocator()->willReturn($container);
@@ -113,9 +116,6 @@ class WriterFactoryTest extends TestCase
     /**
      * @covers \Zend\Log\Writer\Factory\WriterFactory::__construct
      * @covers \Zend\Log\Writer\Factory\WriterFactory::createService
-     * @expectedException \Zend\ServiceManager\Exception\InvalidServiceException
-     * @expectedExceptionMessage Zend\Log\Writer\Factory\WriterFactory requires that the requested
-     * name is provided on invocation; please update your tests or consuming container
      */
     public function testCreateServiceInvalidNames()
     {
@@ -128,12 +128,14 @@ class WriterFactoryTest extends TestCase
 
         $factory = new WriterFactory();
 
+        // Assert
+        $this->setExpectedException(
+            InvalidServiceException::class,
+            'WriterFactory requires that the requested name is provided'
+        );
+
         // Act
         $object = $factory->createService($pluginManager, 'invalid', 'invalid');
-
-        // Assert
-        $this->assertInstanceOf(InvokableObject::class, $object);
-        $this->assertEquals([], $object->options);
     }
 
     /**

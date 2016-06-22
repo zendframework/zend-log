@@ -19,6 +19,13 @@ use ZendTest\Log\Writer\TestAsset\InvokableObject;
 
 class WriterFactoryTest extends TestCase
 {
+    protected function createServiceManagerMock()
+    {
+        $container = $this->prophesize(ServiceLocatorInterface::class);
+        $container->willImplement(ContainerInterface::class);
+        return $container;
+    }
+
     /**
      * @covers \Zend\Log\Writer\Factory\WriterFactory::setCreationOptions
      */
@@ -51,10 +58,10 @@ class WriterFactoryTest extends TestCase
     public function testCreateServiceWithoutCreationOptions()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
+        $container = $this->createServiceManagerMock();
 
         $pluginManager = $this->prophesize(AbstractPluginManager::class);
-        $pluginManager->getServiceLocator()->willReturn($container);
+        $pluginManager->getServiceLocator()->willReturn($container->reveal());
         $pluginManager = $pluginManager->reveal();
 
         $factory = new WriterFactory();
@@ -74,10 +81,10 @@ class WriterFactoryTest extends TestCase
     public function testCreateServiceWithCreationOptions()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
+        $container = $this->createServiceManagerMock();
 
         $pluginManager = $this->prophesize(AbstractPluginManager::class);
-        $pluginManager->getServiceLocator()->willReturn($container);
+        $pluginManager->getServiceLocator()->willReturn($container->reveal());
         $pluginManager = $pluginManager->reveal();
 
         $factory = new WriterFactory(['foo' => 'bar']);
@@ -97,10 +104,10 @@ class WriterFactoryTest extends TestCase
     public function testCreateServiceWithValidRequestName()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
+        $container = $this->createServiceManagerMock();
 
         $pluginManager = $this->prophesize(AbstractPluginManager::class);
-        $pluginManager->getServiceLocator()->willReturn($container);
+        $pluginManager->getServiceLocator()->willReturn($container->reveal());
         $pluginManager = $pluginManager->reveal();
 
         $factory = new WriterFactory();
@@ -120,10 +127,10 @@ class WriterFactoryTest extends TestCase
     public function testCreateServiceInvalidNames()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
+        $container = $this->createServiceManagerMock();
 
         $pluginManager = $this->prophesize(AbstractPluginManager::class);
-        $pluginManager->getServiceLocator()->willReturn($container);
+        $pluginManager->getServiceLocator()->willReturn($container->reveal());
         $pluginManager = $pluginManager->reveal();
 
         $factory = new WriterFactory();
@@ -144,11 +151,11 @@ class WriterFactoryTest extends TestCase
     public function testInvokeWithoutOptions()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
+        $container = $this->createServiceManagerMock();
         $factory = new WriterFactory();
 
         // Act
-        $object = $factory($container, InvokableObject::class, []);
+        $object = $factory($container->reveal(), InvokableObject::class, []);
 
         // Assert
         $this->assertInstanceOf(InvokableObject::class, $object);
@@ -161,11 +168,11 @@ class WriterFactoryTest extends TestCase
     public function testInvokeWithInvalidFilterManagerAsString()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container = $this->createServiceManagerMock();
         $factory = new WriterFactory();
 
         // Act
-        $object = $factory($container, InvokableObject::class, [
+        $object = $factory($container->reveal(), InvokableObject::class, [
             'filter_manager' => 'my_manager',
         ]);
 
@@ -182,13 +189,15 @@ class WriterFactoryTest extends TestCase
     public function testInvokeWithValidFilterManagerAsString()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->once())->method('get')->with($this->equalTo('my_manager'))->willReturn(123);
+        $container = $this->createServiceManagerMock();
+        $container->has('LogFormatterManager')->willReturn(false);
+        $container->has('my_manager')->willReturn(true);
+        $container->get('my_manager')->willReturn(123);
 
         $factory = new WriterFactory();
 
         // Act
-        $object = $factory($container, InvokableObject::class, [
+        $object = $factory($container->reveal(), InvokableObject::class, [
             'filter_manager' => 'my_manager',
         ]);
 
@@ -205,14 +214,15 @@ class WriterFactoryTest extends TestCase
     public function testInvokeWithoutFilterManager()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->at(0))->method('has')->with($this->equalTo('LogFilterManager'))->willReturn(true);
-        $container->expects($this->at(1))->method('get')->with($this->equalTo('LogFilterManager'))->willReturn(123);
+        $container = $this->createServiceManagerMock();
+        $container->has('LogFilterManager')->willReturn(true);
+        $container->get('LogFilterManager')->willReturn(123);
+        $container->has('LogFormatterManager')->willReturn(false);
 
         $factory = new WriterFactory();
 
         // Act
-        $object = $factory($container, InvokableObject::class, []);
+        $object = $factory($container->reveal(), InvokableObject::class, []);
 
         // Assert
         $this->assertInstanceOf(InvokableObject::class, $object);
@@ -227,11 +237,11 @@ class WriterFactoryTest extends TestCase
     public function testInvokeWithInvalidFormatterManagerAsString()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container = $this->prophesize(ContainerInterface::class);
         $factory = new WriterFactory();
 
         // Act
-        $object = $factory($container, InvokableObject::class, [
+        $object = $factory($container->reveal(), InvokableObject::class, [
             'formatter_manager' => 'my_manager',
         ]);
 
@@ -248,13 +258,14 @@ class WriterFactoryTest extends TestCase
     public function testInvokeWithValidFormatterManagerAsString()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->once())->method('get')->with($this->equalTo('my_manager'))->willReturn(123);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has('LogFilterManager')->willReturn(false);
+        $container->get('my_manager')->willReturn(123);
 
         $factory = new WriterFactory();
 
         // Act
-        $object = $factory($container, InvokableObject::class, [
+        $object = $factory($container->reveal(), InvokableObject::class, [
             'formatter_manager' => 'my_manager',
         ]);
 
@@ -271,16 +282,16 @@ class WriterFactoryTest extends TestCase
     public function testInvokeWithoutFormatterManager()
     {
         // Arrange
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->at(0))->method('has')->with($this->equalTo('LogFilterManager'))->willReturn(true);
-        $container->expects($this->at(1))->method('get')->with($this->equalTo('LogFilterManager'))->willReturn(null);
-        $container->expects($this->at(2))->method('has')->with($this->equalTo('LogFormatterManager'))->willReturn(true);
-        $container->expects($this->at(3))->method('get')->with($this->equalTo('LogFormatterManager'))->willReturn(123);
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->has('LogFilterManager')->willReturn(true);
+        $container->get('LogFilterManager')->willReturn(null);
+        $container->has('LogFormatterManager')->willReturn(true);
+        $container->get('LogFormatterManager')->willReturn(123);
 
         $factory = new WriterFactory();
 
         // Act
-        $object = $factory($container, InvokableObject::class, []);
+        $object = $factory($container->reveal(), InvokableObject::class, []);
 
         // Assert
         $this->assertInstanceOf(InvokableObject::class, $object);

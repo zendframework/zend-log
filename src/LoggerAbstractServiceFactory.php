@@ -147,19 +147,53 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
         }
 
         foreach ($config['writers'] as $index => $writerConfig) {
-            if (!isset($writerConfig['options']['db'])
-                || !is_string($writerConfig['options']['db'])
+            if (isset($writerConfig['name'])
+                && ('db' === $writerConfig['name']
+                    || Writer\Db::class === $writerConfig['name']
+                    || 'zendlogwriterdb' === $writerConfig['name']
+                )
+                && isset($writerConfig['options']['db'])
+                && is_string($writerConfig['options']['db'])
+                && $services->has($writerConfig['options']['db'])
             ) {
-                continue;
-            }
-            if (!$services->has($writerConfig['options']['db'])) {
+                // Retrieve the DB service from the service locator, and
+                // inject it into the configuration.
+                $db = $services->get($writerConfig['options']['db']);
+                $config['writers'][$index]['options']['db'] = $db;
                 continue;
             }
 
-            // Retrieve the DB service from the service locator, and
-            // inject it into the configuration.
-            $db = $services->get($writerConfig['options']['db']);
-            $config['writers'][$index]['options']['db'] = $db;
+            if (isset($writerConfig['name'])
+                && ('mongo' === $writerConfig['name']
+                    || Writer\Mongo::class === $writerConfig['name']
+                    || 'zendlogwritermongo' === $writerConfig['name']
+                )
+                && isset($writerConfig['options']['mongo'])
+                && is_string($writerConfig['options']['mongo'])
+                && $services->has($writerConfig['options']['mongo'])
+            ) {
+                // Retrieve the Mongo service from the service locator, and
+                // inject it into the configuration.
+                $mongoClient = $services->get($writerConfig['options']['mongo']);
+                $config['writers'][$index]['options']['mongo'] = $mongoClient;
+                continue;
+            }
+
+            if (isset($writerConfig['name'])
+                && ('mongodb' === $writerConfig['name']
+                    || Writer\MongoDB::class === $writerConfig['name']
+                    || 'zendlogwritermongodb' === $writerConfig['name']
+                )
+                && isset($writerConfig['options']['manager'])
+                && is_string($writerConfig['options']['manager'])
+                && $services->has($writerConfig['options']['manager'])
+            ) {
+                // Retrieve the MongoDB Manager service from the service locator, and
+                // inject it into the configuration.
+                $manager = $services->get($writerConfig['options']['manager']);
+                $config['writers'][$index]['options']['manager'] = $manager;
+                continue;
+            }
         }
     }
 }

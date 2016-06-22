@@ -108,6 +108,12 @@
 </li>
 
                         
+                            
+<li >
+    <a href="../service-manager/">Service Manager Integration</a>
+</li>
+
+                        
                         </ul>
                     </li>
                 
@@ -540,7 +546,7 @@ $logger-&gt;info('Informational message');</code></pre>
 <pre class="codehilite"><code class="language-php">$mongo = new MongoClient();
 
 $writer = new \Zend\Log\Writer\MongoDB([
-    'save_options' =&gt; [], //MongoDB Driver Options
+    'save_options' =&gt; [], // MongoDB Driver Options
     'collection' =&gt; 'collectionName',
     'database' =&gt; 'databaseName',
     'mongo' =&gt; $mongo,

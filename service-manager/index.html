@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <link rel="shortcut icon" href="../img/favicon.ico">
 
-    <title>Processors - zend-log</title>
+    <title>Service Manager Integration - zend-log</title>
 
     <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
@@ -103,14 +103,14 @@
 
                         
                             
-<li class="active">
-    <a href="./">Processors</a>
+<li >
+    <a href="../processors/">Processors</a>
 </li>
 
                         
                             
-<li >
-    <a href="../service-manager/">Service Manager Integration</a>
+<li class="active">
+    <a href="./">Service Manager Integration</a>
 </li>
 
                         
@@ -160,13 +160,11 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#processors">Processors</a></li>
+        <li class="main active"><a href="#service-manager">Service Manager</a></li>
         
-            <li><a href="#processor-interface">Processor interface</a></li>
+            <li><a href="#loggerabstractservicefactory">LoggerAbstractServiceFactory</a></li>
         
-            <li><a href="#adding-processors">Adding processors</a></li>
-        
-            <li><a href="#available-processors">Available processors</a></li>
+            <li><a href="#custom-writers-formatters-filters-and-processors">Custom Writers, Formatters, Filters, and Processors</a></li>
         
     
     </ul>
@@ -174,10 +172,10 @@
     
     <ul class="pager hidden-print">
       <li class="previous">
-        <a rel="prev" href="../formatters/"><i class="fa fa-arrow-left"></i> Previous</a>
+        <a rel="prev" href="../processors/"><i class="fa fa-arrow-left"></i> Previous</a>
       </li>
       <li class="next">
-        <a rel="next" href="../service-manager/">Next <i class="fa fa-arrow-right"></i></a>
+        <a rel="next" href="../psr3/">Next <i class="fa fa-arrow-right"></i></a>
       </li>
     </ul>
     
@@ -193,99 +191,108 @@
       
     
   
-  <li class="active">Processors</li>
+  <li class="active">Service Manager Integration</li>
 </ol>
 
-<h1 id="processors">Processors</h1>
-<p><strong><em>Processors</em></strong> allow you to provide additional information to logs in an
-automated fashion. They are called from the logger before the event is passed
-to the writers; they receive the event array, and return an event array on
-completion.</p>
-<p>Use cases include:</p>
+<h1 id="service-manager">Service Manager</h1>
+<p>The <code>zend-log</code> package provides several components which can be used in 
+combination with <a href="https://docs.zendframework.com/zend-servicemanager">zend-servicemanager</a>.
+These components make it possible to quickly setup a logger instance or to
+provide custom writers, filters, formatters, or processors.</p>
+<h2 id="loggerabstractservicefactory">LoggerAbstractServiceFactory</h2>
+<p>When you register the abstract factory called <code>Zend\Log\LoggerAbstractServiceFactory</code>,
+you will be able to setup loggers via the configuration. The abstract factory can be
+registered in the service manager using the following configuration:</p>
+<pre class="codehilite"><code class="language-php">// module.config.php
+return [
+    'service_manager' =&gt; [
+        'abstract_factories' =&gt; [
+            'Zend\Log\LoggerAbstractServiceFactory',
+        ],
+    ],
+];</code></pre>
+
+
+<blockquote>
+<h3 id="users-of-zend-component-installer">Users of zend-component-installer</h3>
+<p>If you are using zend-component-installer, you will have been prompted to
+install zend-log as a module or configuration provider when you installed
+zend-log. When you do, the abstract factory is automatically registered
+for you in your configuration.</p>
+<h3 id="zend-log-as-a-module">zend-log as a module</h3>
+<p>If you are using zend-log v2.8 or later with a zend-mvc-based application,
+but not using zend-component-installer, you can register <code>Zend\Log</code> as a
+module in your application. When you do, the abstract service factory
+will be registered automatically.</p>
+</blockquote>
+<p>Next, define your custom loggers in the configuration as follows:</p>
+<pre class="codehilite"><code class="language-php">// module.config.php
+return [
+    'log' =&gt; [
+        'MyLogger' =&gt; [
+            'writers' =&gt; [
+                [
+                    'name' =&gt; 'stream',
+                    'priority' =&gt; Logger::DEBUG,
+                    'options' =&gt; [
+                        'stream' =&gt; 'php://output',
+                        'formatter' =&gt; [
+                            'name' =&gt; 'MyFormatter',
+                        ],
+                        'filters' =&gt; [
+                            [
+                                'name' =&gt; 'MyFilter',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+];</code></pre>
+
+
+<p>The logger can now be retrieved via the service manager using the key used in
+the configuration (<code>MyLogger</code>):</p>
+<pre class="codehilite"><code class="language-php">/** @var \Zend\Log\Logger $logger */ 
+$logger = $container-&gt;get('MyLogger');</code></pre>
+
+
+<h2 id="custom-writers-formatters-filters-and-processors">Custom Writers, Formatters, Filters, and Processors</h2>
+<p>In the <code>LoggerAbstractServiceFactory</code> example above, a custom formatter (called
+<code>MyFormatter</code>) and a custom filter (called <code>MyFilter</code>) are used. These classes
+need to be made available to the service manager. It's possible to do this via
+custom plugin managers which have the names:</p>
 <ul>
-<li>Providing exception backtrace information.</li>
-<li>Injecting substitutions into the message.</li>
-<li>Injecting a request identifier (in order to later inspect logs for a specific
-  identifier)</li>
+<li><code>log_formatters</code></li>
+<li><code>log_filters</code></li>
+<li><code>log_processors</code></li>
+<li><code>log_writers</code></li>
 </ul>
-<h2 id="processor-interface">Processor interface</h2>
-<p>All processors must implement <code>Zend\Log\Processor\ProcessorInterface</code>:</p>
-<pre class="codehilite"><code class="language-php">namespace Zend\Log\Processor;
-
-interface ProcessorInterface
-{
-    /**
-     * Processes a log message before it is given to the writers
-     *
-     * @param  array $event
-     * @return array
-     */
-    public function process(array $event);
-}</code></pre>
-
-
-<h2 id="adding-processors">Adding processors</h2>
-<p>To add a processor to a <code>Logger</code> instance, inject it using the <code>addProcessor()</code> method:</p>
-<pre class="codehilite"><code class="language-php">$logger-&gt;addProcessor(new Zend\Log\Processor\Backtrace());</code></pre>
-
-
-<h2 id="available-processors">Available processors</h2>
-<p>The following processors are available.</p>
-<h3 id="backtrace">Backtrace</h3>
-<p><code>Zend\Log\Processor\Backtrace</code> calls <code>debug_backtrace()</code> for every log event,
-injecting the details into the event's <code>extra</code> array:</p>
-<pre class="codehilite"><code class="language-php">$event = [
-    // ... standard elements ...
-    'extra' =&gt; [
-        'file' =&gt; 'SomeFile.php',
-        'line' =&gt; 1337,
-        'class' =&gt; 'Foo\MyClass',
-        'function' =&gt; 'myMethod',
+<h3 id="example">Example</h3>
+<pre class="codehilite"><code class="language-php">// module.config.php
+return [
+    'log_formatters' =&gt; [
+        'factories' =&gt; [
+            // ...
+        ],
+    ],
+    'log_filters' =&gt; [
+        'factories' =&gt; [
+            // ...
+        ],
+    ],
+    'log_processors' =&gt; [
+        'factories' =&gt; [
+            // ...
+        ],
+    ],
+    'log_writers' =&gt; [
+        'factories' =&gt; [
+            // ...
+        ],
     ],
 ];</code></pre>
-
-
-<h3 id="psrplaceholder">PsrPlaceholder</h3>
-<p><code>Zend\Log\Processor\PsrPlaceholder</code> replaces <a href="http://www.php-fig.org/psr/psr-3/">PSR-3</a>-formatted
-message placeholders with the values found in the <code>extra</code> array.</p>
-<p>As an example:</p>
-<pre class="codehilite"><code class="language-php">$logger-&gt;addProcessor(new Zend\Log\Processor\PsrPlaceholder());
-$logger-&gt;warn('Invalid plugin {plugin}', ['plugin' =&gt; 'My\Plugins\FooPlugin']);</code></pre>
-
-
-<p>will output:</p>
-<pre class="codehilite"><code>Invalid plugin My\Plugins\FooPlugin</code></pre>
-
-
-<p>This feature allows compatibility with PSR-3, and provides a simple way to
-provide string substitutions without needing to resort to <code>sprintf()</code> in
-your userland code.</p>
-<h3 id="referenceid">ReferenceId</h3>
-<p><code>Zend\Log\Processor\ReferenceId</code> allows you to specify a static reference
-identifier to inject in all log messages; typically, you will generate a new
-one for each request, to allow querying logs for the given reference
-identifier later.</p>
-<p>Given the following:</p>
-<pre class="codehilite"><code class="language-php">$processor = new Zend\Log\Processor\ReferenceId();
-$processor-&gt;setIdentifier(microtime(true) . '_' . uniqid());
-$logger-&gt;addProcessor($processor);
-$logger-&gt;info('Log event');</code></pre>
-
-
-<p>The event will contain:</p>
-<pre class="codehilite"><code class="language-php">$event = [
-    /* ... standard values ... */
-    'extra' =&gt; [
-        'referenceId' =&gt; '1455057110.6284_56ba68ebe1244',
-    ],
-];</code></pre>
-
-
-<h3 id="requestid">RequestId</h3>
-<p><code>Zend\Log\Processor\RequestId</code> is similar to <code>ReferenceId</code> with one key
-difference: if you do not set an identifier, one is automatically
-generated for you using hashed information from <code>$_SERVER</code>, including
-<code>REQUEST_TIME_FLOAT</code>, <code>HTTP_X_FORWARDED_FOR</code>, and/or <code>REMOTE_ADDR</code>.</p>
 
 <hr />
 
@@ -293,10 +300,10 @@ generated for you using hashed information from <code>$_SERVER</code>, including
 <nav>
   <ul class="pager hidden-print">
     <li class="previous">
-      <a rel="prev" href="../formatters/"><i class="fa fa-arrow-left"></i> Previous</a>
+      <a rel="prev" href="../processors/"><i class="fa fa-arrow-left"></i> Previous</a>
     </li>
     <li class="next">
-      <a rel="next" href="../service-manager/">Next <i class="fa fa-arrow-right"></i></a>
+      <a rel="next" href="../psr3/">Next <i class="fa fa-arrow-right"></i></a>
     </li>
   </ul>
 </nav>

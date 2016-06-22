@@ -151,7 +151,7 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testRetrievesMongoServiceFromServiceManagerWhenEncounteringMongoWriter()
     {
-        if (!extension_loaded('mongo')) {
+        if (! extension_loaded('mongo')) {
             $this->markTestSkipped('The mongo PHP extension is not available');
         }
 
@@ -206,7 +206,7 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testRetrievesMongoDBServiceFromServiceManagerWhenEncounteringMongoDbWriter()
     {
-        if (!extension_loaded('mongodb')) {
+        if (! extension_loaded('mongodb')) {
             $this->markTestSkipped('The mongodb PHP extension is not available');
         }
 

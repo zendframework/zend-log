@@ -10,6 +10,9 @@
 namespace ZendTest\Log\Writer;
 
 use ReflectionObject;
+use Zend\Log\FilterPluginManager;
+use Zend\Log\FormatterPluginManager;
+use Zend\ServiceManager\ServiceManager;
 use ZendTest\Log\TestAsset\ConcreteWriter;
 use ZendTest\Log\TestAsset\ErrorGeneratingWriter;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
@@ -122,6 +125,78 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Zend\Log\Filter\Priority', $filters[0]);
         $this->assertEquals(3, $this->readAttribute($filters[0], 'priority'));
         $this->assertInstanceOf('Zend\Log\Filter\Mock', $filters[1]);
+    }
+
+    /**
+     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     */
+    public function testConstructorWithFormatterManager()
+    {
+        // Arrange
+        $pluginManager = new FormatterPluginManager(new ServiceManager());
+
+        // Act
+        $writer = new ConcreteWriter([
+            'formatter_manager' => $pluginManager,
+        ]);
+
+        // Assert
+        $this->assertSame($pluginManager, $writer->getFormatterPluginManager());
+    }
+
+    /**
+     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     * @expectedException Zend\Log\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Writer plugin manager must extend Zend\Log\Writer\FormatterPluginManager; received integer
+     */
+    public function testConstructorWithInvalidFormatterManager()
+    {
+        // Arrange
+        // There is nothing to arrange.
+
+        // Act
+        $writer = new ConcreteWriter([
+            'formatter_manager' => 123,
+        ]);
+
+        // Assert
+        // No assert needed, expecting an exception.
+    }
+
+    /**
+     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     */
+    public function testConstructorWithFilterManager()
+    {
+        // Arrange
+        $pluginManager = new FilterPluginManager(new ServiceManager());
+
+        // Act
+        $writer = new ConcreteWriter([
+            'filter_manager' => $pluginManager,
+        ]);
+
+        // Assert
+        $this->assertSame($pluginManager, $writer->getFilterPluginManager());
+    }
+
+    /**
+     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     * @expectedException Zend\Log\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Writer plugin manager must extend Zend\Log\Writer\FilterPluginManager; received integer
+     */
+    public function testConstructorWithInvalidFilterManager()
+    {
+        // Arrange
+        // There is nothing to arrange.
+
+        // Act
+        $writer = new ConcreteWriter([
+            'filter_manager' => 123,
+        ]);
+
+        // Assert
+        // Nothing to assert, expecting an exception.
     }
 
     /**

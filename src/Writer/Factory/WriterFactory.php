@@ -1,9 +1,7 @@
 <?php
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @link      http://github.com/zendframework/zend-log for the canonical source repository
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
@@ -57,8 +55,8 @@ final class WriterFactory implements FactoryInterface
     {
         $options = (array)$options;
 
-        $this->populateOptions($options, $container, 'filter_manager', 'LogFilterManager');
-        $this->populateOptions($options, $container, 'formatter_manager', 'LogFormatterManager');
+        $options = $this->populateOptions($options, $container, 'filter_manager', 'LogFilterManager');
+        $options = $this->populateOptions($options, $container, 'formatter_manager', 'LogFormatterManager');
 
         return new $requestedName($options);
     }
@@ -70,14 +68,21 @@ final class WriterFactory implements FactoryInterface
      * @param ContainerInterface $container
      * @param string $name
      * @param string $defaultService
+     * @return array
      */
-    private function populateOptions(&$options, ContainerInterface $container, $name, $defaultService)
+    private function populateOptions(array $options, ContainerInterface $container, $name, $defaultService)
     {
         if (isset($options[$name]) && is_string($options[$name])) {
             $options[$name] = $container->get($options[$name]);
-        } elseif (!isset($options[$name]) && $container->has($defaultService)) {
-            $options[$name] = $container->get($defaultService);
+            return $options;
         }
+        
+        if (! isset($options[$name]) && $container->has($defaultService)) {
+            $options[$name] = $container->get($defaultService);
+            return $options;
+        }
+
+        return $options;
     }
 
     /**

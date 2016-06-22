@@ -30,7 +30,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#38](https://github.com/zendframework/zend-log/pull/38) adds the `MongoDb`
+  writer to the list of available writer plugins; the writer was added in a
+  previous release, but never enabled within the default set of writers.
 
 ## 2.8.4 - TBD
 

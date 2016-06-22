@@ -47,6 +47,7 @@ class Mongo extends AbstractWriter
      * @param string $collection
      * @param array $saveOptions
      * @throws Exception\InvalidArgumentException
+     * @throws Exception\ExtensionNotLoadedException
      */
     public function __construct($mongo, $database = null, $collection = null, array $saveOptions = [])
     {

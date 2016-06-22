@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.9.0 - TBD
+## 2.9.0 - 2016-06-22
 
 ### Added
 
@@ -33,24 +33,6 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#38](https://github.com/zendframework/zend-log/pull/38) adds the `MongoDb`
   writer to the list of available writer plugins; the writer was added in a
   previous release, but never enabled within the default set of writers.
-
-## 2.8.4 - TBD
-
-### Added
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
 
 ## 2.8.3 - 2016-05-25
 

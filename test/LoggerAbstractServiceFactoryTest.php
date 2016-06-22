@@ -9,11 +9,14 @@
 
 namespace ZendTest\Log;
 
+use MongoDB\Driver\Manager;
 use Zend\Log\LoggerAbstractServiceFactory;
 use Zend\Log\ProcessorPluginManager;
 use Zend\Log\Writer\Noop;
 use Zend\Log\WriterPluginManager;
 use Zend\Log\Writer\Db as DbWriter;
+use Zend\Log\Writer\Mongo as MongoWriter;
+use Zend\Log\Writer\MongoDB as MongoDBWriter;
 use Zend\ServiceManager\Config;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceManager;
@@ -144,6 +147,110 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($found, 'Did not find expected DB writer');
         $this->assertAttributeSame($db, 'db', $writer);
+    }
+
+    public function testRetrievesMongoServiceFromServiceManagerWhenEncounteringMongoWriter()
+    {
+        if (! extension_loaded('mongo')) {
+            $this->markTestSkipped('The mongo PHP extension is not available');
+        }
+
+        if (version_compare(phpversion(), '7.0', '>=')) {
+            $this->markTestIncomplete('Code to test is not compatible with PHP 7 ');
+        }
+
+        $mongoClient = $this->getMockBuilder('MongoClient')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $config = new Config([
+            'abstract_factories' => [LoggerAbstractServiceFactory::class],
+            'services' => [
+                'mongo_client' => $mongoClient,
+                'config' => [
+                    'log' => [
+                        'Application\Log' => [
+                            'writers' => [
+                                [
+                                    'name'     => 'mongo',
+                                    'priority' => 1,
+                                    'options'  => [
+                                        'database'     => 'applicationdb',
+                                        'collection'   => 'applicationlog',
+                                        'mongo'        => 'mongo_client',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+        $serviceManager = new ServiceManager();
+        $config->configureServiceManager($serviceManager);
+
+        $logger = $serviceManager->get('Application\Log');
+        $this->assertInstanceOf('Zend\Log\Logger', $logger);
+        $writers = $logger->getWriters();
+        $found   = false;
+
+        foreach ($writers as $writer) {
+            if ($writer instanceof MongoWriter) {
+                $found = true;
+                break;
+            }
+        }
+
+        $this->assertTrue($found, 'Did not find expected mongo writer');
+    }
+
+    public function testRetrievesMongoDBServiceFromServiceManagerWhenEncounteringMongoDbWriter()
+    {
+        if (! extension_loaded('mongodb')) {
+            $this->markTestSkipped('The mongodb PHP extension is not available');
+        }
+
+        $manager = new Manager('mongodb://localhost:27017');
+
+        $config = new Config([
+            'abstract_factories' => [LoggerAbstractServiceFactory::class],
+            'services' => [
+                'mongo_manager' => $manager,
+                'config' => [
+                    'log' => [
+                        'Application\Log' => [
+                            'writers' => [
+                                [
+                                    'name'     => 'mongodb',
+                                    'priority' => 1,
+                                    'options'  => [
+                                        'database'     => 'applicationdb',
+                                        'collection'   => 'applicationlog',
+                                        'manager'      => 'mongo_manager',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+        $serviceManager = new ServiceManager();
+        $config->configureServiceManager($serviceManager);
+
+        $logger = $serviceManager->get('Application\Log');
+        $this->assertInstanceOf('Zend\Log\Logger', $logger);
+        $writers = $logger->getWriters();
+        $found   = false;
+
+        foreach ($writers as $writer) {
+            if ($writer instanceof MongoDBWriter) {
+                $found = true;
+                break;
+            }
+        }
+
+        $this->assertTrue($found, 'Did not find expected mongo db writer');
     }
 
     /**

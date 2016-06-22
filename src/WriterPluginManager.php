@@ -9,9 +9,9 @@
 
 namespace Zend\Log;
 
+use Zend\Log\Writer\Factory\WriterFactory;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\Exception\InvalidServiceException;
-use Zend\ServiceManager\Factory\InvokableFactory;
 
 /**
  * Plugin manager for log writers.
@@ -25,6 +25,8 @@ class WriterPluginManager extends AbstractPluginManager
         'firephp'        => Writer\FirePhp::class,
         'mail'           => Writer\Mail::class,
         'mock'           => Writer\Mock::class,
+        'mongo'          => Writer\Mongo::class,
+        'mongodb'        => Writer\MongoDB::class,
         'noop'           => Writer\Noop::class,
         'psr'            => Writer\Psr::class,
         'stream'         => Writer\Stream::class,
@@ -40,31 +42,35 @@ class WriterPluginManager extends AbstractPluginManager
     ];
 
     protected $factories = [
-        Writer\ChromePhp::class      => InvokableFactory::class,
-        Writer\Db::class             => InvokableFactory::class,
-        Writer\FirePhp::class        => InvokableFactory::class,
-        Writer\Mail::class           => InvokableFactory::class,
-        Writer\Mock::class           => InvokableFactory::class,
-        Writer\Noop::class           => InvokableFactory::class,
-        Writer\Psr::class            => InvokableFactory::class,
-        Writer\Stream::class         => InvokableFactory::class,
-        Writer\Syslog::class         => InvokableFactory::class,
-        Writer\FingersCrossed::class => InvokableFactory::class,
-        Writer\ZendMonitor::class    => InvokableFactory::class,
+        Writer\ChromePhp::class      => WriterFactory::class,
+        Writer\Db::class             => WriterFactory::class,
+        Writer\FirePhp::class        => WriterFactory::class,
+        Writer\Mail::class           => WriterFactory::class,
+        Writer\Mock::class           => WriterFactory::class,
+        Writer\Mongo::class          => WriterFactory::class,
+        Writer\MongoDB::class        => WriterFactory::class,
+        Writer\Noop::class           => WriterFactory::class,
+        Writer\Psr::class            => WriterFactory::class,
+        Writer\Stream::class         => WriterFactory::class,
+        Writer\Syslog::class         => WriterFactory::class,
+        Writer\FingersCrossed::class => WriterFactory::class,
+        Writer\ZendMonitor::class    => WriterFactory::class,
         // Legacy (v2) due to alias resolution; canonical form of resolved
         // alias is used to look up the factory, while the non-normalized
         // resolved alias is used as the requested name passed to the factory.
-        'zendlogwriterchromephp'      => InvokableFactory::class,
-        'zendlogwriterdb'             => InvokableFactory::class,
-        'zendlogwriterfirephp'        => InvokableFactory::class,
-        'zendlogwritermail'           => InvokableFactory::class,
-        'zendlogwritermock'           => InvokableFactory::class,
-        'zendlogwriternoop'           => InvokableFactory::class,
-        'zendlogwriterpsr'            => InvokableFactory::class,
-        'zendlogwriterstream'         => InvokableFactory::class,
-        'zendlogwritersyslog'         => InvokableFactory::class,
-        'zendlogwriterfingerscrossed' => InvokableFactory::class,
-        'zendlogwriterzendmonitor'    => InvokableFactory::class,
+        'zendlogwriterchromephp'      => WriterFactory::class,
+        'zendlogwriterdb'             => WriterFactory::class,
+        'zendlogwriterfirephp'        => WriterFactory::class,
+        'zendlogwritermail'           => WriterFactory::class,
+        'zendlogwritermock'           => WriterFactory::class,
+        'zendlogwritermongo'          => WriterFactory::class,
+        'zendlogwritermongodb'        => WriterFactory::class,
+        'zendlogwriternoop'           => WriterFactory::class,
+        'zendlogwriterpsr'            => WriterFactory::class,
+        'zendlogwriterstream'         => WriterFactory::class,
+        'zendlogwritersyslog'         => WriterFactory::class,
+        'zendlogwriterfingerscrossed' => WriterFactory::class,
+        'zendlogwriterzendmonitor'    => WriterFactory::class,
     ];
 
     protected $instanceOf = Writer\WriterInterface::class;

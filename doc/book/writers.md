@@ -288,7 +288,7 @@ And `Zend\Log\Writer\MongoDB` is used like this:
 $mongo = new MongoClient();
 
 $writer = new \Zend\Log\Writer\MongoDB([
-    'save_options' => [], //MongoDB Driver Options
+    'save_options' => [], // MongoDB Driver Options
     'collection' => 'collectionName',
     'database' => 'databaseName',
     'mongo' => $mongo,

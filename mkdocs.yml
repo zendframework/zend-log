@@ -8,6 +8,7 @@ pages:
       - Filters: filters.md
       - Formatters: formatters.md
       - Processors: processors.md
+      - "Service Manager Integration": service-manager.md
     - 'PSR-3 Support': psr3.md
 site_name: zend-log
 site_description: Zend\Log

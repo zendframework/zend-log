@@ -76,7 +76,7 @@ final class WriterFactory implements FactoryInterface
             $options[$name] = $container->get($options[$name]);
             return $options;
         }
-        
+
         if (! isset($options[$name]) && $container->has($defaultService)) {
             $options[$name] = $container->get($defaultService);
             return $options;

@@ -18,12 +18,12 @@ class ErrorLog extends AbstractWriter
     /**
      * @var int
      */
-    protected $mode;
+    protected $mode = 0;
 
     /**
      * @var string|null
      */
-    protected $destination;
+    protected $destination = null;
 
 
     /**

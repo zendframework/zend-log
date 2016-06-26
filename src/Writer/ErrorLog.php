@@ -12,6 +12,7 @@ namespace Zend\Log\Writer;
 use InvalidArgumentException;
 use Traversable;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
+use Zend\Stdlib\ErrorHandler;
 use Zend\Validator\EmailAddress as EmailAddressValidator;
 
 class ErrorLog extends AbstractWriter
@@ -92,7 +93,10 @@ class ErrorLog extends AbstractWriter
      */
     protected function isStream($name)
     {
-        @$f = fopen($name, 'r');
+        ErrorHandler::start();
+        $f = fopen($name, 'r');
+        ErrorHandler::stop();
+
         if (!$f) {
             return false;
         }

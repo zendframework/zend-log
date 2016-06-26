@@ -9,6 +9,7 @@
 
 namespace Zend\Log\Writer;
 
+use InvalidArgumentException;
 use Traversable;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
 use Zend\Validator\EmailAddress as EmailAddressValidator;
@@ -43,12 +44,16 @@ class ErrorLog extends AbstractWriter
         parent::__construct($options);
 
         $mode = isset($options['mode']) ? (int) $options['mode'] : 0;
-        if (0 <= $mode && $mode <= 4) {
-            $this->mode = $mode;
+        if ($mode < 0 || 4 < $mode) {
+            throw new InvalidArgumentException("Invalid mode");
         }
+        $this->mode = $mode;
 
         $destination = isset($options['destination']) ? (string) $options['destination'] : null;
-        $is_stream = $this->mode == 3 && $this->isStream($destination) ;
+        $is_stream = $this->isStream($destination) ;
+        if ($this->mode == 3 && !$is_stream) {
+            throw new InvalidArgumentException("Destination is not a valid pathname.");
+        }
 
 
         $validator = new EmailAddressValidator();

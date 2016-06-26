@@ -39,4 +39,27 @@ class ErrorLogTest extends \PHPUnit_Framework_TestCase
             ]
         ]);
     }
+
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testInvalidModeException()
+    {
+        new ErrorLog([
+            'mode' => 13,
+        ]);
+    }
+
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testInvalidDestinationException()
+    {
+        new ErrorLog([
+            'mode' => 3,
+            'destination' => null
+        ]);
+    }
 }

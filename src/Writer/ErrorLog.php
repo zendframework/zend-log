@@ -50,10 +50,19 @@ class ErrorLog extends AbstractWriter
         }
         $this->mode = $mode;
 
-        $destination = isset($options['destination']) ? (string) $options['destination'] : null;
-        $is_stream = $this->isStream($destination) ;
-        if ($this->mode == 3 && !$is_stream) {
-            throw new InvalidArgumentException("Destination is not a valid pathname.");
+
+        $destination = isset($options['destination']) ? $options['destination'] : null;
+        if (!is_string($destination) && $destination !== null) {
+            throw new InvalidArgumentException("Destination is expected to be a string.");
+        }
+
+        if ($this->mode == 3) {
+            $is_stream = $this->isStream($destination);
+            if (!$is_stream) {
+                throw new InvalidArgumentException("Destination is not a valid path or is not writeable.");
+            }
+        } else {
+            $is_stream = false;
         }
 
 
@@ -94,7 +103,7 @@ class ErrorLog extends AbstractWriter
     protected function isStream($name)
     {
         ErrorHandler::start();
-        $f = fopen($name, 'r');
+        $f = fopen($name, 'a');
         ErrorHandler::stop();
 
         if (!$f) {

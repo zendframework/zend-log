@@ -12,9 +12,9 @@ namespace Zend\Log\Writer;
 use Traversable;
 use Zend\Log\Exception;
 use Zend\Log\Filter;
-use Zend\Log\FilterPluginManager;
+use Zend\Log\FilterPluginManager as NewFilterPluginManager; // @todo Temporary alias until \Zend\Log\Writer\FilterPluginManager has been removed.
 use Zend\Log\Formatter;
-use Zend\Log\FormatterPluginManager;
+use Zend\Log\FormatterPluginManager as NewFormatterPluginManager; // @todo Temporary alias until \Zend\Log\Writer\FilterPluginManager has been removed.
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ErrorHandler;
 
@@ -159,7 +159,7 @@ abstract class AbstractWriter implements WriterInterface
     public function getFilterPluginManager()
     {
         if (null === $this->filterPlugins) {
-            $this->setFilterPluginManager(new FilterPluginManager(new ServiceManager()));
+            $this->setFilterPluginManager(new NewFilterPluginManager(new ServiceManager()));
         }
         return $this->filterPlugins;
     }
@@ -176,10 +176,10 @@ abstract class AbstractWriter implements WriterInterface
         if (is_string($plugins)) {
             $plugins = new $plugins;
         }
-        if (!$plugins instanceof FilterPluginManager) {
+        if (!$plugins instanceof NewFilterPluginManager) {
             throw new Exception\InvalidArgumentException(sprintf(
-                'Writer plugin manager must extend %s\FilterPluginManager; received %s',
-                __NAMESPACE__,
+                'Writer plugin manager must extend %s; received %s',
+                NewFilterPluginManager::class,
                 is_object($plugins) ? get_class($plugins) : gettype($plugins)
             ));
         }
@@ -208,7 +208,7 @@ abstract class AbstractWriter implements WriterInterface
     public function getFormatterPluginManager()
     {
         if (null === $this->formatterPlugins) {
-            $this->setFormatterPluginManager(new FormatterPluginManager(new ServiceManager()));
+            $this->setFormatterPluginManager(new NewFormatterPluginManager(new ServiceManager()));
         }
         return $this->formatterPlugins;
     }
@@ -225,11 +225,11 @@ abstract class AbstractWriter implements WriterInterface
         if (is_string($plugins)) {
             $plugins = new $plugins;
         }
-        if (!$plugins instanceof FormatterPluginManager) {
+        if (!$plugins instanceof NewFormatterPluginManager) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
-                    'Writer plugin manager must extend %s\FormatterPluginManager; received %s',
-                    __NAMESPACE__,
+                    'Writer plugin manager must extend %s; received %s',
+                    NewFormatterPluginManager::class,
                     is_object($plugins) ? get_class($plugins) : gettype($plugins)
                 )
             );

@@ -24,7 +24,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#53](https://github.com/zendframework/zend-log/pull/53) adds a suggestion to
+  the package definition of ext/mongodb, for those who want to use the MongoDB
+  writer.
 
 ### Deprecated
 

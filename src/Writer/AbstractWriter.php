@@ -12,12 +12,17 @@ namespace Zend\Log\Writer;
 use Traversable;
 use Zend\Log\Exception;
 use Zend\Log\Filter;
-use Zend\Log\FilterPluginManager;
+use Zend\Log\FilterPluginManager as LogFilterPluginManager;
 use Zend\Log\Formatter;
-use Zend\Log\FormatterPluginManager;
+use Zend\Log\FormatterPluginManager as LogFormatterPluginManager;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ErrorHandler;
 
+/**
+ * @todo Remove aliases for parent namespace's FilterPluginManager and
+ *    FormatterPluginManager once the deprecated versions in the current
+ *    namespace are removed (likely v3.0).
+ */
 abstract class AbstractWriter implements WriterInterface
 {
     /**
@@ -154,12 +159,12 @@ abstract class AbstractWriter implements WriterInterface
     /**
      * Get filter plugin manager
      *
-     * @return FilterPluginManager
+     * @return LogFilterPluginManager
      */
     public function getFilterPluginManager()
     {
         if (null === $this->filterPlugins) {
-            $this->setFilterPluginManager(new FilterPluginManager(new ServiceManager()));
+            $this->setFilterPluginManager(new LogFilterPluginManager(new ServiceManager()));
         }
         return $this->filterPlugins;
     }
@@ -167,7 +172,7 @@ abstract class AbstractWriter implements WriterInterface
     /**
      * Set filter plugin manager
      *
-     * @param  string|FilterPluginManager $plugins
+     * @param  string|LogFilterPluginManager $plugins
      * @return self
      * @throws Exception\InvalidArgumentException
      */
@@ -176,10 +181,10 @@ abstract class AbstractWriter implements WriterInterface
         if (is_string($plugins)) {
             $plugins = new $plugins;
         }
-        if (!$plugins instanceof FilterPluginManager) {
+        if (!$plugins instanceof LogFilterPluginManager) {
             throw new Exception\InvalidArgumentException(sprintf(
-                'Writer plugin manager must extend %s\FilterPluginManager; received %s',
-                __NAMESPACE__,
+                'Writer plugin manager must extend %s; received %s',
+                LogFilterPluginManager::class,
                 is_object($plugins) ? get_class($plugins) : gettype($plugins)
             ));
         }
@@ -203,12 +208,12 @@ abstract class AbstractWriter implements WriterInterface
     /**
      * Get formatter plugin manager
      *
-     * @return FormatterPluginManager
+     * @return LogFormatterPluginManager
      */
     public function getFormatterPluginManager()
     {
         if (null === $this->formatterPlugins) {
-            $this->setFormatterPluginManager(new FormatterPluginManager(new ServiceManager()));
+            $this->setFormatterPluginManager(new LogFormatterPluginManager(new ServiceManager()));
         }
         return $this->formatterPlugins;
     }
@@ -216,7 +221,7 @@ abstract class AbstractWriter implements WriterInterface
     /**
      * Set formatter plugin manager
      *
-     * @param  string|FormatterPluginManager $plugins
+     * @param  string|LogFormatterPluginManager $plugins
      * @return self
      * @throws Exception\InvalidArgumentException
      */
@@ -225,11 +230,11 @@ abstract class AbstractWriter implements WriterInterface
         if (is_string($plugins)) {
             $plugins = new $plugins;
         }
-        if (!$plugins instanceof FormatterPluginManager) {
+        if (!$plugins instanceof LogFormatterPluginManager) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
-                    'Writer plugin manager must extend %s\FormatterPluginManager; received %s',
-                    __NAMESPACE__,
+                    'Writer plugin manager must extend %s; received %s',
+                    LogFormatterPluginManager::class,
                     is_object($plugins) ? get_class($plugins) : gettype($plugins)
                 )
             );

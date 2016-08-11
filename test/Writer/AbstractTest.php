@@ -12,6 +12,8 @@ namespace ZendTest\Log\Writer;
 use ReflectionObject;
 use Zend\Log\FilterPluginManager;
 use Zend\Log\FormatterPluginManager;
+use Zend\Log\Writer\FilterPluginManager as LegacyFilterPluginManager;
+use Zend\Log\Writer\FormatterPluginManager as LegacyFormatterPluginManager;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\Log\TestAsset\ConcreteWriter;
 use ZendTest\Log\TestAsset\ErrorGeneratingWriter;
@@ -147,7 +149,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Zend\Log\Writer\AbstractWriter::__construct
      * @expectedException Zend\Log\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Writer plugin manager must extend Zend\Log\Writer\FormatterPluginManager; received integer
+     * @expectedExceptionMessage Writer plugin manager must extend Zend\Log\FormatterPluginManager; received integer
      */
     public function testConstructorWithInvalidFormatterManager()
     {
@@ -161,6 +163,23 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         // No assert needed, expecting an exception.
+    }
+
+    /**
+     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     */
+    public function testConstructorWithLegacyFormatterManager()
+    {
+        // Arrange
+        $pluginManager = new LegacyFormatterPluginManager(new ServiceManager());
+
+        // Act
+        $writer = new ConcreteWriter([
+            'formatter_manager' => $pluginManager,
+        ]);
+
+        // Assert
+        $this->assertSame($pluginManager, $writer->getFormatterPluginManager());
     }
 
     /**
@@ -183,7 +202,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Zend\Log\Writer\AbstractWriter::__construct
      * @expectedException Zend\Log\Exception\InvalidArgumentException
-     * @expectedExceptionMessage Writer plugin manager must extend Zend\Log\Writer\FilterPluginManager; received integer
+     * @expectedExceptionMessage Writer plugin manager must extend Zend\Log\FilterPluginManager; received integer
      */
     public function testConstructorWithInvalidFilterManager()
     {
@@ -197,6 +216,23 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         // Nothing to assert, expecting an exception.
+    }
+
+    /**
+     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     */
+    public function testConstructorWithLegacyFilterManager()
+    {
+        // Arrange
+        $pluginManager = new LegacyFilterPluginManager(new ServiceManager());
+
+        // Act
+        $writer = new ConcreteWriter([
+            'filter_manager' => $pluginManager,
+        ]);
+
+        // Assert
+        $this->assertSame($pluginManager, $writer->getFilterPluginManager());
     }
 
     /**

@@ -34,6 +34,7 @@
         "psr/log-implementation": "1.0.0"
     },
     "suggest": {
+        "ext-mongo": "mongo extension to use Mongo writer",
         "ext-mongodb": "mongodb extension to use MongoDB writer",
         "zendframework/zend-console": "Zend\\Console component to use the RequestID log processor",
         "zendframework/zend-db": "Zend\\Db component to use the database log writer",

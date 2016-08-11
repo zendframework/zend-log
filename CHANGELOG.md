@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - Nothing.
 
-## 2.9.1 - TBD
+## 2.9.1 - 2016-08-11
 
 ### Added
 
@@ -36,7 +36,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#56](https://github.com/zendframework/zend-log/pull/56) fixes an edge case
+  with the `AbstractWriter` whereby instantiating a
+  `Zend\Log\Writer\FormatterPluginManager` or `FilterPluginManager` prior to
+  creating a writer instance would lead to a naming conflict. New aliases were
+  added to prevent the conflict going forwards.
 
 ## 2.9.0 - 2016-06-22
 

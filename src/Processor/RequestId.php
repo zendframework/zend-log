@@ -9,8 +9,6 @@
 
 namespace Zend\Log\Processor;
 
-use Zend\Console\Console;
-
 class RequestId implements ProcessorInterface
 {
     /**
@@ -53,19 +51,16 @@ class RequestId implements ProcessorInterface
             return $this->identifier;
         }
 
-        $requestTime = $_SERVER['REQUEST_TIME_FLOAT'];
-
-        if (Console::isConsole()) {
-            $this->identifier = md5($requestTime);
-            return $this->identifier;
-        }
+        $identifier = (string) $_SERVER['REQUEST_TIME_FLOAT'];
 
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $this->identifier = md5($requestTime . $_SERVER['HTTP_X_FORWARDED_FOR']);
-            return $this->identifier;
+            $identifier .= $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } elseif (isset($_SERVER['REMOTE_ADDR'])) {
+            $identifier .= $_SERVER['REMOTE_ADDR'];
         }
 
-        $this->identifier = md5($requestTime . $_SERVER['REMOTE_ADDR']);
+        $this->identifier = md5($identifier);
+
         return $this->identifier;
     }
 }

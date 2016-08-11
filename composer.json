@@ -20,7 +20,6 @@
         "psr/log": "^1.0"
     },
     "require-dev": {
-        "zendframework/zend-console": "^2.6",
         "zendframework/zend-db": "^2.6",
         "zendframework/zend-escaper": "^2.5",
         "zendframework/zend-filter": "^2.5",

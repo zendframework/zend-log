@@ -31,7 +31,6 @@ class JsonTest extends \PHPUnit_Framework_TestCase
     }
 
 
-
     /**
      * @dataProvider provideDateTimeFormats
      */
@@ -44,7 +43,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
         $line = $f->format(['timestamp' => $date]);
         $json = json_decode($line);
 
-        $this->assertContains($date->format($dateTimeFormat), $json->timestamp);
+        $this->assertEquals($date->format($dateTimeFormat), $json->timestamp);
     }
 
 
@@ -55,5 +54,4 @@ class JsonTest extends \PHPUnit_Framework_TestCase
             ['U'],
         ];
     }
-
 }

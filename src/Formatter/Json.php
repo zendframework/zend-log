@@ -9,13 +9,11 @@
 
 namespace Zend\Log\Formatter;
 
-
-use Exception;
 use DateTime;
+use Exception;
 
 class Json implements FormatterInterface
 {
-
 
 
     /**
@@ -27,7 +25,6 @@ class Json implements FormatterInterface
     protected $dateTimeFormat = self::DEFAULT_DATETIME_FORMAT;
 
 
-
     /**
      * Formats data into a single line to be written by the writer.
      *
@@ -36,13 +33,11 @@ class Json implements FormatterInterface
      */
     public function format($event)
     {
-
         if (isset($event['timestamp']) && $event['timestamp'] instanceof DateTime) {
             $event['timestamp'] = $event['timestamp']->format($this->getDateTimeFormat());
         }
 
         return @json_encode($event, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
-
     }
 
     /**
@@ -58,7 +53,7 @@ class Json implements FormatterInterface
      */
     public function setDateTimeFormat($dateTimeFormat)
     {
-        $this->dateTimeFormat = (string) $dateTimeFormat;
+        $this->dateTimeFormat = (string)$dateTimeFormat;
         return $this;
     }
 
@@ -105,12 +100,12 @@ class Json implements FormatterInterface
             'class' => get_class($e),
             'message' => $e->getMessage(),
             'code' => $e->getCode(),
-            'file' => $e->getFile().':'.$e->getLine(),
+            'file' => $e->getFile() . ':' . $e->getLine(),
         ];
         $trace = $e->getTrace();
         foreach ($trace as $frame) {
             if (isset($frame['file'])) {
-                $data['trace'][] = $frame['file'].':'.$frame['line'];
+                $data['trace'][] = $frame['file'] . ':' . $frame['line'];
             } elseif (isset($frame['function']) && $frame['function'] === '{closure}') {
                 // We should again normalize the frames, because it might contain invalid items
                 $data['trace'][] = $frame['function'];

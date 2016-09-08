@@ -25,9 +25,9 @@ class JsonTest extends \PHPUnit_Framework_TestCase
         $json = json_decode($line);
 
 
-        $this->assertEqual($date->format('c'), $json->timestamp);
-        $this->assertEqual('foo', $json->message);
-        $this->assertEqual((string)42, $json->priority);
+        $this->assertEquals($date->format('c'), $json->timestamp);
+        $this->assertEquals('foo', $json->message);
+        $this->assertEquals((string)42, $json->priority);
     }
 
 

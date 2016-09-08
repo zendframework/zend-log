@@ -10,17 +10,17 @@
 namespace ZendTest\Log\Formatter;
 
 use DateTime;
-use Zend\Log\Formatter\JsonFormatter;
+use Zend\Log\Formatter\Json;
 
 /**
  * @group      Zend_Log
  */
-class XmlTest extends \PHPUnit_Framework_TestCase
+class JsonTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaultFormat()
     {
         $date = new DateTime();
-        $f = new JsonFormatter();
+        $f = new Json();
         $line = $f->format(['timestamp' => $date, 'message' => 'foo', 'priority' => 42]);
         $json = json_decode($line);
 
@@ -38,7 +38,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
     public function testSetDateTimeFormat($dateTimeFormat)
     {
         $date = new DateTime();
-        $f = new JsonFormatter();
+        $f = new Json();
         $f->setDateTimeFormat($dateTimeFormat);
 
         $line = $f->format(['timestamp' => $date]);

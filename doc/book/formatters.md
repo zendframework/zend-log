@@ -40,12 +40,12 @@ You can retrieve the default keys by using the `DEFAULT_FORMAT` constant from
 
 ## Formatting to Json
 
-`Zend\Log\Formatter\JsonFormatter` is the Json formatter.  By default, it
+`Zend\Log\Formatter\Json` is the Json formatter.  By default, it
 automatically logs all items as Json:
 
 ```php
 $writer = new Zend\Log\Writer\Stream('php://output');
-$formatter = new Zend\Log\Formatter\JsonFormatter();
+$formatter = new Zend\Log\Formatter\Json();
 $writer->setFormatter($formatter);
 
 $logger = new Zend\Log\Logger();

@@ -20,14 +20,14 @@ class ProcessorPluginManager extends AbstractPluginManager
 {
     protected $aliases = [
         'backtrace'      => Processor\Backtrace::class,
-        'psrplaceholder' => Processor\PsrPlaceHolder::class,
+        'psrplaceholder' => Processor\PsrPlaceholder::class,
         'referenceid'    => Processor\ReferenceId::class,
         'requestid'      => Processor\RequestId::class
     ];
 
     protected $factories = [
         Processor\Backtrace::class      => InvokableFactory::class,
-        Processor\PsrPlaceHolder::class => InvokableFactory::class,
+        Processor\PsrPlaceholder::class => InvokableFactory::class,
         Processor\ReferenceId::class    => InvokableFactory::class,
         Processor\RequestId::class      => InvokableFactory::class,
         // Legacy (v2) due to alias resolution; canonical form of resolved

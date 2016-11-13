@@ -25,9 +25,9 @@
         "zendframework/zend-filter": "^2.5",
         "zendframework/zend-mail": "^2.6.1",
         "zendframework/zend-validator": "^2.6",
-        "friendsofphp/php-cs-fixer": "~1.7.0",
         "phpunit/PHPUnit": "~4.0",
-        "mikey179/vfsStream": "^1.6"
+        "mikey179/vfsStream": "^1.6",
+        "zendframework/zend-coding-standard": "~1.0.0"
     },
     "provide": {
         "psr/log-implementation": "1.0.0"

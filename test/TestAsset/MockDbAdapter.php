@@ -17,7 +17,7 @@ class MockDbAdapter extends DbAdapter
     public $plaftorm;
     public $driver;
 
-    public $calls = array();
+    public $calls = [];
 
     public function __call($method, $params)
     {
@@ -28,10 +28,13 @@ class MockDbAdapter extends DbAdapter
     {
         $this->platform = new MockDbPlatform;
         $this->driver = new MockDbDriver;
-
     }
-    public function query($sql, $parametersOrQueryMode = DbAdapter::QUERY_MODE_PREPARE, ResultSetInterface $resultPrototype = null)
-    {
+
+    public function query(
+        $sql,
+        $parametersOrQueryMode = DbAdapter::QUERY_MODE_PREPARE,
+        ResultSetInterface $resultPrototype = null
+    ) {
         $this->calls[__FUNCTION__][] = $sql;
         return $this;
     }

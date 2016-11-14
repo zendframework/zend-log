@@ -13,7 +13,8 @@ use DateTime;
 
 class ErrorHandler extends Simple
 {
-    const DEFAULT_FORMAT = '%timestamp% %priorityName% (%priority%) %message% (errno %extra[errno]%) in %extra[file]% on line %extra[line]%';
+    const DEFAULT_FORMAT = '%timestamp% %priorityName% (%priority%) %message% (errno %extra[errno]%) '
+    . 'in %extra[file]% on line %extra[line]%';
 
     /**
      * This method formats the event for the PHP Error Handler.

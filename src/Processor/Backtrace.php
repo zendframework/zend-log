@@ -44,9 +44,9 @@ class Backtrace implements ProcessorInterface
         }
 
         $origin = [
-            'file'     => isset($trace[$i-1]['file'])   ? $trace[$i-1]['file']   : null,
-            'line'     => isset($trace[$i-1]['line'])   ? $trace[$i-1]['line']   : null,
-            'class'    => isset($trace[$i]['class'])    ? $trace[$i]['class']    : null,
+            'file'     => isset($trace[$i - 1]['file']) ? $trace[$i - 1]['file'] : null,
+            'line'     => isset($trace[$i - 1]['line']) ? $trace[$i - 1]['line'] : null,
+            'class'    => isset($trace[$i]['class']) ? $trace[$i]['class'] : null,
             'function' => isset($trace[$i]['function']) ? $trace[$i]['function'] : null,
         ];
 

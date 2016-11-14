@@ -56,7 +56,7 @@ class MongoTest extends \PHPUnit_Framework_TestCase
 
     public function testWriteWithDefaultSaveOptions()
     {
-        $event = ['message'=> 'foo', 'priority' => 42];
+        $event = ['message' => 'foo', 'priority' => 42];
 
         $this->mongoCollection->expects($this->once())
             ->method('save')
@@ -84,7 +84,7 @@ class MongoTest extends \PHPUnit_Framework_TestCase
     public function testWriteConvertsDateTimeToMongoDate()
     {
         $date = new DateTime();
-        $event = ['timestamp'=> $date];
+        $event = ['timestamp' => $date];
 
         $this->mongoCollection->expects($this->once())
             ->method('save')

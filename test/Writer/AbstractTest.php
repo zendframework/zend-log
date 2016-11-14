@@ -25,36 +25,36 @@ use Zend\Log\Filter\Regex as RegexFilter;
  */
 class AbstractTest extends \PHPUnit_Framework_TestCase
 {
-    protected $_writer;
+    protected $writer;
 
     protected function setUp()
     {
-        $this->_writer = new ConcreteWriter();
+        $this->writer = new ConcreteWriter();
     }
 
     public function testSetSimpleFormatterByName()
     {
-        $instance = $this->_writer->setFormatter('simple');
+        $instance = $this->writer->setFormatter('simple');
         $this->assertAttributeInstanceOf('Zend\Log\Formatter\Simple', 'formatter', $instance);
     }
 
     public function testAddFilter()
     {
-        $this->_writer->addFilter(1);
-        $this->_writer->addFilter(new RegexFilter('/mess/'));
+        $this->writer->addFilter(1);
+        $this->writer->addFilter(new RegexFilter('/mess/'));
         $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException');
-        $this->_writer->addFilter(new \stdClass());
+        $this->writer->addFilter(new \stdClass());
     }
 
     public function testAddMockFilterByName()
     {
-        $instance = $this->_writer->addFilter('mock');
+        $instance = $this->writer->addFilter('mock');
         $this->assertInstanceOf('ZendTest\Log\TestAsset\ConcreteWriter', $instance);
     }
 
     public function testAddRegexFilterWithParamsByName()
     {
-        $instance = $this->_writer->addFilter('regex', [ 'regex' => '/mess/' ]);
+        $instance = $this->writer->addFilter('regex', [ 'regex' => '/mess/' ]);
         $this->assertInstanceOf('ZendTest\Log\TestAsset\ConcreteWriter', $instance);
     }
 
@@ -63,7 +63,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testFluentInterface()
     {
-        $instance = $this->_writer->addFilter(1)
+        $instance = $this->writer->addFilter(1)
                                   ->setFormatter(new SimpleFormatter());
 
         $this->assertInstanceOf('ZendTest\Log\TestAsset\ConcreteWriter', $instance);
@@ -240,10 +240,10 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormatterDefaultsToNull()
     {
-        $r = new ReflectionObject($this->_writer);
+        $r = new ReflectionObject($this->writer);
         $m = $r->getMethod('getFormatter');
         $m->setAccessible(true);
-        $this->assertNull($m->invoke($this->_writer));
+        $this->assertNull($m->invoke($this->writer));
     }
 
     /**
@@ -253,12 +253,12 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
     public function testCanSetFormatter()
     {
         $formatter = new SimpleFormatter;
-        $this->_writer->setFormatter($formatter);
+        $this->writer->setFormatter($formatter);
 
-        $r = new ReflectionObject($this->_writer);
+        $r = new ReflectionObject($this->writer);
         $m = $r->getMethod('getFormatter');
         $m->setAccessible(true);
-        $this->assertSame($formatter, $m->invoke($this->_writer));
+        $this->assertSame($formatter, $m->invoke($this->writer));
     }
 
     /**
@@ -266,12 +266,12 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasFormatter()
     {
-        $r = new ReflectionObject($this->_writer);
+        $r = new ReflectionObject($this->writer);
         $m = $r->getMethod('hasFormatter');
         $m->setAccessible(true);
-        $this->assertFalse($m->invoke($this->_writer));
+        $this->assertFalse($m->invoke($this->writer));
 
-        $this->_writer->setFormatter(new SimpleFormatter);
-        $this->assertTrue($m->invoke($this->_writer));
+        $this->writer->setFormatter(new SimpleFormatter);
+        $this->assertTrue($m->invoke($this->writer));
     }
 }

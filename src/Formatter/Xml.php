@@ -235,6 +235,8 @@ class Xml implements FormatterInterface
                 );
             }
 
+            $value = $this->getEscaper()->escapeHtml($value);
+
             if (is_numeric($key)) {
                 // xml does not allow numeric values, try to switch the value and the key
                 $key   = (string) $value;

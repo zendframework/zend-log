@@ -233,9 +233,9 @@ class Xml implements FormatterInterface
                 $value = $this->getEscaper()->escapeHtml(
                     '"Object" of type ' . get_class($value) . " does not support __toString() method"
                 );
+            } else {
+                $value = $this->getEscaper()->escapeHtml($value);
             }
-
-            $value = $this->getEscaper()->escapeHtml($value);
 
             if (is_numeric($key)) {
                 // xml does not allow numeric values, try to switch the value and the key

@@ -123,21 +123,20 @@ class Db extends AbstractWriter
             $dataToInsert = $this->mapEventIntoColumn($event, $this->columnMap);
         }
 
-        $statement = $this->db->query($this->prepareInsert($this->tableName, $dataToInsert));
+        $statement = $this->db->query($this->prepareInsert($dataToInsert));
         $statement->execute($dataToInsert);
     }
 
     /**
      * Prepare the INSERT SQL statement
      *
-     * @param  string $tableName
      * @param  array $fields
      * @return string
      */
-    protected function prepareInsert($tableName, array $fields)
+    protected function prepareInsert(array $fields)
     {
         $keys = array_keys($fields);
-        $sql = 'INSERT INTO ' . $this->db->platform->quoteIdentifier($tableName) . ' (' .
+        $sql = 'INSERT INTO ' . $this->db->platform->quoteIdentifier($this->tableName) . ' (' .
             implode(",", array_map([$this->db->platform, 'quoteIdentifier'], $keys)) . ') VALUES (' .
             implode(",", array_map([$this->db->driver, 'formatParameterName'], $keys)) . ')';
 

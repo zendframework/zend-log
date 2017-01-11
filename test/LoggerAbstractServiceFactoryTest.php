@@ -259,7 +259,7 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
     public function testWillInjectWriterPluginManagerIfAvailable()
     {
         $writers = new WriterPluginManager(new ServiceManager());
-        $mockWriter = $this->getMock('Zend\Log\Writer\WriterInterface');
+        $mockWriter = $this->createMock('Zend\Log\Writer\WriterInterface');
         $writers->setService('CustomWriter', $mockWriter);
 
         $config = new Config([
@@ -291,7 +291,7 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
     public function testWillInjectProcessorPluginManagerIfAvailable()
     {
         $processors = new ProcessorPluginManager(new ServiceManager());
-        $mockProcessor = $this->getMock('Zend\Log\Processor\ProcessorInterface');
+        $mockProcessor = $this->createMock('Zend\Log\Processor\ProcessorInterface');
         $processors->setService('CustomProcessor', $mockProcessor);
 
         $config = new Config([

@@ -73,7 +73,7 @@ class FingersCrossedTest extends \PHPUnit_Framework_TestCase
         $options = ['writer' => 'mock', 'priority' => 3];
         $writer = new FingersCrossedWriter($options);
 
-        $writer->setFormatter($this->getMock('Zend\Log\Formatter\FormatterInterface'));
+        $writer->setFormatter($this->createMock('Zend\Log\Formatter\FormatterInterface'));
         $this->assertAttributeEmpty('formatter', $writer);
     }
 }

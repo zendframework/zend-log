@@ -42,7 +42,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
     {
         $this->_writer->addFilter(1);
         $this->_writer->addFilter(new RegexFilter('/mess/'));
-        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException');
+        $this->expectException('Zend\Log\Exception\InvalidArgumentException');
         $this->_writer->addFilter(new \stdClass());
     }
 
@@ -72,11 +72,11 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
     public function testConvertErrorsToException()
     {
         $writer = new ErrorGeneratingWriter();
-        $this->setExpectedException('Zend\Log\Exception\RuntimeException');
+        $this->expectException('Zend\Log\Exception\RuntimeException');
         $writer->write(['message' => 'test']);
 
         $writer->setConvertWriteErrorsToExceptions(false);
-        $this->setExpectedException('PHPUnit_Framework_Error_Warning');
+        $this->expectException('PHPUnit_Framework_Error_Warning');
         $writer->write(['message' => 'test']);
     }
 

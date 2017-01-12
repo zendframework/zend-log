@@ -136,10 +136,8 @@ class WriterFactoryTest extends TestCase
         $factory = new WriterFactory();
 
         // Assert
-        $this->setExpectedException(
-            InvalidServiceException::class,
-            'WriterFactory requires that the requested name is provided'
-        );
+        $this->expectException(InvalidServiceException::class);
+        $this->expectExceptionMessage('WriterFactory requires that the requested name is provided');
 
         // Act
         $object = $factory->createService($pluginManager, 'invalid', 'invalid');

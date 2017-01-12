@@ -93,7 +93,7 @@ class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidLoggerService($service)
     {
-        $this->setExpectedException(ServiceNotFoundException::class);
+        $this->expectException(ServiceNotFoundException::class);
         $this->serviceManager->get($service);
     }
 

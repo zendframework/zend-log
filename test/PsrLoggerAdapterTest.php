@@ -99,8 +99,8 @@ class PsrLoggerAdapterTest extends LoggerInterfaceTest
         $context = ['bar' => 'baz'];
 
         $logger = $this->getMockBuilder(Logger::class)
-                ->setMethods(['log'])
-                ->getMock();
+            ->setMethods(['log'])
+            ->getMock();
         $logger->expects($this->once())
             ->method('log')
             ->with(

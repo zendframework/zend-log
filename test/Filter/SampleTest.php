@@ -22,7 +22,8 @@ class SampleTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorThrowsOnInvalidSampleRate()
     {
-        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'must be numeric');
+        $this->expectException('Zend\Log\Exception\InvalidArgumentException');
+        $this->expectExceptionMessage('must be numeric');
         new Sample('bar');
     }
 

@@ -25,7 +25,7 @@ class NullTest extends \PHPUnit_Framework_TestCase
 
     public function testRaisesNoticeOnInstantiation()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error_Deprecated');
+        $this->expectException('PHPUnit_Framework_Error_Deprecated');
         new NullWriter();
     }
 }

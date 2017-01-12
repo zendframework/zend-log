@@ -61,7 +61,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     {
         $writer = new MongoDBWriter($this->manager, $this->database, $this->collection);
 
-        $writer->setFormatter($this->getMock('Zend\Log\Formatter\FormatterInterface'));
+        $writer->setFormatter($this->createMock('Zend\Log\Formatter\FormatterInterface'));
         $this->assertAttributeEmpty('formatter', $writer);
     }
 

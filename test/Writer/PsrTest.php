@@ -29,7 +29,7 @@ class PsrTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructWithPsrLogger()
     {
-        $psrLogger = $this->getMock(LoggerInterface::class);
+        $psrLogger = $this->createMock(LoggerInterface::class);
         $writer    = new PsrWriter($psrLogger);
         $this->assertAttributeSame($psrLogger, 'logger', $writer);
     }
@@ -39,7 +39,7 @@ class PsrTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructWithOptions()
     {
-        $psrLogger = $this->getMock(LoggerInterface::class);
+        $psrLogger = $this->createMock(LoggerInterface::class);
         $formatter = new SimpleFormatter();
         $filter    = new MockFilter();
         $writer = new PsrWriter([
@@ -73,7 +73,7 @@ class PsrTest extends \PHPUnit_Framework_TestCase
         $message = 'foo';
         $extra   = ['bar' => 'baz'];
 
-        $psrLogger = $this->getMock(LoggerInterface::class);
+        $psrLogger = $this->createMock(LoggerInterface::class);
         $psrLogger->expects($this->once())
             ->method('log')
             ->with(

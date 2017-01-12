@@ -18,7 +18,8 @@ class RegexTest extends \PHPUnit_Framework_TestCase
 {
     public function testMessageFilterRecognizesInvalidRegularExpression()
     {
-        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'invalid reg');
+        $this->expectException('Zend\Log\Exception\InvalidArgumentException');
+        $this->expectExceptionMessage('invalid reg');
         new Regex('invalid regexp');
     }
 

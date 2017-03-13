@@ -258,6 +258,8 @@ $logger->info('Informational message');
 
 ## Writing to MongoDB
 
+Using the legacy mongo php driver (may be used up to up to php 5.6)
+
 In this example `Zend\Log\Writer\MongoDB` uses an array for construction. Available keys include:
 
 ```php
@@ -312,6 +314,69 @@ $collection = 'collectionName';
 $saveOptions = [];
 
 $writer = new \Zend\Log\Writer\MongoDB($mongo, $database, $collection, $saveOptions);
+$logger = new \Zend\Log\Logger();
+$logger->addWriter($writer);
+
+// goes to Mongo DB
+$logger->info('Informational message');
+```
+
+Using the mongodb driver (php 5.4 and later)
+
+In this example `Zend\Log\Writer\MongoDB` uses an array for construction. Available keys include:
+
+```php
+[
+    'save_options' => [],
+    'collection' => '',
+    'database' => '',
+    'manager' => $mongo,
+    'filters' => [],
+    'formatter' => []
+]
+```
+
+`collection`, `database`, and `manager` are required. Each key accepts:
+
+Array Index | Accepted Values | Description
+----------- | --------------- | -----------
+`save_options` | array | MongoDB driver options
+`collection` | string | collection name
+`database` | string | database name
+`manager` | `MongoDB\Driver\Manager` | MongoDB connection object
+`filters` | array, int, string, Zend\Log\Filter\FilterInterface | Log filter(s)
+`formatter` | array, string, Zend\Log\Formatter\FormatterInterface | Log formatter(s)
+
+And `Zend\Log\Writer\MongoDB` is used like this:
+
+```php
+$mongo = new MongoDB\Driver\Manager();
+
+$writer = new \Zend\Log\Writer\MongoDB([
+    'save_options' => [], // MongoDB Driver Options
+    'collection' => 'collectionName',
+    'database' => 'databaseName',
+    'manager' => $mongo,
+    'filters' => [],
+    'formatter' => []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger->addWriter($writer);
+
+// goes to Mongo DB
+$logger->info('Informational message');
+```
+
+It may also be constructed by passing the arguments directly
+
+```php
+$mongo = new MongoDB\Driver\Manager();
+$database = 'databaseName';
+$collection = 'collectionName';
+$saveOptions = [];
+
+$writer = new \Zend\Log\Writer\MongoDB($manager, $database, $collection, $saveOptions);
 $logger = new \Zend\Log\Logger();
 $logger->addWriter($writer);
 

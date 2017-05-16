@@ -10,6 +10,7 @@
 namespace Zend\Log;
 
 use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Config;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -29,7 +30,30 @@ class FilterPluginManagerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $name, array $options = null)
     {
-        return new FilterPluginManager($container, $options ?: []);
+        $pluginManager = new FilterPluginManager($container, $options ?: []);
+
+        // If this is in a zend-mvc application, the ServiceListener will inject
+        // merged configuration during bootstrap.
+        if ($container->has('ServiceListener')) {
+            return $pluginManager;
+        }
+
+        // If we do not have a config service, nothing more to do
+        if (! $container->has('config')) {
+            return $pluginManager;
+        }
+
+        $config = $container->get('config');
+
+        // If we do not have log_filters configuration, nothing more to do
+        if (! isset($config['log_filters']) || ! is_array($config['log_filters'])) {
+            return $pluginManager;
+        }
+
+        // Wire service configuration for log_filters
+        (new Config($config['log_filters']))->configureServiceManager($pluginManager);
+
+        return $pluginManager;
     }
 
     /**

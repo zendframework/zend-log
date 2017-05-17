@@ -32,6 +32,8 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#67](https://github.com/zendframework/zend-log/pull/67) ensures that content
   being injected into a DOM node by `Zend\Log\Formatter\Xml` is escaped so that
   XML entities will be properly emitted.
+- [#73](https://github.com/zendframework/zend-log/pull/73) adds a missing import
+  statement to the `Psr` log writer.
 
 ## 2.9.1 - 2016-08-11
 

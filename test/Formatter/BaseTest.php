@@ -9,17 +9,15 @@
 
 namespace ZendTest\Log\Formatter;
 
-use DateTime;
-use stdClass;
-use EmptyIterator;
 use ArrayIterator;
+use DateTime;
+use EmptyIterator;
+use PHPUnit\Framework\TestCase;
+use stdClass;
 use ZendTest\Log\TestAsset\StringObject;
 use Zend\Log\Formatter\Base as BaseFormatter;
 
-/**
- * @group      Zend_Log
- */
-class BaseTest extends \PHPUnit_Framework_TestCase
+class BaseTest extends TestCase
 {
     public function testDefaultDateTimeFormat()
     {

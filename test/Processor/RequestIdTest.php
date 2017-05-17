@@ -9,12 +9,10 @@
 
 namespace ZendTest\Log\Processor;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Processor\RequestId;
 
-/**
- * @group      Zend_Log
- */
-class RequestIdTest extends \PHPUnit_Framework_TestCase
+class RequestIdTest extends TestCase
 {
     public function testProcess()
     {

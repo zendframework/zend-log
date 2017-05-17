@@ -9,17 +9,13 @@
 
 namespace ZendTest\Log\Writer;
 
-use ZendTest\Log\TestAsset\MockFirePhp;
+use PHPUnit\Framework\TestCase;
+use Zend\Log\Logger;
 use Zend\Log\Writer\FirePhp;
 use Zend\Log\Writer\FirePhp\FirePhpInterface;
-use Zend\Log\Logger;
+use ZendTest\Log\TestAsset\MockFirePhp;
 
-/**
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Log
- */
-class FirePhpTest extends \PHPUnit_Framework_TestCase
+class FirePhpTest extends TestCase
 {
     protected $firephp;
 

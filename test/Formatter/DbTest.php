@@ -10,12 +10,10 @@
 namespace ZendTest\Log\Formatter;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Formatter\Db as DbFormatter;
 
-/**
- * @group      Zend_Log
- */
-class DbTest extends \PHPUnit_Framework_TestCase
+class DbTest extends TestCase
 {
     public function testDefaultDateTimeFormat()
     {

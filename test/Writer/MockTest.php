@@ -9,12 +9,10 @@
 
 namespace ZendTest\Log\Writer;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Writer\Mock as MockWriter;
 
-/**
- * @group      Zend_Log
- */
-class MockTest extends \PHPUnit_Framework_TestCase
+class MockTest extends TestCase
 {
     public function testWrite()
     {

@@ -9,12 +9,13 @@
 
 namespace ZendTest\Log\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Filter\Regex;
 
 /**
  * @group      Zend_Log
  */
-class RegexTest extends \PHPUnit_Framework_TestCase
+class RegexTest extends TestCase
 {
     public function testMessageFilterRecognizesInvalidRegularExpression()
     {

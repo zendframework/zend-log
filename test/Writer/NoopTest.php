@@ -9,12 +9,10 @@
 
 namespace ZendTest\Log\Writer;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Writer\Noop as NoopWriter;
 
-/**
- * @group      Zend_Log
- */
-class NoopTest extends \PHPUnit_Framework_TestCase
+class NoopTest extends TestCase
 {
     public function testWrite()
     {

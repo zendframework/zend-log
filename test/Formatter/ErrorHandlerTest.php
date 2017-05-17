@@ -10,14 +10,12 @@
 namespace ZendTest\Log\Formatter;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Formatter\ErrorHandler;
 use ZendTest\Log\TestAsset\StringObject;
 use ZendTest\Log\TestAsset\NotStringObject;
 
-/**
- * @group      Zend_Log
- */
-class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
+class ErrorHandlerTest extends TestCase
 {
     public function testFormat()
     {

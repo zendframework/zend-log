@@ -10,15 +10,10 @@
 
 namespace ZendTest\Log\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Filter\Sample;
 
-/**
- * @category   Zend
- * @package    Zend_Log
- * @subpackage UnitTests
- * @group      Zend_Log
- */
-class SampleTest extends \PHPUnit_Framework_TestCase
+class SampleTest extends TestCase
 {
     public function testConstructorThrowsOnInvalidSampleRate()
     {

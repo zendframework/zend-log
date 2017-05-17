@@ -10,10 +10,11 @@
 namespace ZendTest\Log;
 
 use MongoDB\Driver\Manager;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\LoggerAbstractServiceFactory;
 use Zend\Log\ProcessorPluginManager;
-use Zend\Log\Writer\Noop;
 use Zend\Log\WriterPluginManager;
+use Zend\Log\Writer\Noop;
 use Zend\Log\Writer\Db as DbWriter;
 use Zend\Log\Writer\Mongo as MongoWriter;
 use Zend\Log\Writer\MongoDB as MongoDBWriter;
@@ -21,10 +22,7 @@ use Zend\ServiceManager\Config;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceManager;
 
-/**
- * @group      Zend_Log
- */
-class LoggerAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
+class LoggerAbstractServiceFactoryTest extends TestCase
 {
     /**
      * @var \Zend\ServiceManager\ServiceLocatorInterface

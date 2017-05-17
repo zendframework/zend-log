@@ -9,13 +9,11 @@
 
 namespace ZendTest\Log\Writer;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Writer\FingersCrossed as FingersCrossedWriter;
 use Zend\Log\Writer\Mock as MockWriter;
 
-/**
- * @group      Zend_Log
- */
-class FingersCrossedTest extends \PHPUnit_Framework_TestCase
+class FingersCrossedTest extends TestCase
 {
     public function testBuffering()
     {

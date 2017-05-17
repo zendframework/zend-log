@@ -8,10 +8,10 @@
 namespace ZendTest\Log;
 
 use Interop\Container\ContainerInterface;
-use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Log\Processor\ProcessorInterface;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\ProcessorPluginManager;
 use Zend\Log\ProcessorPluginManagerFactory;
+use Zend\Log\Processor\ProcessorInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ProcessorPluginManagerFactoryTest extends TestCase

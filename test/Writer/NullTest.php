@@ -9,12 +9,10 @@
 
 namespace ZendTest\Log\Writer;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Writer\Null as NullWriter;
 
-/**
- * @group      Zend_Log
- */
-class NullTest extends \PHPUnit_Framework_TestCase
+class NullTest extends TestCase
 {
     public function setUp()
     {

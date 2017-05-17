@@ -42,7 +42,7 @@ class Priority implements FilterInterface
             $operator = isset($priority['operator']) ? $priority['operator'] : null;
             $priority = isset($priority['priority']) ? $priority['priority'] : null;
         }
-        if (!is_int($priority) && !ctype_digit($priority)) {
+        if (! is_int($priority) && ! ctype_digit($priority)) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Priority must be a number, received "%s"',
                 gettype($priority)

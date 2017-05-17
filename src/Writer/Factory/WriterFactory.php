@@ -122,7 +122,8 @@ final class WriterFactory implements FactoryInterface
         }
 
         throw new InvalidServiceException(sprintf(
-            '%s requires that the requested name is provided on invocation; please update your tests or consuming container',
+            '%s requires that the requested name is provided on invocation; '
+            .'please update your tests or consuming container',
             __CLASS__
         ));
     }

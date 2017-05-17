@@ -168,7 +168,7 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         ];
         $outputExpected = [
             'message' => 'Hi',
-            'extra'   =>  '',
+            'extra'   => '',
         ];
 
         $this->assertEquals($outputExpected, $formatter->format($event));

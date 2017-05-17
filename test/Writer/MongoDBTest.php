@@ -67,7 +67,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
 
     public function testWriteWithDefaultSaveOptions()
     {
-        $event = ['message'=> 'foo', 'priority' => 42];
+        $event = ['message' => 'foo', 'priority' => 42];
 
         $writer = new MongoDBWriter($this->manager, $this->database, $this->collection);
 
@@ -117,7 +117,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
 
     public function testWriteWithoutCollectionNameWhenNamespaceIsGivenAsDatabase()
     {
-        $event = ['message'=> 'foo', 'priority' => 42];
+        $event = ['message' => 'foo', 'priority' => 42];
 
         $writer = new MongoDBWriter($this->manager, $this->database . '.' . $this->collection);
 
@@ -134,7 +134,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     public function testWriteConvertsDateTimeToMongoDate()
     {
         $date = new DateTime();
-        $event = ['timestamp'=> $date];
+        $event = ['timestamp' => $date];
 
         $writer = new MongoDBWriter($this->manager, $this->database, $this->collection);
 

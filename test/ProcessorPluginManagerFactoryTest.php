@@ -70,4 +70,99 @@ class ProcessorPluginManagerFactoryTest extends TestCase
         $processors = $factory->createService($container->reveal());
         $this->assertSame($processor, $processors->get('test'));
     }
+
+    public function testConfiguresProcessorServicesWhenFound()
+    {
+        $processor = $this->prophesize(ProcessorInterface::class)->reveal();
+        $config = [
+            'log_processors' => [
+                'aliases' => [
+                    'test' => 'test-too',
+                ],
+                'factories' => [
+                    'test-too' => function ($container) use ($processor) {
+                        return $processor;
+                    },
+                ],
+            ],
+        ];
+
+        $container = $this->prophesize(ServiceLocatorInterface::class);
+        $container->willImplement(ContainerInterface::class);
+
+        $container->has('ServiceListener')->willReturn(false);
+        $container->has('config')->willReturn(true);
+        $container->get('config')->willReturn($config);
+
+        $factory = new ProcessorPluginManagerFactory();
+        $processors = $factory($container->reveal(), 'ProcessorManager');
+
+        $this->assertInstanceOf(ProcessorPluginManager::class, $processors);
+        $this->assertTrue($processors->has('test'));
+        $this->assertSame($processor, $processors->get('test'));
+        $this->assertTrue($processors->has('test-too'));
+        $this->assertSame($processor, $processors->get('test-too'));
+    }
+
+    public function testDoesNotConfigureProcessorServicesWhenServiceListenerPresent()
+    {
+        $processor = $this->prophesize(ProcessorInterface::class)->reveal();
+        $config = [
+            'log_processors' => [
+                'aliases' => [
+                    'test' => 'test-too',
+                ],
+                'factories' => [
+                    'test-too' => function ($container) use ($processor) {
+                        return $processor;
+                    },
+                ],
+            ],
+        ];
+
+        $container = $this->prophesize(ServiceLocatorInterface::class);
+        $container->willImplement(ContainerInterface::class);
+
+        $container->has('ServiceListener')->willReturn(true);
+        $container->has('config')->shouldNotBeCalled();
+        $container->get('config')->shouldNotBeCalled();
+
+        $factory = new ProcessorPluginManagerFactory();
+        $processors = $factory($container->reveal(), 'ProcessorManager');
+
+        $this->assertInstanceOf(ProcessorPluginManager::class, $processors);
+        $this->assertFalse($processors->has('test'));
+        $this->assertFalse($processors->has('test-too'));
+    }
+
+    public function testDoesNotConfigureProcessorServicesWhenConfigServiceNotPresent()
+    {
+        $container = $this->prophesize(ServiceLocatorInterface::class);
+        $container->willImplement(ContainerInterface::class);
+
+        $container->has('ServiceListener')->willReturn(false);
+        $container->has('config')->willReturn(false);
+        $container->get('config')->shouldNotBeCalled();
+
+        $factory = new ProcessorPluginManagerFactory();
+        $processors = $factory($container->reveal(), 'ProcessorManager');
+
+        $this->assertInstanceOf(ProcessorPluginManager::class, $processors);
+    }
+
+    public function testDoesNotConfigureProcessorServicesWhenConfigServiceDoesNotContainProcessorsConfig()
+    {
+        $container = $this->prophesize(ServiceLocatorInterface::class);
+        $container->willImplement(ContainerInterface::class);
+
+        $container->has('ServiceListener')->willReturn(false);
+        $container->has('config')->willReturn(true);
+        $container->get('config')->willReturn(['foo' => 'bar']);
+
+        $factory = new ProcessorPluginManagerFactory();
+        $processors = $factory($container->reveal(), 'ProcessorManager');
+
+        $this->assertInstanceOf(ProcessorPluginManager::class, $processors);
+        $this->assertFalse($processors->has('foo'));
+    }
 }

@@ -18,7 +18,12 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#74](https://github.com/zendframework/zend-log/pull/74) fixes how the various
+  plugin manager factories initialize the plugin manager instances, ensuring
+  they are injecting the relevant configuration from the `config` service and
+  thus seeding them with configured plugin services. This means that the
+  `log_processors`, `log_writers`, `log_filters`, and `log_formatters`
+  configuration will now be honored in non-zend-mvc contexts.
 
 ## 2.9.1 - 2016-08-11
 

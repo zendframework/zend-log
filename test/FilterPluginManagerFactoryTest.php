@@ -70,4 +70,99 @@ class FilterPluginManagerFactoryTest extends TestCase
         $filters = $factory->createService($container->reveal());
         $this->assertSame($filter, $filters->get('test'));
     }
+
+    public function testConfiguresFilterServicesWhenFound()
+    {
+        $filter = $this->prophesize(FilterInterface::class)->reveal();
+        $config = [
+            'log_filters' => [
+                'aliases' => [
+                    'test' => 'test-too',
+                ],
+                'factories' => [
+                    'test-too' => function ($container) use ($filter) {
+                        return $filter;
+                    },
+                ],
+            ],
+        ];
+
+        $container = $this->prophesize(ServiceLocatorInterface::class);
+        $container->willImplement(ContainerInterface::class);
+
+        $container->has('ServiceListener')->willReturn(false);
+        $container->has('config')->willReturn(true);
+        $container->get('config')->willReturn($config);
+
+        $factory = new FilterPluginManagerFactory();
+        $filters = $factory($container->reveal(), 'FilterManager');
+
+        $this->assertInstanceOf(FilterPluginManager::class, $filters);
+        $this->assertTrue($filters->has('test'));
+        $this->assertSame($filter, $filters->get('test'));
+        $this->assertTrue($filters->has('test-too'));
+        $this->assertSame($filter, $filters->get('test-too'));
+    }
+
+    public function testDoesNotConfigureFilterServicesWhenServiceListenerPresent()
+    {
+        $filter = $this->prophesize(FilterInterface::class)->reveal();
+        $config = [
+            'log_filters' => [
+                'aliases' => [
+                    'test' => 'test-too',
+                ],
+                'factories' => [
+                    'test-too' => function ($container) use ($filter) {
+                        return $filter;
+                    },
+                ],
+            ],
+        ];
+
+        $container = $this->prophesize(ServiceLocatorInterface::class);
+        $container->willImplement(ContainerInterface::class);
+
+        $container->has('ServiceListener')->willReturn(true);
+        $container->has('config')->shouldNotBeCalled();
+        $container->get('config')->shouldNotBeCalled();
+
+        $factory = new FilterPluginManagerFactory();
+        $filters = $factory($container->reveal(), 'FilterManager');
+
+        $this->assertInstanceOf(FilterPluginManager::class, $filters);
+        $this->assertFalse($filters->has('test'));
+        $this->assertFalse($filters->has('test-too'));
+    }
+
+    public function testDoesNotConfigureFilterServicesWhenConfigServiceNotPresent()
+    {
+        $container = $this->prophesize(ServiceLocatorInterface::class);
+        $container->willImplement(ContainerInterface::class);
+
+        $container->has('ServiceListener')->willReturn(false);
+        $container->has('config')->willReturn(false);
+        $container->get('config')->shouldNotBeCalled();
+
+        $factory = new FilterPluginManagerFactory();
+        $filters = $factory($container->reveal(), 'FilterManager');
+
+        $this->assertInstanceOf(FilterPluginManager::class, $filters);
+    }
+
+    public function testDoesNotConfigureFilterServicesWhenConfigServiceDoesNotContainFiltersConfig()
+    {
+        $container = $this->prophesize(ServiceLocatorInterface::class);
+        $container->willImplement(ContainerInterface::class);
+
+        $container->has('ServiceListener')->willReturn(false);
+        $container->has('config')->willReturn(true);
+        $container->get('config')->willReturn(['foo' => 'bar']);
+
+        $factory = new FilterPluginManagerFactory();
+        $filters = $factory($container->reveal(), 'FilterManager');
+
+        $this->assertInstanceOf(FilterPluginManager::class, $filters);
+        $this->assertFalse($filters->has('foo'));
+    }
 }

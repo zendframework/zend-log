@@ -9,6 +9,7 @@
 
 namespace Zend\Log\Writer;
 
+use Traversable;
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerAwareTrait as PsrLoggerAwareTrait;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;

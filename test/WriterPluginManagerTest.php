@@ -9,13 +9,11 @@
 
 namespace ZendTest\Log;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\WriterPluginManager;
 use Zend\ServiceManager\ServiceManager;
 
-/**
- * @group      Zend_Log
- */
-class WriterPluginManagerTest extends \PHPUnit_Framework_TestCase
+class WriterPluginManagerTest extends TestCase
 {
     /**
      * @var WriterPluginManager

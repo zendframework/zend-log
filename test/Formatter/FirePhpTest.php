@@ -9,14 +9,10 @@
 
 namespace ZendTest\Log\Formatter;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Formatter\FirePhp;
 
-/**
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Log
- */
-class FirePhpTest extends \PHPUnit_Framework_TestCase
+class FirePhpTest extends TestCase
 {
     public function testFormatWithExtraData()
     {

@@ -8,7 +8,7 @@
 namespace ZendTest\Log;
 
 use Interop\Container\ContainerInterface;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Filter\FilterInterface;
 use Zend\Log\FilterPluginManager;
 use Zend\Log\FilterPluginManagerFactory;

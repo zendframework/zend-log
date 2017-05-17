@@ -10,15 +10,13 @@
 namespace ZendTest\Log\Writer;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
-use ZendTest\Log\TestAsset\MockDbAdapter;
-use Zend\Log\Writer\Db as DbWriter;
 use Zend\Log\Formatter\FormatterInterface;
+use Zend\Log\Writer\Db as DbWriter;
+use ZendTest\Log\TestAsset\MockDbAdapter;
 
-/**
- * @group      Zend_Log
- */
-class DbTest extends \PHPUnit_Framework_TestCase
+class DbTest extends TestCase
 {
     public function setUp()
     {

@@ -9,21 +9,19 @@
 
 namespace ZendTest\Log\Writer;
 
+use PHPUnit\Framework\TestCase;
 use ReflectionObject;
 use Zend\Log\FilterPluginManager;
+use Zend\Log\Filter\Regex as RegexFilter;
 use Zend\Log\FormatterPluginManager;
+use Zend\Log\Formatter\Simple as SimpleFormatter;
 use Zend\Log\Writer\FilterPluginManager as LegacyFilterPluginManager;
 use Zend\Log\Writer\FormatterPluginManager as LegacyFormatterPluginManager;
 use Zend\ServiceManager\ServiceManager;
 use ZendTest\Log\TestAsset\ConcreteWriter;
 use ZendTest\Log\TestAsset\ErrorGeneratingWriter;
-use Zend\Log\Formatter\Simple as SimpleFormatter;
-use Zend\Log\Filter\Regex as RegexFilter;
 
-/**
- * @group      Zend_Log
- */
-class AbstractTest extends \PHPUnit_Framework_TestCase
+class AbstractTest extends TestCase
 {
     protected $writer;
 

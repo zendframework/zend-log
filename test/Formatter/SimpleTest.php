@@ -10,13 +10,11 @@
 namespace ZendTest\Log\Formatter;
 
 use DateTime;
-use Zend\Log\Formatter\Simple;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use Zend\Log\Formatter\Simple;
 
-/**
- * @group      Zend_Log
- */
-class SimpleTest extends \PHPUnit_Framework_TestCase
+class SimpleTest extends TestCase
 {
     public function testConstructorThrowsOnBadFormatString()
     {

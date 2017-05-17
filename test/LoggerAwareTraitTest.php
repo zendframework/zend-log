@@ -9,7 +9,7 @@
 
 namespace ZendTest\Log;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Logger;
 
 class LoggerAwareTraitTest extends TestCase

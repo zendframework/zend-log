@@ -2,24 +2,6 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.10.0 - TBD
-
-### Added
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
 ## 2.9.2 - TBD
 
 ### Added
@@ -42,6 +24,8 @@ All notable changes to this project will be documented in this file, in reverse 
   thus seeding them with configured plugin services. This means that the
   `log_processors`, `log_writers`, `log_filters`, and `log_formatters`
   configuration will now be honored in non-zend-mvc contexts.
+- [#62](https://github.com/zendframework/zend-log/pull/62) fixes registration of
+  the alias and factory for the `PsrPlaceholder` processor plugin.
 
 ## 2.9.1 - 2016-08-11
 

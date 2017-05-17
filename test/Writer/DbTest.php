@@ -200,7 +200,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
     public function testWriteDateTimeAsTimestamp()
     {
         $date = new DateTime();
-        $event = ['timestamp'=> $date];
+        $event = ['timestamp' => $date];
         $this->writer->write($event);
 
         $this->assertContains('query', array_keys($this->db->calls));
@@ -215,7 +215,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $event = [
-            'extra'=> [
+            'extra' => [
                 'request_time' => $date
             ]
         ];

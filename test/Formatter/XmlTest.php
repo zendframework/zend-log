@@ -125,7 +125,10 @@ class XmlTest extends \PHPUnit_Framework_TestCase
             'message' => 'tottakai',
             'priority' => 4
         ];
-        $expected = sprintf('<log><date>%s</date><word>tottakai</word><priority>4</priority></log>', $date->format('r'));
+        $expected = sprintf(
+            '<log><date>%s</date><word>tottakai</word><priority>4</priority></log>',
+            $date->format('r')
+        );
 
         $formatter = new XmlFormatter($options);
         $output = $formatter->format($event);
@@ -144,7 +147,7 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $event = [
             'message' => 'tottakai',
             'priority' => 4,
-            'context' => ['test'=>'one'],
+            'context' => ['test' => 'one'],
             'reference' => new XmlFormatter()
         ];
         $expected = '<log><message>tottakai</message><priority>4</priority></log>';
@@ -165,10 +168,11 @@ class XmlTest extends \PHPUnit_Framework_TestCase
         $event = [
             'message' => 'tottakai',
             'priority' => 4,
-            'context' => ['test'=>'one'],
+            'context' => ['test' => 'one'],
             'reference' => new SerializableObject()
         ];
-        $expected = '<log><message>tottakai</message><priority>4</priority><reference>ZendTest\Log\TestAsset\SerializableObject</reference></log>';
+        $expected = '<log><message>tottakai</message><priority>4</priority><reference>'
+            .'ZendTest\Log\TestAsset\SerializableObject</reference></log>';
 
         $formatter = new XmlFormatter($options);
         $output = $formatter->format($event);
@@ -189,7 +193,8 @@ class XmlTest extends \PHPUnit_Framework_TestCase
             'priorityName' => 'CRIT',
             'extra'        => []
         ];
-        $expected = '<logEntry><timestamp>2001-01-01T12:00:00-06:00</timestamp><message>test</message><priority>1</priority><priorityName>CRIT</priorityName></logEntry>';
+        $expected = '<logEntry><timestamp>2001-01-01T12:00:00-06:00</timestamp><message>test</message>'
+            .'<priority>1</priority><priorityName>CRIT</priorityName></logEntry>';
         $expected .= "\n" . PHP_EOL;
         $this->assertEquals($expected, $formatter->format($event));
     }
@@ -210,7 +215,9 @@ class XmlTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $expected = '<logEntry><timestamp>2001-01-01T12:00:00-06:00</timestamp><message>test</message><priority>1</priority><priorityName>CRIT</priorityName><extra><test>one</test><bar>foo</bar></extra></logEntry>';
+        $expected = '<logEntry><timestamp>2001-01-01T12:00:00-06:00</timestamp><message>test</message>'
+            .'<priority>1</priority><priorityName>CRIT</priorityName><extra><test>one</test>'
+            .'<bar>foo</bar></extra></logEntry>';
         $expected .= "\n" . PHP_EOL;
         $this->assertEquals($expected, $formatter->format($event));
     }
@@ -248,7 +255,12 @@ class XmlTest extends \PHPUnit_Framework_TestCase
                 'foobar'
             ]
         ];
-        $expected = '<logEntry><timestamp>2001-01-01T12:00:00-06:00</timestamp><message>test</message><priority>1</priority><priorityName>CRIT</priorityName><extra><test><one/><two><three><four>four</four></three><five/></two></test><test_null/><test_int>14</test_int><test_object>"Object" of type stdClass does not support __toString() method</test_object><serializable_object>ZendTest\Log\TestAsset\SerializableObject</serializable_object><test_empty_array/><bar>foo</bar><foobar/></extra></logEntry>';
+        $expected = '<logEntry><timestamp>2001-01-01T12:00:00-06:00</timestamp><message>test</message>'
+            .'<priority>1</priority><priorityName>CRIT</priorityName><extra><test><one/><two><three><four>four</four>'
+            .'</three><five/></two></test><test_null/><test_int>14</test_int><test_object>'
+            .'"Object" of type stdClass does not support __toString() method</test_object><serializable_object>'
+            .'ZendTest\Log\TestAsset\SerializableObject</serializable_object><test_empty_array/>'
+            .'<bar>foo</bar><foobar/></extra></logEntry>';
         $expected .= "\n" . PHP_EOL;
         $this->assertEquals($expected, $formatter->format($event));
     }

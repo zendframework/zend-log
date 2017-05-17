@@ -110,7 +110,7 @@ class StreamWriterTest extends \PHPUnit_Framework_TestCase
         $formatter = new SimpleFormatter($expected);
         $writer->setFormatter($formatter);
 
-        $writer->write(['bar'=>'baz']);
+        $writer->write(['bar' => 'baz']);
         rewind($stream);
         $contents = stream_get_contents($stream);
         fclose($stream);

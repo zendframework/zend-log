@@ -25,7 +25,7 @@ class ReferenceId extends RequestId implements ProcessorInterface
             return $event;
         }
 
-        if (!isset($event['extra'])) {
+        if (! isset($event['extra'])) {
             $event['extra'] = [];
         }
 

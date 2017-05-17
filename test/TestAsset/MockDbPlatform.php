@@ -16,5 +16,4 @@ class MockDbPlatform
     {
         $this->calls[$method][] = $params;
     }
-
 }

@@ -59,7 +59,7 @@ class Xml implements FormatterInterface
             $options = ArrayUtils::iteratorToArray($options);
         }
 
-        if (!is_array($options)) {
+        if (! is_array($options)) {
             $args = func_get_args();
 
             $options = [
@@ -79,11 +79,11 @@ class Xml implements FormatterInterface
             }
         }
 
-        if (!array_key_exists('rootElement', $options)) {
+        if (! array_key_exists('rootElement', $options)) {
             $options['rootElement'] = 'logEntry';
         }
 
-        if (!array_key_exists('encoding', $options)) {
+        if (! array_key_exists('encoding', $options)) {
             $options['encoding'] = 'UTF-8';
         }
 

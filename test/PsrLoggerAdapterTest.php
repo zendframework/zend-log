@@ -16,7 +16,6 @@ use Zend\Log\PsrLoggerAdapter;
 use Zend\Log\Writer\Mock as MockWriter;
 
 /**
- * @group Zend_Log
  * @coversDefaultClass Zend\Log\PsrLoggerAdapter
  * @covers ::<!public>
  */

@@ -8,11 +8,6 @@
         "logging"
     ],
     "homepage": "https://github.com/zendframework/zend-log",
-    "autoload": {
-        "psr-4": {
-            "Zend\\Log\\": "src/"
-        }
-    },
     "require": {
         "php": "^5.6 || ^7.0",
         "psr/log": "^1.0",
@@ -21,7 +16,7 @@
     },
     "require-dev": {
         "mikey179/vfsStream": "^1.6",
-        "phpunit/phpunit": "^5.7",
+        "phpunit/phpunit": "^5.7.15 || ^6.0.8",
         "zendframework/zend-coding-standard": "~1.0.0",
         "zendframework/zend-db": "^2.6",
         "zendframework/zend-escaper": "^2.5",
@@ -53,11 +48,17 @@
             "config-provider": "Zend\\Log\\ConfigProvider"
         }
     },
+    "autoload": {
+        "psr-4": {
+            "Zend\\Log\\": "src/"
+        }
+    },
     "autoload-dev": {
         "psr-4": {
             "ZendTest\\Log\\": "test/"
         },
         "files": [
+            "autoload/phpunit.php",
             "test/Writer/TestAsset/chmod.php"
         ]
     },

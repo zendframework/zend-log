@@ -9,12 +9,13 @@
 
 namespace ZendTest\Log\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Filter\Priority;
 
 /**
  * @group      Zend_Log
  */
-class PriorityTest extends \PHPUnit_Framework_TestCase
+class PriorityTest extends TestCase
 {
     public function testComparisonDefaultsToLessThanOrEqual()
     {

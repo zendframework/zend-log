@@ -9,16 +9,12 @@
 
 namespace ZendTest\Log\Writer;
 
+use PHPUnit\Framework\TestCase;
 use ZendTest\Log\TestAsset\MockChromePhp;
 use Zend\Log\Writer\ChromePhp;
 use Zend\Log\Logger;
 
-/**
- * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Log
- */
-class ChromePhpTest extends \PHPUnit_Framework_TestCase
+class ChromePhpTest extends TestCase
 {
     protected $chromephp;
 

@@ -12,12 +12,10 @@ namespace ZendTest\Log\Writer;
 
 use DateTime;
 use MongoDate;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Writer\Mongo as MongoWriter;
 
-/**
- * @group      Zend_Log
- */
-class MongoTest extends \PHPUnit_Framework_TestCase
+class MongoTest extends TestCase
 {
     protected function setUp()
     {

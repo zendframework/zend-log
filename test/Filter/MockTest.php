@@ -9,12 +9,13 @@
 
 namespace ZendTest\Log\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Filter\Mock as MockFilter;
 
 /**
  * @group      Zend_Log
  */
-class MockTest extends \PHPUnit_Framework_TestCase
+class MockTest extends TestCase
 {
     public function testWrite()
     {

@@ -8,7 +8,7 @@
 namespace ZendTest\Log;
 
 use Interop\Container\ContainerInterface;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Writer\WriterInterface;
 use Zend\Log\WriterPluginManager;
 use Zend\Log\WriterPluginManagerFactory;

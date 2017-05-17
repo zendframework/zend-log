@@ -9,21 +9,21 @@
 
 namespace ZendTest\Log\Writer;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Logger;
 use Zend\Log\Writer\Mail as MailWriter;
 use Zend\Mail\Message as MailMessage;
 use Zend\Mail\Transport;
 
-/**
- * @group      Zend_Log
- */
-class MailTest extends \PHPUnit_Framework_TestCase
+class MailTest extends TestCase
 {
     const FILENAME = 'message.txt';
+
     /**
      * @var MailWriter
      */
     protected $writer;
+
     /**
      * @var Logger
      */

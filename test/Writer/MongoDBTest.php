@@ -16,12 +16,10 @@ use MongoDB\Driver\Command;
 use MongoDB\Driver\Manager;
 use MongoDB\Driver\Query;
 use MongoDB\Driver\WriteConcern;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Writer\MongoDB as MongoDBWriter;
 
-/**
- * @group      Zend_Log
- */
-class MongoDBTest extends \PHPUnit_Framework_TestCase
+class MongoDBTest extends TestCase
 {
     /**
      * @var Manager

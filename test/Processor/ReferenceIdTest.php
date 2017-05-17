@@ -9,12 +9,10 @@
 
 namespace ZendTest\Log\Processor;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Processor\ReferenceId;
 
-/**
- * @group      Zend_Log
- */
-class ReferenceIdTest extends \PHPUnit_Framework_TestCase
+class ReferenceIdTest extends TestCase
 {
     public function testProcessMixesInReferenceId()
     {

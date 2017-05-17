@@ -9,12 +9,10 @@
 
 namespace ZendTest\Log\Writer;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Writer\ZendMonitor;
 
-/**
- * @group      Zend_Log
- */
-class ZendMonitorTest extends \PHPUnit_Framework_TestCase
+class ZendMonitorTest extends TestCase
 {
     /**
      * @group ZF-10081

@@ -9,15 +9,13 @@
 
 namespace ZendTest\Log\Writer;
 
-use ZendTest\Log\TestAsset\CustomSyslogWriter;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Writer\Syslog as SyslogWriter;
 use Zend\Log\Logger;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
+use ZendTest\Log\TestAsset\CustomSyslogWriter;
 
-/**
- * @group      Zend_Log
- */
-class SyslogTest extends \PHPUnit_Framework_TestCase
+class SyslogTest extends TestCase
 {
     public function testWrite()
     {

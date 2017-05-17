@@ -9,15 +9,13 @@
 
 namespace ZendTest\Log\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Filter\Validator;
 use Zend\Validator\ValidatorChain;
 use Zend\Validator\Digits as DigitsFilter;
 use Zend\Validator\NotEmpty as NotEmptyFilter;
 
-/**
- * @group      Zend_Log
- */
-class ValidatorTest extends \PHPUnit_Framework_TestCase
+class ValidatorTest extends TestCase
 {
     public function testValidatorFilter()
     {

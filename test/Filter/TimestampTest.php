@@ -11,7 +11,7 @@ namespace ZendTest\Log\Filter;
 
 use ArrayObject;
 use DateTime;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Filter\Timestamp as TimestampFilter;
 
 /**

@@ -9,14 +9,14 @@
 
 namespace ZendTest\Log\Processor;
 
-use Zend\Log\Processor\PsrPlaceholder;
 use stdClass;
+use PHPUnit\Framework\TestCase;
+use Zend\Log\Processor\PsrPlaceholder;
 
 /**
- * @group      Zend_Log
  * @coversDefaultClass Zend\Log\Processor\PsrPlaceholder
  */
-class PsrPlaceholderTest extends \PHPUnit_Framework_TestCase
+class PsrPlaceholderTest extends TestCase
 {
     /**
      * @dataProvider pairsProvider

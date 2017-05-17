@@ -11,6 +11,7 @@ namespace ZendTest\Log;
 
 use Exception;
 use ErrorException;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Exception\RuntimeException;
 use Zend\Log\Logger;
 use Zend\Log\Processor\Backtrace;
@@ -20,10 +21,7 @@ use Zend\Log\Filter\Mock as MockFilter;
 use Zend\Stdlib\SplPriorityQueue;
 use Zend\Validator\Digits as DigitsFilter;
 
-/**
- * @group      Zend_Log
- */
-class LoggerTest extends \PHPUnit_Framework_TestCase
+class LoggerTest extends TestCase
 {
     /**
      * @var Logger

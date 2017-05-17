@@ -10,13 +10,11 @@
 namespace ZendTest\Log\Formatter;
 
 use DateTime;
-use ZendTest\Log\TestAsset\SerializableObject;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Formatter\Xml as XmlFormatter;
+use ZendTest\Log\TestAsset\SerializableObject;
 
-/**
- * @group      Zend_Log
- */
-class XmlTest extends \PHPUnit_Framework_TestCase
+class XmlTest extends TestCase
 {
     public function testDefaultFormat()
     {
@@ -298,8 +296,12 @@ class XmlTest extends \PHPUnit_Framework_TestCase
                 'foobar'
             ]
         ];
+
+        // @codingStandardsIgnoreStart
         $expected = '<logEntry><timestamp>2001-01-01T12:00:00-06:00</timestamp><message>test</message><priority>1</priority><priorityName>CRIT</priorityName><extra><test><one/><two><three><four>four&amp;four</four></three><five/></two></test><test_null/><test_int>14</test_int><test_object>"Object" of type stdClass does not support __toString() method</test_object><serializable_object>ZendTest\Log\TestAsset\SerializableObject</serializable_object><test_empty_array/><bar>foo</bar><foobar/></extra></logEntry>';
         $expected .= "\n" . PHP_EOL;
+        // @codingStandardsIgnoreEnd
+
         $this->assertEquals($expected, $formatter->format($event));
     }
 }

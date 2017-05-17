@@ -10,12 +10,10 @@
 namespace ZendTest\Log\Formatter;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Formatter\ExceptionHandler;
 
-/**
- * @group      Zend_Log
- */
-class ExceptionHandlerTest extends \PHPUnit_Framework_TestCase
+class ExceptionHandlerTest extends TestCase
 {
     public function testFormat()
     {

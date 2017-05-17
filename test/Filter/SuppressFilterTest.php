@@ -9,12 +9,10 @@
 
 namespace ZendTest\Log\Filter;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Filter\SuppressFilter;
 
-/**
- * @group      Zend_Log
- */
-class SuppressFilterTest extends \PHPUnit_Framework_TestCase
+class SuppressFilterTest extends TestCase
 {
     public function setUp()
     {

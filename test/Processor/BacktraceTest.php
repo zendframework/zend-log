@@ -9,12 +9,10 @@
 
 namespace ZendTest\Log\Processor;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Processor\Backtrace;
 
-/**
- * @group      Zend_Log
- */
-class BacktraceTest extends \PHPUnit_Framework_TestCase
+class BacktraceTest extends TestCase
 {
     public function testProcess()
     {

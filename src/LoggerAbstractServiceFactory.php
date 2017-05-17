@@ -88,14 +88,14 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
             return $this->config;
         }
 
-        if (!$services->has('config')) {
+        if (! $services->has('config')) {
             $this->config = [];
 
             return $this->config;
         }
 
         $config = $services->get('config');
-        if (!isset($config[$this->configKey])) {
+        if (! isset($config[$this->configKey])) {
             $this->config = [];
 
             return $this->config;
@@ -121,8 +121,8 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
             $config['writer_plugin_manager'] = $services->get($config['writer_plugin_manager']);
         }
 
-        if ((!isset($config['writer_plugin_manager'])
-                || !$config['writer_plugin_manager'] instanceof AbstractPluginManager)
+        if ((! isset($config['writer_plugin_manager'])
+                || ! $config['writer_plugin_manager'] instanceof AbstractPluginManager)
             && $services->has('LogWriterManager')
         ) {
             $config['writer_plugin_manager'] = $services->get('LogWriterManager');
@@ -135,14 +135,14 @@ class LoggerAbstractServiceFactory implements AbstractFactoryInterface
             $config['processor_plugin_manager'] = $services->get($config['processor_plugin_manager']);
         }
 
-        if ((!isset($config['processor_plugin_manager'])
-                || !$config['processor_plugin_manager'] instanceof AbstractPluginManager)
+        if ((! isset($config['processor_plugin_manager'])
+                || ! $config['processor_plugin_manager'] instanceof AbstractPluginManager)
             && $services->has('LogProcessorManager')
         ) {
             $config['processor_plugin_manager'] = $services->get('LogProcessorManager');
         }
 
-        if (!isset($config['writers'])) {
+        if (! isset($config['writers'])) {
             return;
         }
 

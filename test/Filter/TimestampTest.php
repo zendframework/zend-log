@@ -24,8 +24,12 @@ class TimestampTest extends TestCase
     /**
      * @dataProvider dateTimeDataProvider
      */
-    public function testComparisonWhenValueIsSuppliedAsDateTimeObject($timestamp, $dateTimeValue, $operator, $expectation)
-    {
+    public function testComparisonWhenValueIsSuppliedAsDateTimeObject(
+        $timestamp,
+        $dateTimeValue,
+        $operator,
+        $expectation
+    ) {
         $filter = new TimestampFilter($dateTimeValue, null, $operator);
 
         $result = $filter->filter(['timestamp' => $timestamp]);
@@ -40,8 +44,13 @@ class TimestampTest extends TestCase
     /**
      * @dataProvider datePartDataProvider
      */
-    public function testComparisonWhenValueIsSuppliedAsDatePartValue($timestamp, $datePartVal, $datePartChar, $operator, $expectation)
-    {
+    public function testComparisonWhenValueIsSuppliedAsDatePartValue(
+        $timestamp,
+        $datePartVal,
+        $datePartChar,
+        $operator,
+        $expectation
+    ) {
         $filter = new TimestampFilter($datePartVal, $datePartChar, $operator);
 
         $result = $filter->filter(['timestamp' => $timestamp]);

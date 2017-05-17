@@ -51,13 +51,15 @@ class StreamWriterTest extends \PHPUnit_Framework_TestCase
     public function testConstructorThrowsWhenModeSpecifiedForExistingStream()
     {
         $stream = fopen('php://memory', 'w+');
-        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'existing stream');
+        $this->expectException('Zend\Log\Exception\InvalidArgumentException');
+        $this->expectExceptionMessage('existing stream');
         new StreamWriter($stream, 'w+');
     }
 
     public function testConstructorThrowsWhenStreamCannotBeOpened()
     {
-        $this->setExpectedException('Zend\Log\Exception\RuntimeException', 'cannot be opened');
+        $this->expectException('Zend\Log\Exception\RuntimeException');
+        $this->expectExceptionMessage('cannot be opened');
         new StreamWriter('');
     }
 
@@ -82,7 +84,8 @@ class StreamWriterTest extends \PHPUnit_Framework_TestCase
         $writer = new StreamWriter($stream);
         fclose($stream);
 
-        $this->setExpectedException('Zend\Log\Exception\RuntimeException', 'Unable to write');
+        $this->expectException('Zend\Log\Exception\RuntimeException');
+        $this->expectExceptionMessage('Unable to write');
         $writer->write(['message' => 'foo']);
     }
 
@@ -93,7 +96,8 @@ class StreamWriterTest extends \PHPUnit_Framework_TestCase
 
         $writer->shutdown();
 
-        $this->setExpectedException('Zend\Log\Exception\RuntimeException', 'Unable to write');
+        $this->expectException('Zend\Log\Exception\RuntimeException');
+        $this->expectExceptionMessage('Unable to write');
         $writer->write(['message' => 'this write should fail']);
     }
 
@@ -106,7 +110,7 @@ class StreamWriterTest extends \PHPUnit_Framework_TestCase
         $formatter = new SimpleFormatter($expected);
         $writer->setFormatter($formatter);
 
-        $writer->write(['bar'=>'baz']);
+        $writer->write(['bar' => 'baz']);
         rewind($stream);
         $contents = stream_get_contents($stream);
         fclose($stream);

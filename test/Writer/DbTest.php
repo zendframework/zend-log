@@ -30,13 +30,15 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
     public function testNotPassingTableNameToConstructorThrowsException()
     {
-        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'table name');
+        $this->expectException('Zend\Log\Exception\InvalidArgumentException');
+        $this->expectExceptionMessage('table name');
         $writer = new DbWriter($this->db);
     }
 
     public function testNotPassingDbToConstructorThrowsException()
     {
-        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException', 'Adapter');
+        $this->expectException('Zend\Log\Exception\InvalidArgumentException');
+        $this->expectExceptionMessage('Adapter');
         $writer = new DbWriter([]);
     }
 
@@ -190,14 +192,15 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->writer->write(['message' => 'this should not fail']);
         $this->writer->shutdown();
 
-        $this->setExpectedException('Zend\Log\Exception\RuntimeException', 'Database adapter is null');
+        $this->expectException('Zend\Log\Exception\RuntimeException');
+        $this->expectExceptionMessage('Database adapter is null');
         $this->writer->write(['message' => 'this should fail']);
     }
 
     public function testWriteDateTimeAsTimestamp()
     {
         $date = new DateTime();
-        $event = ['timestamp'=> $date];
+        $event = ['timestamp' => $date];
         $this->writer->write($event);
 
         $this->assertContains('query', array_keys($this->db->calls));
@@ -212,7 +215,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
     {
         $date = new DateTime();
         $event = [
-            'extra'=> [
+            'extra' => [
                 'request_time' => $date
             ]
         ];

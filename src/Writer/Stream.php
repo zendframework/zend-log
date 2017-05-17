@@ -50,10 +50,10 @@ class Stream extends AbstractWriter
 
         if (is_array($streamOrUrl)) {
             parent::__construct($streamOrUrl);
-            $mode            = isset($streamOrUrl['mode'])          ? $streamOrUrl['mode']          : null;
+            $mode            = isset($streamOrUrl['mode']) ? $streamOrUrl['mode'] : null;
             $logSeparator    = isset($streamOrUrl['log_separator']) ? $streamOrUrl['log_separator'] : null;
-            $filePermissions = isset($streamOrUrl['chmod'])         ? $streamOrUrl['chmod']         : $filePermissions;
-            $streamOrUrl     = isset($streamOrUrl['stream'])        ? $streamOrUrl['stream']        : null;
+            $filePermissions = isset($streamOrUrl['chmod']) ? $streamOrUrl['chmod'] : $filePermissions;
+            $streamOrUrl     = isset($streamOrUrl['stream']) ? $streamOrUrl['stream'] : null;
         }
 
         // Setting the default mode
@@ -79,13 +79,13 @@ class Stream extends AbstractWriter
             $this->stream = $streamOrUrl;
         } else {
             ErrorHandler::start();
-            if (isset($filePermissions) && !file_exists($streamOrUrl) && is_writable(dirname($streamOrUrl))) {
+            if (isset($filePermissions) && ! file_exists($streamOrUrl) && is_writable(dirname($streamOrUrl))) {
                 touch($streamOrUrl);
                 chmod($streamOrUrl, $filePermissions);
             }
             $this->stream = fopen($streamOrUrl, $mode, false);
             $error = ErrorHandler::stop();
-            if (!$this->stream) {
+            if (! $this->stream) {
                 throw new Exception\RuntimeException(sprintf(
                     '"%s" cannot be opened with mode "%s"',
                     $streamOrUrl,

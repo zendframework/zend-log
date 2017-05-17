@@ -37,7 +37,7 @@ class ExceptionHandler implements FormatterInterface
                 . $event['priority'] . ') ' . $event['message'] .' in '
                 . $event['extra']['file'] . ' on line ' . $event['extra']['line'];
 
-        if (!empty($event['extra']['trace'])) {
+        if (! empty($event['extra']['trace'])) {
             $outputTrace = '';
             foreach ($event['extra']['trace'] as $trace) {
                 $outputTrace .= "File  : {$trace['file']}\n"

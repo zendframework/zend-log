@@ -61,13 +61,13 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     {
         $writer = new MongoDBWriter($this->manager, $this->database, $this->collection);
 
-        $writer->setFormatter($this->getMock('Zend\Log\Formatter\FormatterInterface'));
+        $writer->setFormatter($this->createMock('Zend\Log\Formatter\FormatterInterface'));
         $this->assertAttributeEmpty('formatter', $writer);
     }
 
     public function testWriteWithDefaultSaveOptions()
     {
-        $event = ['message'=> 'foo', 'priority' => 42];
+        $event = ['message' => 'foo', 'priority' => 42];
 
         $writer = new MongoDBWriter($this->manager, $this->database, $this->collection);
 
@@ -117,7 +117,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
 
     public function testWriteWithoutCollectionNameWhenNamespaceIsGivenAsDatabase()
     {
-        $event = ['message'=> 'foo', 'priority' => 42];
+        $event = ['message' => 'foo', 'priority' => 42];
 
         $writer = new MongoDBWriter($this->manager, $this->database . '.' . $this->collection);
 
@@ -134,7 +134,7 @@ class MongoDBTest extends \PHPUnit_Framework_TestCase
     public function testWriteConvertsDateTimeToMongoDate()
     {
         $date = new DateTime();
-        $event = ['timestamp'=> $date];
+        $event = ['timestamp' => $date];
 
         $writer = new MongoDBWriter($this->manager, $this->database, $this->collection);
 

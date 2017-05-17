@@ -58,7 +58,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function testEmptyWriter()
     {
-        $this->setExpectedException(RuntimeException::class, 'No log writer specified');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('No log writer specified');
         $this->logger->log(Logger::INFO, 'test');
     }
 
@@ -225,7 +226,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testPassingInvalidArgumentToLogRaisesException($message, $extra)
     {
-        $this->setExpectedException('Zend\Log\Exception\InvalidArgumentException');
+        $this->expectException('Zend\Log\Exception\InvalidArgumentException');
         $this->logger->log(Logger::ERR, $message, $extra);
     }
 
@@ -480,10 +481,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCatchExceptionNotValidPriority()
     {
-        $this->setExpectedException(
-            'Zend\Log\Exception\InvalidArgumentException',
-            '$priority must be an integer >= 0 and < 8; received -1'
-        );
+        $this->expectException('Zend\Log\Exception\InvalidArgumentException');
+        $this->expectExceptionMessage('$priority must be an integer >= 0 and < 8; received -1');
         $writer = new MockWriter();
         $this->logger->addWriter($writer);
         $this->logger->log(-1, 'Foo');

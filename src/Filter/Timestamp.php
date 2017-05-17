@@ -62,13 +62,13 @@ class Timestamp implements FilterInterface
         if ($value instanceof DateTime) {
             $this->value = $value;
         } else {
-            if (!is_int($value)) {
+            if (! is_int($value)) {
                 throw new Exception\InvalidArgumentException(sprintf(
                     'Value must be either DateTime instance or integer; received "%s"',
                     gettype($value)
                 ));
             }
-            if (!is_string($dateFormatChar)) {
+            if (! is_string($dateFormatChar)) {
                 throw new Exception\InvalidArgumentException(sprintf(
                     'Date format character must be supplied as string; received "%s"',
                     gettype($dateFormatChar)
@@ -81,7 +81,7 @@ class Timestamp implements FilterInterface
 
         if ($operator === null) {
             $operator = '<=';
-        } elseif (!in_array(
+        } elseif (! in_array(
             $operator,
             ['<', 'lt', '<=', 'le', '>', 'gt', '>=', 'ge', '==', '=', 'eq', '!=', '<>']
         )) {

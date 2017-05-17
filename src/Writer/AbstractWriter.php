@@ -101,8 +101,10 @@ abstract class AbstractWriter implements WriterInterface
                         if (is_int($filter) || is_string($filter) || $filter instanceof Filter\FilterInterface) {
                             $this->addFilter($filter);
                         } elseif (is_array($filter)) {
-                            if (!isset($filter['name'])) {
-                                throw new Exception\InvalidArgumentException('Options must contain a name for the filter');
+                            if (! isset($filter['name'])) {
+                                throw new Exception\InvalidArgumentException(
+                                    'Options must contain a name for the filter'
+                                );
                             }
                             $filterOptions = (isset($filter['options'])) ? $filter['options'] : null;
                             $this->addFilter($filter['name'], $filterOptions);
@@ -116,7 +118,7 @@ abstract class AbstractWriter implements WriterInterface
                 if (is_string($formatter) || $formatter instanceof Formatter\FormatterInterface) {
                     $this->setFormatter($formatter);
                 } elseif (is_array($formatter)) {
-                    if (!isset($formatter['name'])) {
+                    if (! isset($formatter['name'])) {
                         throw new Exception\InvalidArgumentException('Options must contain a name for the formatter');
                     }
                     $formatterOptions = (isset($formatter['options'])) ? $formatter['options'] : null;
@@ -144,7 +146,7 @@ abstract class AbstractWriter implements WriterInterface
             $filter = $this->filterPlugin($filter, $options);
         }
 
-        if (!$filter instanceof Filter\FilterInterface) {
+        if (! $filter instanceof Filter\FilterInterface) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Filter must implement %s\Filter\FilterInterface; received "%s"',
                 __NAMESPACE__,
@@ -181,7 +183,7 @@ abstract class AbstractWriter implements WriterInterface
         if (is_string($plugins)) {
             $plugins = new $plugins;
         }
-        if (!$plugins instanceof LogFilterPluginManager) {
+        if (! $plugins instanceof LogFilterPluginManager) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Writer plugin manager must extend %s; received %s',
                 LogFilterPluginManager::class,
@@ -230,7 +232,7 @@ abstract class AbstractWriter implements WriterInterface
         if (is_string($plugins)) {
             $plugins = new $plugins;
         }
-        if (!$plugins instanceof LogFormatterPluginManager) {
+        if (! $plugins instanceof LogFormatterPluginManager) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
                     'Writer plugin manager must extend %s; received %s',
@@ -265,14 +267,14 @@ abstract class AbstractWriter implements WriterInterface
     public function write(array $event)
     {
         foreach ($this->filters as $filter) {
-            if (!$filter->filter($event)) {
+            if (! $filter->filter($event)) {
                 return;
             }
         }
 
         $errorHandlerStarted = false;
 
-        if ($this->convertWriteErrorsToExceptions && !ErrorHandler::started()) {
+        if ($this->convertWriteErrorsToExceptions && ! ErrorHandler::started()) {
             ErrorHandler::start($this->errorsToExceptionsConversionLevel);
             $errorHandlerStarted = true;
         }
@@ -308,7 +310,7 @@ abstract class AbstractWriter implements WriterInterface
             $formatter = $this->formatterPlugin($formatter, $options);
         }
 
-        if (!$formatter instanceof Formatter\FormatterInterface) {
+        if (! $formatter instanceof Formatter\FormatterInterface) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Formatter must implement %s\Formatter\FormatterInterface; received "%s"',
                 __NAMESPACE__,

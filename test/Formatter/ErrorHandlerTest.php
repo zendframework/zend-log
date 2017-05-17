@@ -73,9 +73,13 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
                         ]
                 ]
         ];
-        $formatString = '%extra[context][object1]% %extra[context][object2]% %extra[context][string]% %extra[context][array]% %extra[context][array][key]%';
+        $formatString = '%extra[context][object1]% %extra[context][object2]% %extra[context][string]% '
+            .'%extra[context][array]% %extra[context][array][key]%';
         $formatter = new ErrorHandler($formatString);
         $output = $formatter->format($event);
-        $this->assertEquals($stringObject->__toString() .' %extra[context][object2]% test1 %extra[context][array]% test2', $output);
+        $this->assertEquals(
+            $stringObject->__toString() .' %extra[context][object2]% test1 %extra[context][array]% test2',
+            $output
+        );
     }
 }

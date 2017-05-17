@@ -26,6 +26,9 @@ All notable changes to this project will be documented in this file, in reverse 
   configuration will now be honored in non-zend-mvc contexts.
 - [#62](https://github.com/zendframework/zend-log/pull/62) fixes registration of
   the alias and factory for the `PsrPlaceholder` processor plugin.
+- [#66](https://github.com/zendframework/zend-log/pull/66) fixes the namespace
+  of the `LogFormatterProviderInterface` when registering the
+  `LogFormatterManager` with the zend-modulemanager `ServiceListener`.
 
 ## 2.9.1 - 2016-08-11
 

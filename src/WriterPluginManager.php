@@ -21,6 +21,7 @@ class WriterPluginManager extends AbstractPluginManager
     protected $aliases = [
         'chromephp'      => Writer\ChromePhp::class,
         'db'             => Writer\Db::class,
+        'errorlog'       => Writer\ErrorLog::class,
         'fingerscrossed' => Writer\FingersCrossed::class,
         'firephp'        => Writer\FirePhp::class,
         'mail'           => Writer\Mail::class,
@@ -44,6 +45,7 @@ class WriterPluginManager extends AbstractPluginManager
     protected $factories = [
         Writer\ChromePhp::class      => WriterFactory::class,
         Writer\Db::class             => WriterFactory::class,
+        Writer\ErrorLog::class       => WriterFactory::class,
         Writer\FirePhp::class        => WriterFactory::class,
         Writer\Mail::class           => WriterFactory::class,
         Writer\Mock::class           => WriterFactory::class,
@@ -60,6 +62,7 @@ class WriterPluginManager extends AbstractPluginManager
         // resolved alias is used as the requested name passed to the factory.
         'zendlogwriterchromephp'      => WriterFactory::class,
         'zendlogwriterdb'             => WriterFactory::class,
+        'zendlogwritererrorlog'       => WriterFactory::class,
         'zendlogwriterfirephp'        => WriterFactory::class,
         'zendlogwritermail'           => WriterFactory::class,
         'zendlogwritermock'           => WriterFactory::class,

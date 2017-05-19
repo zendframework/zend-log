@@ -27,6 +27,9 @@
     "provide": {
         "psr/log-implementation": "1.0.0"
     },
+    "provide": {
+        "psr/log-implementation": "1.0.0"
+    },
     "suggest": {
         "ext-mongo": "mongo extension to use Mongo writer",
         "ext-mongodb": "mongodb extension to use MongoDB writer",

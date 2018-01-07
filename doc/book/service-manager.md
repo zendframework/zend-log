@@ -44,20 +44,29 @@ return [
     'log' => [
         'MyLogger' => [
             'writers' => [
-                [
+                'stream' => [
                     'name' => 'stream',
-                    'priority' => Logger::DEBUG,
+                    'priority' => 1,
                     'options' => [
                         'stream' => 'php://output',
                         'formatter' => [
                             'name' => 'MyFormatter',
                         ],
                         'filters' => [
-                            [
-                                'name' => 'MyFilter',
+                            'priority' => [
+                                'name' => 'priority',
+                                'options' => [
+                                    'operator' => '<=',
+                                    'priority' => \Zend\Log\Logger::INFO,
+                                ],
                             ],
                         ],
                     ],
+                ],
+            ],
+            'processors' => [
+                'requestid' => [
+                    'name' => \Zend\Log\Processor\RequestId::class,
                 ],
             ],
         ],
@@ -72,6 +81,21 @@ the configuration (`MyLogger`):
 /** @var \Zend\Log\Logger $logger */ 
 $logger = $container->get('MyLogger');
 ```
+
+Notes:
+
+- The keys of the writers are not required, but they make the merge of the
+config files easier. The same remark can be made for the list of processors,
+filters, etc.
+
+- The key `priority` next to the key `name` should not be mingled with the
+priority of the writer. The first is the priority in the queue, i.e. the writer
+among all the writers here. It can be any integer, and the default is `1`.
+Bigger the number, bigger is the priority. A writer with a lower priority will
+be triggered later. The second priority is a filter, the severity in fact. It
+means that the writer will be enabled only when the filter is lower or equal (by
+default) to the priority (the biggest severity is 0).
+
 
 ## Custom Writers, Formatters, Filters, and Processors
 

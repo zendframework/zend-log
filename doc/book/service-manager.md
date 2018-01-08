@@ -86,17 +86,6 @@ the configuration (`MyLogger`):
 $logger = $container->get('MyLogger');
 ```
 
-The key `priority` next to the key `name` should not be mingled with the
-priority of the writer. The first is the priority in the queue, i.e. the writer
-among all the writers here. It can be any integer, and the default is `1`
-(`\Zend\Log\Logger::ALERT`) for the writers. Bigger the number, bigger is the
-priority. A writer with a lower priority will be triggered later, so `ALERT` is
-triggered after `DEBUG`. For details on the list of the priorities, see
-[Using Built-in Priorities](https://docs.zendframework.com/zend-log/intro/#using-built-in-priorities).
-The second priority is a filter, the severity in fact. It means that the writer
-will be enabled only when the filter is lower or equal (by default) to the
-priority (the biggest severity is 0).
-
 For the formatter and the filters, only the `name` is required, the options have
 default values (the values set in this example are the default ones). When only
 the name is needed, a shorter format can be used:

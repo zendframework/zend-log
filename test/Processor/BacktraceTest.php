@@ -14,10 +14,15 @@ use Zend\Log\Processor\Backtrace;
 
 class BacktraceTest extends TestCase
 {
+    private $processor;
+
+    protected function setUp()
+    {
+        $this->processor = new Backtrace();
+    }
+
     public function testProcess()
     {
-        $processor = new Backtrace();
-
         $event = [
                 'timestamp'    => '',
                 'priority'     => 1,
@@ -26,11 +31,18 @@ class BacktraceTest extends TestCase
                 'extra'        => []
         ];
 
-        $event = $processor->process($event);
+        $event = $this->processor->process($event);
 
         $this->assertArrayHasKey('file', $event['extra']);
         $this->assertArrayHasKey('line', $event['extra']);
         $this->assertArrayHasKey('class', $event['extra']);
         $this->assertArrayHasKey('function', $event['extra']);
+    }
+
+    public function testCanAddAndGetIgnoredNamespaces()
+    {
+        $this->assertSame(['Zend\\Log'], $this->processor->getIgnoredNamespaces());
+        $this->assertSame($this->processor, $this->processor->addIgnoredNamespace('Foo\\Bar'));
+        $this->assertSame(['Zend\\Log', 'Foo\\Bar'], $this->processor->getIgnoredNamespaces());
     }
 }

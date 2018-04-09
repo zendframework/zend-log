@@ -18,7 +18,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#79](https://github.com/zendframework/zend-log/pull/79) provides fixes to
+  ensure the `FingersCrossed` and `MongoDB` writers work under PHP 7.2.
 
 ## 2.9.2 - 2017-05-17
 

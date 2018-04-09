@@ -267,7 +267,7 @@ $logger-&gt;info('Informational message');</code></pre>
 
 <p>The following table details all allowed constructor arguments and their
 corresponding configuration options.</p>
-<div class="table-responsive"><table>
+<div class="table-responsive"><div class="table-responsive"><table>
 <thead>
 <tr>
 <th>Constructor Argument</th>
@@ -302,7 +302,7 @@ corresponding configuration options.</p>
 <td>Permissions mode to use for stream resource; defaults to existing file/stream permissions</td>
 </tr>
 </tbody>
-</table></div>
+</table></div></div>
 <h2 id="writing-to-databases">Writing to Databases</h2>
 <p><code>Zend\Log\Writer\Db</code> writes log information to a database table using
 <code>Zend\Db\Adapter\Adapter</code>. The constructor of <code>Zend\Log\Writer\Db</code> receives a
@@ -404,7 +404,7 @@ keys:</p>
 
 
 <p>And expects the following data:</p>
-<div class="table-responsive"><table>
+<div class="table-responsive"><div class="table-responsive"><table>
 <thead>
 <tr>
 <th>Array Index</th>
@@ -444,7 +444,7 @@ keys:</p>
 <td>Log formatter(s)</td>
 </tr>
 </tbody>
-</table></div>
+</table></div></div>
 <p>Basic usage of the configuration array looks like:</p>
 <pre class="codehilite"><code class="language-php">$transport = new \Zend\Mail\Transport\Smtp();
 // TODO configure the SMTP transport
@@ -501,7 +501,7 @@ $logger-&gt;info('Informational message');</code></pre>
 
 
 <p><code>collection</code>, <code>database</code>, and <code>mongo</code> are required. Each key accepts:</p>
-<div class="table-responsive"><table>
+<div class="table-responsive"><div class="table-responsive"><table>
 <thead>
 <tr>
 <th>Array Index</th>
@@ -541,7 +541,7 @@ $logger-&gt;info('Informational message');</code></pre>
 <td>Log formatter(s)</td>
 </tr>
 </tbody>
-</table></div>
+</table></div></div>
 <p>And <code>Zend\Log\Writer\MongoDB</code> is used like this:</p>
 <pre class="codehilite"><code class="language-php">$mongo = new MongoClient();
 
@@ -586,7 +586,7 @@ $logger-&gt;info('Informational message');</code></pre>
 
 
 <p>The application name and syslog facility may be set</p>
-<div class="table-responsive"><table>
+<div class="table-responsive"><div class="table-responsive"><table>
 <thead>
 <tr>
 <th>Array Index</th>
@@ -616,7 +616,7 @@ $logger-&gt;info('Informational message');</code></pre>
 <td>Log formatter(s)</td>
 </tr>
 </tbody>
-</table></div>
+</table></div></div>
 <pre class="codehilite"><code class="language-php">$writer = new \Zend\Log\Writer\Syslog([
     'application' =&gt; '',
     'facility' =&gt; '',
@@ -642,7 +642,7 @@ $logger-&gt;info('Informational message');</code></pre>
 
 
 <p><code>Zend\Log\Writer\AbstractWriter</code> options are available.</p>
-<div class="table-responsive"><table>
+<div class="table-responsive"><div class="table-responsive"><table>
 <thead>
 <tr>
 <th>Array Index</th>
@@ -662,7 +662,7 @@ $logger-&gt;info('Informational message');</code></pre>
 <td>Log formatter(s)</td>
 </tr>
 </tbody>
-</table></div>
+</table></div></div>
 <pre class="codehilite"><code class="language-php">$writer = new \Zend\Log\Writer\ZendMonitor([
     'filters' =&gt; [],
     'formatter' =&gt; []

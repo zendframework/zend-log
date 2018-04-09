@@ -243,9 +243,10 @@ class FingersCrossed extends AbstractWriter
      * Fomatters must be set on the wrapped writer.
      *
      * @param string|FormatterInterface $formatter
+     * @param array|null $options (unused)
      * @return WriterInterface
      */
-    public function setFormatter($formatter)
+    public function setFormatter($formatter, array $options = null)
     {
         return $this->writer;
     }

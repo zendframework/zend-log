@@ -22,7 +22,7 @@
         "zendframework/zend-escaper": "^2.5",
         "zendframework/zend-filter": "^2.5",
         "zendframework/zend-mail": "^2.6.1",
-        "zendframework/zend-validator": "^2.6"
+        "zendframework/zend-validator": "^2.10.1"
     },
     "provide": {
         "psr/log-implementation": "1.0.0"

@@ -11,8 +11,6 @@ use DateTime;
 
 class Json implements FormatterInterface
 {
-
-
     /**
      * Format specifier for DateTime objects in event data (default: ISO 8601)
      *
@@ -20,7 +18,6 @@ class Json implements FormatterInterface
      * @var string
      */
     protected $dateTimeFormat = self::DEFAULT_DATETIME_FORMAT;
-
 
     /**
      * Formats data into a single line to be written by the writer.
@@ -34,7 +31,10 @@ class Json implements FormatterInterface
             $event['timestamp'] = $event['timestamp']->format($this->getDateTimeFormat());
         }
 
-        return @json_encode($event, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION);
+        return @json_encode(
+            $event,
+            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK | JSON_PRESERVE_ZERO_FRACTION
+        );
     }
 
     /**

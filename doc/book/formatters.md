@@ -38,6 +38,24 @@ format string. This string contains keys surrounded by percent signs (e.g.
 You can retrieve the default keys by using the `DEFAULT_FORMAT` constant from
 `Zend\Log\Formatter\Simple`.
 
+## Formatting to JSON
+
+`Zend\Log\Formatter\Json` is the JSON formatter.  By default, it
+automatically logs all items as JSON:
+
+```php
+$writer = new Zend\Log\Writer\Stream('php://output');
+$formatter = new Zend\Log\Formatter\Json();
+$writer->setFormatter($formatter);
+
+$logger = new Zend\Log\Logger();
+$logger->addWriter($writer);
+
+$logger->info('there');
+
+// outputs "{"timestamp":"2016-09-07T13:58:01+00:00","priority":6,"priorityName":"INFO","message":"there","extra":[]}"
+```
+
 ## Formatting to XML
 
 `Zend\Log\Formatter\Xml` formats log data into XML strings. By default, it

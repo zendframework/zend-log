@@ -10,19 +10,11 @@ branches:
 cache:
   directories:
     - $HOME/.composer/cache
-    - $HOME/.local
-    - zf-mkdoc-theme
 
 env:
   global:
     - COMPOSER_ARGS="--no-interaction"
     - COVERAGE_DEPS="php-coveralls/php-coveralls"
-    - LEGACY_DEPS="phpunit/phpunit"
-    - SITE_URL: https://zendframework.github.io/zend-log
-    - GH_USER_NAME: "Matthew Weier O'Phinney"
-    - GH_USER_EMAIL: matthew@weierophinney.net
-    - GH_REF: github.com/zendframework/zend-log.git
-    - secure: "qA/Jf9N8LOyGch3Wbm/zPKfe+MLSDJuIDiuCklkTULey+gJ9e6RIo0vpmaPfs+de9667teTq0j9xvDlDG/E+/H/CnPHAfs+oZ8SJQiQoXTAZeJ383GORSrj46UScDrWrr+EHAKrj9CWcLLghYfC3Yg4g5j50o6if3bs5s/wLjiYQnTNpzql2f3l8zG/+41wCB+z16RE0Yp5HGlvGi27h0Gw/g5+dTmVqz6PnWBHrheKe5K52p1+8kcBjOO+s08idhgZ0ES2Byd80nfDeV8GCpmSNyf4fLRvgxYX0ikHPPygv9ri4d2v12rgsgTV+aNGH5v9XsaF//vO8OzEt8ZNes17OMj6Em3uZxkdv/Lk6SaqCNQy47zqrkTcfWEFn45bFGMdHaI4CJ1mMa/BAruKgrzU649wmruILZ0IC2FWsTvfnlYyXHYsCNY8LRksBRkBGq5xQxa+0VVXlUnalvL5Pf+FMToznLIoa1DlZx4K1x7/sjCHpiedTehWL+D8rcTJt16j7Pkgu6doXgBUA98qxb/o0fp1lf9bwe2d6cDAifNS8xmcA2apqM3OaGKbhKQ0tzHi4HwObPG7MBXjkITsQmpd/T8G981OCSTcH3w7bKMZ5cf5j7e8NVuyFiQ/EQti82D1ga/pz+Unwcb4uq1yEAozHbjshLYF+HGTg3GVZZwI="
 
 services:
   - mongodb
@@ -35,9 +27,9 @@ matrix:
     - php: 5.6
       env:
         - DEPS=locked
+        - LEGACY_DEPS="phpunit/phpunit"
         - TEST_COVERAGE=true
         - DEPLOY_DOCS="$(if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then echo -n 'true' ; else echo -n 'false' ; fi)"
-        - PATH="$HOME/.local/bin:$PATH"
     - php: 5.6
       env:
         - DEPS=latest
@@ -60,6 +52,15 @@ matrix:
     - php: 7.1
       env:
         - DEPS=latest
+    - php: 7.2
+      env:
+        - DEPS=lowest
+    - php: 7.2
+      env:
+        - DEPS=locked
+    - php: 7.2
+      env:
+        - DEPS=latest
     - php: hhvm
       env:
         - DEPS=lowest
@@ -77,32 +78,21 @@ before_install:
   - if [[ $TRAVIS_PHP_VERSION =~ ^5.6 ]]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini ; fi
   - if [[ $TRAVIS_PHP_VERSION == "hhvm" ]]; then echo "extension = mongodb.so" >> /etc/hhvm/php.ini ; fi
   - if [[ $TRAVIS_PHP_VERSION == "hhvm" ]]; then echo "extension = mongo.so" >> /etc/hhvm/php.ini ; fi
-  - travis_retry composer self-update
 
 install:
   - travis_retry composer install $COMPOSER_ARGS --ignore-platform-reqs
-  - if [[ $TRAVIS_PHP_VERSION =~ ^5.6 ]]; then travis_retry composer update $COMPOSER_ARGS --with-dependencies $LEGACY_DEPS ; fi
+  - if [[ $LEGACY_DEPS != '' ]]; then travis_retry composer update $COMPOSER_ARGS --with-dependencies $LEGACY_DEPS ; fi
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
   - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS ; fi
-  - composer show
+  - stty cols 120 && composer show
 
 script:
   - if [[ $TEST_COVERAGE == 'true' ]]; then composer test-coverage ; else composer test ; fi
   - if [[ $CS_CHECK == 'true' ]]; then composer cs-check ; fi
-  - if [[ $DEPLOY_DOCS == "true" && "$TRAVIS_TEST_RESULT" == "0" ]]; then wget -O theme-installer.sh "https://raw.githubusercontent.com/zendframework/zf-mkdoc-theme/master/theme-installer.sh" ; chmod 755 theme-installer.sh ; ./theme-installer.sh ; fi
 
 after_script:
   - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry php vendor/bin/php-coveralls -v ; fi
 
-after_success:
-  - if [[ $DEPLOY_DOCS == "true" ]]; then echo "Preparing to build and deploy documentation" ; ./zf-mkdoc-theme/deploy.sh ; echo "Completed deploying documentation" ; fi
-
-
 notifications:
   email: false
-  slack:
-    rooms:
-      - secure: "U6BG5KdrTgOnhEcDyTR/kdRRVuWxCqJMnL2xhh4u1S1cpVm46yU324HMCEaAr2DNep4U79qfhCsChDVBYuTF7cnBP5UVakP9wYVrKLywn2yBeJt8sC0sq6Y9nV0/zxxGZomf4gZfcBL4nKarxqycJUyNBz/tKwW1TE+NRdY0VmItPnaCQNXMi04fQvU55XPkcwO7BPmp7srDZCKHNI1v7JFVklXlFZvKt3jAQl77/hC0Z24vEkaFNYsjeOnTvkFWssAWGyxuOYgyBd3xWIB4HAJx0Z35GsZuAUiwplEIkyYNVjEwmDlSagAFqYKWjMq+biszzUxk6z6S2w2C0wx0CFpr1U/BIAayaFbaEYy07ls/MzHStV0xaYDZAdODmRTmOP7a9EO7t2Om34ry7o51qCu1C6Xq89nTMDX0+pQV8lHdfPiFTBoOSHnQu84kpCVIEI9cT+nLEX3fm+5C8sNdkbocZNm2mezhzvCWhrD4zSBeM7YN5f2PbGAYBySk1RqJJ1LJIMdR9Zb5B/u84nx5jVz+II3kJKjEoZFQvdDZNccnHclo/aOeG4KjaNXLcoC2Z+LDf2/ZyoFPW7tO3/MAmSCekD4wTaXKaN6Xl4kzw/tO3AzDR46mB/U10f0zBO8cZGgF5CAQiHsawlIjWergvzvCn7P1MZcBxYjFbAtmgdw="
-    on_success: change
-    on_failure: always

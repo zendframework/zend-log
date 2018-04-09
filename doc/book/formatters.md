@@ -38,10 +38,10 @@ format string. This string contains keys surrounded by percent signs (e.g.
 You can retrieve the default keys by using the `DEFAULT_FORMAT` constant from
 `Zend\Log\Formatter\Simple`.
 
-## Formatting to Json
+## Formatting to JSON
 
-`Zend\Log\Formatter\Json` is the Json formatter.  By default, it
-automatically logs all items as Json:
+`Zend\Log\Formatter\Json` is the JSON formatter.  By default, it
+automatically logs all items as JSON:
 
 ```php
 $writer = new Zend\Log\Writer\Stream('php://output');

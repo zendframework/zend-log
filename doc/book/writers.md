@@ -534,3 +534,17 @@ which means that:
 - higher integer values indicate higher priority (triggered earliest);
 - lower integer values (including negative values) have lower priority
 (triggered last).
+
+## Distinction between priority in the queue of writers and the filter `Priority`
+
+When you add a writer to the logger, you can set its priority as a second
+argument. This priority is the priority in the queue of all writers of the
+logger. It can be any integer, and the default is `1` (`\Zend\Log\Logger::ALERT`)
+for the writers; the bigger the number, the higher the priority. A writer with a
+lower priority will be triggered later, so `ALERT` is triggered after `DEBUG`.
+For details on the list of the priorities, see the section entitled [Using Built-in Priorities](intro.md#using-built-in-priorities).
+
+This priority should not be confused with the [`Priority` filter](filters.md#available-filters),
+which determines if a message meets a _severity_ threshold. When a `Priority`
+filter is attached, the writer will output the message only when the filter is
+lower or equal (by default) to the priority (the biggest severity is 0).

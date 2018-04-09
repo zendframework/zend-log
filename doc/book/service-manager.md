@@ -44,20 +44,33 @@ return [
     'log' => [
         'MyLogger' => [
             'writers' => [
-                [
+                'stream' => [
                     'name' => 'stream',
-                    'priority' => Logger::DEBUG,
+                    'priority' => \Zend\Log\Logger::ALERT,
                     'options' => [
                         'stream' => 'php://output',
                         'formatter' => [
-                            'name' => 'MyFormatter',
+                            'name' => \Zend\Log\Formatter\Simple::class,
+                            'options' => [
+                                'format' => '%timestamp% %priorityName% (%priority%): %message% %extra%',
+                                'dateTimeFormat' => 'c',
+                            ],
                         ],
                         'filters' => [
-                            [
-                                'name' => 'MyFilter',
+                            'priority' => [
+                                'name' => 'priority',
+                                'options' => [
+                                    'operator' => '<=',
+                                    'priority' => \Zend\Log\Logger::INFO,
+                                ],
                             ],
                         ],
                     ],
+                ],
+            ],
+            'processors' => [
+                'requestid' => [
+                    'name' => \Zend\Log\Processor\RequestId::class,
                 ],
             ],
         ],
@@ -71,6 +84,30 @@ the configuration (`MyLogger`):
 ```php
 /** @var \Zend\Log\Logger $logger */ 
 $logger = $container->get('MyLogger');
+```
+
+For the formatter and the filters, only the `name` is required, the options have
+default values (the values set in this example are the default ones). When only
+the name is needed, a shorter format can be used:
+
+```php
+// module.config.php
+                    'options' => [
+                        'stream' => 'php://output',
+                        'formatter' => \Zend\Log\Formatter\Simple::class,
+                        'filters' => [
+                            'priority' => \Zend\Log\Filter\Priority::class,
+                        ],
+                    ],
+];
+```
+
+Because the main filter is `Priority`, it can be set directly too:
+
+```php
+// module.config.php
+                        'filters' => \Zend\Log\Logger::INFO,
+];
 ```
 
 ## Custom Writers, Formatters, Filters, and Processors

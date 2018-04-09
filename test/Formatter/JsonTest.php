@@ -10,9 +10,6 @@ namespace ZendTest\Log\Formatter;
 use DateTime;
 use Zend\Log\Formatter\Json;
 
-/**
- * @group      Zend_Log
- */
 class JsonTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaultFormat()
@@ -22,12 +19,18 @@ class JsonTest extends \PHPUnit_Framework_TestCase
         $line = $f->format(['timestamp' => $date, 'message' => 'foo', 'priority' => 42]);
         $json = json_decode($line);
 
-
         $this->assertEquals($date->format('c'), $json->timestamp);
         $this->assertEquals('foo', $json->message);
         $this->assertEquals((string)42, $json->priority);
     }
 
+    public function provideDateTimeFormats()
+    {
+        return [
+            ['r'],
+            ['U'],
+        ];
+    }
 
     /**
      * @dataProvider provideDateTimeFormats
@@ -42,14 +45,5 @@ class JsonTest extends \PHPUnit_Framework_TestCase
         $json = json_decode($line);
 
         $this->assertEquals($date->format($dateTimeFormat), $json->timestamp);
-    }
-
-
-    public function provideDateTimeFormats()
-    {
-        return [
-            ['r'],
-            ['U'],
-        ];
     }
 }

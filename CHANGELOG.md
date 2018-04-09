@@ -2,11 +2,13 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.10.0 - TBD
+## 2.10.0 - 2018-04-09
 
 ### Added
 
-- Nothing.
+- [#58](https://github.com/zendframework/zend-log/pull/58) adds the class
+  `Zend\Log\Formatter\Json`, which will format log lines as individual JSON
+  objects.
 
 ### Deprecated
 

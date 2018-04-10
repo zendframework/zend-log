@@ -18,7 +18,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#88](https://github.com/zendframework/zend-log/pull/88) removes
+  support for HHVM.
 
 ### Fixed
 

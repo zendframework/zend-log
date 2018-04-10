@@ -1,13 +1,21 @@
 {
     "name": "zendframework/zend-log",
-    "description": "component for general purpose logging",
+    "description": "Robust, composite logger with filtering, formatting, and PSR-3 support",
     "license": "BSD-3-Clause",
     "keywords": [
-        "zf2",
+        "zendframework",
+        "zf",
         "log",
         "logging"
     ],
-    "homepage": "https://github.com/zendframework/zend-log",
+    "support": {
+        "docs": "https://docs.zendframework.com/zend-log/",
+        "issues": "https://github.com/zendframework/zend-log/issues",
+        "source": "https://github.com/zendframework/zend-log",
+        "rss": "https://github.com/zendframework/zend-log/releases.atom",
+        "slack": "https://zendframework-slack.herokuapp.com",
+        "forum": "https://discourse.zendframework.com/c/questions/components"
+    },
     "require": {
         "php": "^5.6 || ^7.0",
         "psr/log": "^1.0",
@@ -36,18 +44,6 @@
         "zendframework/zend-mail": "Zend\\Mail component to use the email log writer",
         "zendframework/zend-validator": "Zend\\Validator component to block invalid log messages"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.10.x-dev",
-            "dev-develop": "2.11.x-dev"
-        },
-        "zf": {
-            "component": "Zend\\Log",
-            "config-provider": "Zend\\Log\\ConfigProvider"
-        }
-    },
     "autoload": {
         "psr-4": {
             "Zend\\Log\\": "src/"
@@ -61,6 +57,19 @@
             "autoload/phpunit.php",
             "test/Writer/TestAsset/chmod.php"
         ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.10.x-dev",
+            "dev-develop": "2.11.x-dev"
+        },
+        "zf": {
+            "component": "Zend\\Log",
+            "config-provider": "Zend\\Log\\ConfigProvider"
+        }
     },
     "scripts": {
         "check": [

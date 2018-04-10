@@ -1,6 +1,6 @@
 # Service Manager
 
-The `zend-log` package provides several components which can be used in 
+The `zend-log` package provides several components which can be used in
 combination with [zend-servicemanager](https://docs.zendframework.com/zend-servicemanager).
 These components make it possible to quickly setup a logger instance or to
 provide custom writers, filters, formatters, or processors.
@@ -82,7 +82,7 @@ The logger can now be retrieved via the service manager using the key used in
 the configuration (`MyLogger`):
 
 ```php
-/** @var \Zend\Log\Logger $logger */ 
+/** @var \Zend\Log\Logger $logger */
 $logger = $container->get('MyLogger');
 ```
 

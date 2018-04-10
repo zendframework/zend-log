@@ -35,4 +35,4 @@ Filter Class | Short Name | Description
 `Zend\Log\Filter\Regex` | Regex | Filter out any log messages not matching the regex pattern. This filter uses the `preg_match()` function.
 `Zend\Log\Filter\Timestamp` | Timestamp | Filters log events based on the time when they were triggered. It can be configured by specifying either `idate()`-compliant format characters along with the desired value, or a full `DateTime` instance. An appropriate comparison operator must be supplied in either case.
 `Zend\Log\Filter\SuppressFilter` | SuppressFilter | A simple boolean filter; a boolean `true` value passed to the constructor suppresses all log events, while a boolean `false` value accepts all log events.
-`Zend\Log\Filter\Validator` | Validator | Filter any log messages that fail validaton by the composed `Zend\Validator\ValidatorInterface` implementation.  
+`Zend\Log\Filter\Validator` | Validator | Filter any log messages that fail validaton by the composed `Zend\Validator\ValidatorInterface` implementation.

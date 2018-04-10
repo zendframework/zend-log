@@ -7,6 +7,5 @@
 backends, formatting messages sent to the log, and filtering messages from being
 logged.
 
-
 - File issues at https://github.com/zendframework/zend-log/issues
 - Documentation is at https://zendframework.github.io/zend-log/

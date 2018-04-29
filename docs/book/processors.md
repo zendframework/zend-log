@@ -60,6 +60,14 @@ $event = [
 ];
 ```
 
+By default, classes under the `Zend\Log` namespace are excluded from the backtrace that is logged so that the actual application code triggering the log event can be identified. You can add your own excluded namespaces to the backtrace processor before adding it to the `Logger` instance (note the required escaping of the `\`):
+
+```php
+$processor = new Zend\Log\Processor\Backtrace();
+$processor->addIgnoredNamespace('Foo\\Log');
+$logger->addProcessor($processor);
+```
+
 ### PsrPlaceholder
 
 `Zend\Log\Processor\PsrPlaceholder` replaces [PSR-3](http://www.php-fig.org/psr/psr-3/)-formatted

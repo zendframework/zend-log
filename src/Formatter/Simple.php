@@ -63,7 +63,7 @@ class Simple extends Base
 
         $event = parent::format($event);
         foreach ($event as $name => $value) {
-            if ('extra' == $name && count($value)) {
+            if ('extra' == $name && $value) {
                 $value = $this->normalize($value);
             } elseif ('extra' == $name) {
                 // Don't print an empty array

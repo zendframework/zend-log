@@ -174,7 +174,7 @@ class Syslog extends AbstractWriter
             return $this;
         }
 
-        if (! count($this->validFacilities)) {
+        if (! $this->validFacilities) {
             $this->initializeValidFacilities();
         }
 

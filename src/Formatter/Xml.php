@@ -66,15 +66,15 @@ class Xml implements FormatterInterface
                 'rootElement' => array_shift($args)
             ];
 
-            if (count($args)) {
+            if ($args) {
                 $options['elementMap'] = array_shift($args);
             }
 
-            if (count($args)) {
+            if ($args) {
                 $options['encoding'] = array_shift($args);
             }
 
-            if (count($args)) {
+            if ($args) {
                 $options['dateTimeFormat'] = array_shift($args);
             }
         }

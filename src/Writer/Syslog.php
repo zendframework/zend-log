@@ -184,7 +184,7 @@ class Syslog extends AbstractWriter
             );
         }
 
-        if ('WIN' == strtoupper(substr(PHP_OS, 0, 3))
+        if (0 === stripos(PHP_OS, 'WIN')
             && ($facility !== LOG_USER)
         ) {
             throw new Exception\InvalidArgumentException(

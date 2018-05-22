@@ -3,16 +3,16 @@
 
     
     <url>
-     <loc>None/</loc>
-     <lastmod>2016-08-11</lastmod>
+     <loc>/</loc>
+     <lastmod>2018-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/intro/</loc>
-     <lastmod>2016-08-11</lastmod>
+     <loc>/intro/</loc>
+     <lastmod>2018-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -20,32 +20,32 @@
     
         
     <url>
-     <loc>None/writers/</loc>
-     <lastmod>2016-08-11</lastmod>
+     <loc>/writers/</loc>
+     <lastmod>2018-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/filters/</loc>
-     <lastmod>2016-08-11</lastmod>
+     <loc>/filters/</loc>
+     <lastmod>2018-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/formatters/</loc>
-     <lastmod>2016-08-11</lastmod>
+     <loc>/formatters/</loc>
+     <lastmod>2018-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/processors/</loc>
-     <lastmod>2016-08-11</lastmod>
+     <loc>/processors/</loc>
+     <lastmod>2018-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>None/service-manager/</loc>
-     <lastmod>2016-08-11</lastmod>
+     <loc>/service-manager/</loc>
+     <lastmod>2018-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -53,8 +53,8 @@
 
     
     <url>
-     <loc>None/psr3/</loc>
-     <lastmod>2016-08-11</lastmod>
+     <loc>/psr3/</loc>
+     <lastmod>2018-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

@@ -56,7 +56,7 @@ class Psr extends AbstractWriter
      * - formatter: formatter for this writer
      * - logger: PsrLoggerInterface implementation
      *
-     * @param  array|Traversable|LoggerInterface $options
+     * @param  array|Traversable|PsrLoggerInterface $options
      * @throws Exception\InvalidArgumentException
      */
     public function __construct($options = null)

@@ -15,6 +15,7 @@ use Psr\Log\LoggerAwareTrait as PsrLoggerAwareTrait;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 use Psr\Log\NullLogger;
 use Zend\Log\Logger;
+use Zend\Log\Exception;
 
 /**
  * Proxies log messages to an existing PSR-3 compliant logger.
@@ -55,7 +56,7 @@ class Psr extends AbstractWriter
      * - formatter: formatter for this writer
      * - logger: PsrLoggerInterface implementation
      *
-     * @param  array|Traversable|LoggerInterface $options
+     * @param  array|Traversable|PsrLoggerInterface $options
      * @throws Exception\InvalidArgumentException
      */
     public function __construct($options = null)

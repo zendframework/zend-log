@@ -24,6 +24,22 @@ class Backtrace implements ProcessorInterface
     protected $ignoredNamespaces = ['Zend\\Log'];
 
     /**
+     * Constructor
+     *
+     * Set options for a backtrace processor. Accepted options are:
+     * - ignoredNamespaces: array of namespaces to be excluded from the logged backtrace
+     *
+     * @param  array $options
+     * @return Backtrace
+     */
+    public function __construct(array $options = null)
+    {
+        if (! empty($options['ignoredNamespaces'])) {
+            $this->ignoredNamespaces = array_merge($this->ignoredNamespaces, $options['ignoredNamespaces']);
+        }
+    }
+
+    /**
      * Adds the origin of the log() call to the event extras
      *
      * @param array $event event data
@@ -57,21 +73,6 @@ class Backtrace implements ProcessorInterface
         $event['extra'] = $extra;
 
         return $event;
-    }
-
-    /**
-     * Add a custom namespace to be ignored from the backtrace
-     *
-     * @param string $namespace
-     * @return self
-     */
-    public function addIgnoredNamespace($namespace)
-    {
-        if (! in_array($namespace, $this->ignoredNamespaces)) {
-            $this->ignoredNamespaces[] = $namespace;
-        }
-
-        return $this;
     }
 
     /**

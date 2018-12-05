@@ -60,12 +60,17 @@ $event = [
 ];
 ```
 
-By default, classes under the `Zend\Log` namespace are excluded from the backtrace that is logged so that the actual application code triggering the log event can be identified. You can add your own excluded namespaces to the backtrace processor before adding it to the `Logger` instance (note the required escaping of the `\`):
+By default, classes under the `Zend\Log` namespace are excluded from the backtrace that is logged so that the actual application code triggering the log event can be identified. You can add your own excluded namespaces to the backtrace processor by passing options into the constructor (note the required escaping of the `\`):
 
 ```php
-$processor = new Zend\Log\Processor\Backtrace();
-$processor->addIgnoredNamespace('Foo\\Log');
+$processor = new Zend\Log\Processor\Backtrace(['ignoredNamespaces' => ['Foo\\Log']]);
 $logger->addProcessor($processor);
+```
+
+Alternatively, if not separately instantiating the processor, these options can be passed as a second argument to the logger's `addProcessor()` function:
+
+```php
+$logger->addProcessor('backtrace', ['ignoredNamespaces' => ['Foo\\Log']]);
 ```
 
 ### PsrPlaceholder

@@ -39,10 +39,11 @@ class BacktraceTest extends TestCase
         $this->assertArrayHasKey('function', $event['extra']);
     }
 
-    public function testCanAddAndGetIgnoredNamespaces()
+    public function testConstructorAcceptsOptionalIgnoredNamespaces()
     {
         $this->assertSame(['Zend\\Log'], $this->processor->getIgnoredNamespaces());
-        $this->assertSame($this->processor, $this->processor->addIgnoredNamespace('Foo\\Bar'));
-        $this->assertSame(['Zend\\Log', 'Foo\\Bar'], $this->processor->getIgnoredNamespaces());
+
+        $processor = new Backtrace(['ignoredNamespaces' => ['Foo\\Bar']]);
+        $this->assertSame(['Zend\\Log', 'Foo\\Bar'], $processor->getIgnoredNamespaces());
     }
 }

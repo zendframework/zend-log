@@ -67,10 +67,11 @@ $processor = new Zend\Log\Processor\Backtrace(['ignoredNamespaces' => ['Foo\\Log
 $logger->addProcessor($processor);
 ```
 
-Alternatively, if not separately instantiating the processor, these options can be passed as a second argument to the logger's `addProcessor()` function:
+Alternatively, if not separately instantiating the processor, these options can be passed as the third argument to the logger's `addProcessor()` function:
 
 ```php
-$logger->addProcessor('backtrace', ['ignoredNamespaces' => ['Foo\\Log']]);
+// Assuming the default processor priority of 1
+$logger->addProcessor('backtrace', 1, ['ignoredNamespaces' => ['Foo\\Log']]);
 ```
 
 ### PsrPlaceholder

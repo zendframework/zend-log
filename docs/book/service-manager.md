@@ -46,7 +46,7 @@ return [
             'writers' => [
                 'stream' => [
                     'name' => 'stream',
-                    'priority' => \Zend\Log\Logger::ALERT,
+                    'priority' => 1,
                     'options' => [
                         'stream' => 'php://output',
                         'formatter' => [

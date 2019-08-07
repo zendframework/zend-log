@@ -23,7 +23,7 @@
         "zendframework/zend-stdlib": "^2.7 || ^3.0"
     },
     "require-dev": {
-        "mikey179/vfsStream": "^1.6",
+        "mikey179/vfsstream": "^1.6.7",
         "phpunit/phpunit": "^5.7.15 || ^6.0.8",
         "zendframework/zend-coding-standard": "~1.0.0",
         "zendframework/zend-db": "^2.6",

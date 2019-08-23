@@ -18,10 +18,26 @@ class Backtrace implements ProcessorInterface
     protected $traceLimit = 10;
 
     /**
-     * Classes within this namespace in the stack are ignored
-     * @var string
+     * Classes within these namespaces in the stack are ignored
+     * @var array
      */
-    protected $ignoredNamespace = 'Zend\\Log';
+    protected $ignoredNamespaces = ['Zend\\Log'];
+
+    /**
+     * Constructor
+     *
+     * Set options for a backtrace processor. Accepted options are:
+     * - ignoredNamespaces: array of namespaces to be excluded from the logged backtrace
+     *
+     * @param  array $options
+     * @return Backtrace
+     */
+    public function __construct(array $options = null)
+    {
+        if (! empty($options['ignoredNamespaces'])) {
+            $this->ignoredNamespaces = array_merge($this->ignoredNamespaces, $options['ignoredNamespaces']);
+        }
+    }
 
     /**
      * Adds the origin of the log() call to the event extras
@@ -38,7 +54,7 @@ class Backtrace implements ProcessorInterface
 
         $i = 0;
         while (isset($trace[$i]['class'])
-               && false !== strpos($trace[$i]['class'], $this->ignoredNamespace)
+               && $this->shouldIgnoreFrame($trace[$i]['class'])
         ) {
             $i++;
         }
@@ -60,6 +76,16 @@ class Backtrace implements ProcessorInterface
     }
 
     /**
+     * Get all ignored namespaces
+     *
+     * @return array
+     */
+    public function getIgnoredNamespaces()
+    {
+        return $this->ignoredNamespaces;
+    }
+
+    /**
      * Provide backtrace as slim as possible
      *
      * @return array[]
@@ -67,5 +93,22 @@ class Backtrace implements ProcessorInterface
     protected function getBacktrace()
     {
         return debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $this->traceLimit);
+    }
+
+    /**
+     * Determine whether the current frame in the backtrace should be ignored based on the class name
+     *
+     * @param string $class
+     * @return bool
+     */
+    protected function shouldIgnoreFrame($class)
+    {
+        foreach ($this->ignoredNamespaces as $ignoredNamespace) {
+            if (false !== strpos($class, $ignoredNamespace)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

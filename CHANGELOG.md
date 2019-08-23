@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.11.0 - TBD
+## 2.11.0 - 2019-08-23
 
 ### Added
 
@@ -24,28 +24,6 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [#88](https://github.com/zendframework/zend-log/pull/88) removes
   support for HHVM.
-
-### Fixed
-
-- Nothing.
-
-## 2.10.1 - TBD
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
 
 ### Fixed
 

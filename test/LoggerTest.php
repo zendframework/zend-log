@@ -9,15 +9,15 @@
 
 namespace ZendTest\Log;
 
-use Exception;
 use ErrorException;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Zend\Log\Exception\RuntimeException;
+use Zend\Log\Filter\Mock as MockFilter;
 use Zend\Log\Logger;
 use Zend\Log\Processor\Backtrace;
 use Zend\Log\Writer\Mock as MockWriter;
 use Zend\Log\Writer\Stream as StreamWriter;
-use Zend\Log\Filter\Mock as MockFilter;
 use Zend\Stdlib\SplPriorityQueue;
 use Zend\Validator\Digits as DigitsFilter;
 
@@ -28,10 +28,7 @@ class LoggerTest extends TestCase
      */
     private $logger;
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setUp()
+    protected function setUp()
     {
         $this->logger = new Logger;
     }
@@ -419,7 +416,7 @@ class LoggerTest extends TestCase
      */
     public function testRegisterFatalShutdownFunction()
     {
-        if (version_compare(PHP_VERSION, '7', 'ge')) {
+        if (PHP_VERSION_ID >= 70000) {
             $this->markTestSkipped('PHP7: cannot test as code now raises E_ERROR');
         }
 
@@ -450,7 +447,7 @@ class LoggerTest extends TestCase
      */
     public function testRegisterFatalErrorShutdownFunctionHandlesCompileTimeErrors()
     {
-        if (version_compare(PHP_VERSION, '7', 'ge')) {
+        if (PHP_VERSION_ID >= 70000) {
             $this->markTestSkipped('PHP7: cannot test as code now raises E_ERROR');
         }
 

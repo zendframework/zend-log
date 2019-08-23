@@ -26,7 +26,7 @@ class MongoTest extends TestCase
         $this->database = 'zf2_test';
         $this->collection = 'logs';
 
-        $mongoClass = (version_compare(phpversion('mongo'), '1.3.0', '<')) ? 'Mongo' : 'MongoClient';
+        $mongoClass = version_compare(phpversion('mongo'), '1.3.0', '<') ? 'Mongo' : 'MongoClient';
 
         $this->mongo = $this->getMockBuilder($mongoClass)
             ->disableOriginalConstructor()

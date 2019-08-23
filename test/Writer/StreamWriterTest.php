@@ -22,12 +22,12 @@ class StreamWriterTest extends TestCase
      */
     private static $ranSuite = false;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->root = vfsStream::setup('zend-log');
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         self::$ranSuite = true;
     }

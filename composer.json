@@ -13,7 +13,7 @@
         "issues": "https://github.com/zendframework/zend-log/issues",
         "source": "https://github.com/zendframework/zend-log",
         "rss": "https://github.com/zendframework/zend-log/releases.atom",
-        "slack": "https://zendframework-slack.herokuapp.com",
+        "chat": "https://zendframework-slack.herokuapp.com",
         "forum": "https://discourse.zendframework.com/c/questions/components"
     },
     "require": {
@@ -24,7 +24,7 @@
     },
     "require-dev": {
         "mikey179/vfsstream": "^1.6.7",
-        "phpunit/phpunit": "^5.7.15 || ^6.0.8",
+        "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.5.15",
         "zendframework/zend-coding-standard": "~1.0.0",
         "zendframework/zend-db": "^2.6",
         "zendframework/zend-escaper": "^2.5",
@@ -53,7 +53,7 @@
             "ZendTest\\Log\\": "test/"
         },
         "files": [
-            "autoload/phpunit.php",
+            "test/autoload.php",
             "test/Writer/TestAsset/chmod.php"
         ]
     },

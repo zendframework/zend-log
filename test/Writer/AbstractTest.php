@@ -11,10 +11,10 @@ namespace ZendTest\Log\Writer;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
-use Zend\Log\FilterPluginManager;
 use Zend\Log\Filter\Regex as RegexFilter;
-use Zend\Log\FormatterPluginManager;
+use Zend\Log\FilterPluginManager;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
+use Zend\Log\FormatterPluginManager;
 use Zend\Log\Writer\FilterPluginManager as LegacyFilterPluginManager;
 use Zend\Log\Writer\FormatterPluginManager as LegacyFormatterPluginManager;
 use Zend\ServiceManager\ServiceManager;
@@ -128,7 +128,7 @@ class AbstractTest extends TestCase
     }
 
     /**
-     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     * @covers \Zend\Log\Writer\AbstractWriter::__construct
      */
     public function testConstructorWithFormatterManager()
     {
@@ -145,7 +145,7 @@ class AbstractTest extends TestCase
     }
 
     /**
-     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     * @covers \Zend\Log\Writer\AbstractWriter::__construct
      * @expectedException Zend\Log\Exception\InvalidArgumentException
      * @expectedExceptionMessage Writer plugin manager must extend Zend\Log\FormatterPluginManager; received integer
      */
@@ -164,7 +164,7 @@ class AbstractTest extends TestCase
     }
 
     /**
-     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     * @covers \Zend\Log\Writer\AbstractWriter::__construct
      */
     public function testConstructorWithLegacyFormatterManager()
     {
@@ -181,7 +181,7 @@ class AbstractTest extends TestCase
     }
 
     /**
-     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     * @covers \Zend\Log\Writer\AbstractWriter::__construct
      */
     public function testConstructorWithFilterManager()
     {
@@ -198,7 +198,7 @@ class AbstractTest extends TestCase
     }
 
     /**
-     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     * @covers \Zend\Log\Writer\AbstractWriter::__construct
      * @expectedException Zend\Log\Exception\InvalidArgumentException
      * @expectedExceptionMessage Writer plugin manager must extend Zend\Log\FilterPluginManager; received integer
      */
@@ -217,7 +217,7 @@ class AbstractTest extends TestCase
     }
 
     /**
-     * @covers Zend\Log\Writer\AbstractWriter::__construct
+     * @covers \Zend\Log\Writer\AbstractWriter::__construct
      */
     public function testConstructorWithLegacyFilterManager()
     {
@@ -234,7 +234,7 @@ class AbstractTest extends TestCase
     }
 
     /**
-     * @covers Zend\Log\Writer\AbstractWriter::getFormatter
+     * @covers \Zend\Log\Writer\AbstractWriter::getFormatter
      */
     public function testFormatterDefaultsToNull()
     {
@@ -245,8 +245,8 @@ class AbstractTest extends TestCase
     }
 
     /**
-     * @covers Zend\Log\Writer\AbstractWriter::getFormatter
-     * @covers Zend\Log\Writer\AbstractWriter::setFormatter
+     * @covers \Zend\Log\Writer\AbstractWriter::getFormatter
+     * @covers \Zend\Log\Writer\AbstractWriter::setFormatter
      */
     public function testCanSetFormatter()
     {
@@ -260,7 +260,7 @@ class AbstractTest extends TestCase
     }
 
     /**
-     * @covers Zend\Log\Writer\AbstractWriter::hasFormatter
+     * @covers \Zend\Log\Writer\AbstractWriter::hasFormatter
      */
     public function testHasFormatter()
     {

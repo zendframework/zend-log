@@ -14,8 +14,8 @@ use DateTime;
 use EmptyIterator;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use ZendTest\Log\TestAsset\StringObject;
 use Zend\Log\Formatter\Base as BaseFormatter;
+use ZendTest\Log\TestAsset\StringObject;
 
 class BaseTest extends TestCase
 {
@@ -133,25 +133,14 @@ class BaseTest extends TestCase
             ],
         ];
 
-        if (version_compare(PHP_VERSION, '5.5', 'lt')) {
-            $outputExpected = [
-                'timestamp' => $datetime->format($formatter->getDateTimeFormat()),
-                'priority'  => 1,
-                'message'   => 'tottakai',
-                'extra' => [
-                    'selfRefArr' => '{"selfRefArr":{"selfRefArr":null}}',
-                ],
-            ];
-        } else {
-            $outputExpected = [
-                'timestamp' => $datetime->format($formatter->getDateTimeFormat()),
-                'priority'  => 1,
-                'message'   => 'tottakai',
-                'extra' => [
-                    'selfRefArr' => '',
-                ],
-            ];
-        }
+        $outputExpected = [
+            'timestamp' => $datetime->format($formatter->getDateTimeFormat()),
+            'priority'  => 1,
+            'message'   => 'tottakai',
+            'extra' => [
+                'selfRefArr' => '',
+            ],
+        ];
 
         $this->assertEquals($outputExpected, $formatter->format($event));
     }

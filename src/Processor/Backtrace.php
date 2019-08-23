@@ -24,18 +24,15 @@ class Backtrace implements ProcessorInterface
     protected $ignoredNamespaces = ['Zend\\Log'];
 
     /**
-     * Constructor
-     *
      * Set options for a backtrace processor. Accepted options are:
      * - ignoredNamespaces: array of namespaces to be excluded from the logged backtrace
      *
-     * @param  array $options
-     * @return Backtrace
+     * @param array|null $options
      */
     public function __construct(array $options = null)
     {
         if (! empty($options['ignoredNamespaces'])) {
-            $this->ignoredNamespaces = array_merge($this->ignoredNamespaces, $options['ignoredNamespaces']);
+            $this->ignoredNamespaces = array_merge($this->ignoredNamespaces, (array) $options['ignoredNamespaces']);
         }
     }
 

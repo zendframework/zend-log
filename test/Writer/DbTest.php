@@ -18,7 +18,7 @@ use ZendTest\Log\TestAsset\MockDbAdapter;
 
 class DbTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->tableName = 'db-table-name';
 

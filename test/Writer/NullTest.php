@@ -14,9 +14,9 @@ use Zend\Log\Writer\Null as NullWriter;
 
 class NullTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
-        if (version_compare(PHP_VERSION, '7.0', '>=')) {
+        if (PHP_VERSION_ID >= 70000) {
             $this->markTestSkipped('Cannot test Null log writer under PHP 7; reserved keyword');
         }
     }

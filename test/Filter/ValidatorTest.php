@@ -11,9 +11,9 @@ namespace ZendTest\Log\Filter;
 
 use PHPUnit\Framework\TestCase;
 use Zend\Log\Filter\Validator;
-use Zend\Validator\ValidatorChain;
 use Zend\Validator\Digits as DigitsFilter;
 use Zend\Validator\NotEmpty as NotEmptyFilter;
+use Zend\Validator\ValidatorChain;
 
 class ValidatorTest extends TestCase
 {

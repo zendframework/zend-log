@@ -16,7 +16,7 @@ use Zend\Log\PsrLoggerAdapter;
 use Zend\Log\Writer\Mock as MockWriter;
 
 /**
- * @coversDefaultClass Zend\Log\PsrLoggerAdapter
+ * @coversDefaultClass \Zend\Log\PsrLoggerAdapter
  * @covers ::<!public>
  */
 class PsrLoggerAdapterTest extends LoggerInterfaceTest
@@ -68,7 +68,7 @@ class PsrLoggerAdapterTest extends LoggerInterfaceTest
         }, $this->mockWriter->events);
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         unset($this->mockWriter);
     }

@@ -8,9 +8,10 @@
 namespace ZendTest\Log\Formatter;
 
 use DateTime;
+use PHPUnit\Framework\TestCase;
 use Zend\Log\Formatter\Json;
 
-class JsonTest extends \PHPUnit_Framework_TestCase
+class JsonTest extends TestCase
 {
     public function testDefaultFormat()
     {

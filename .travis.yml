@@ -30,6 +30,7 @@ matrix:
     - php: 7
       env:
         - DEPS=locked
+        - LEGACY_DEPS="phpunit/phpunit"
     - php: 7
       env:
         - DEPS=latest

@@ -7,5 +7,20 @@
 backends, formatting messages sent to the log, and filtering messages from being
 logged.
 
-- File issues at https://github.com/zendframework/zend-log/issues
-- Documentation is at https://docs.zendframework.com/zend-log/
+## Installation
+
+Run the following to install this library:
+
+```bash
+$ composer require zendframework/zend-log
+```
+
+## Documentation
+
+Browse the documentation online at https://docs.zendframework.com/zend-log/
+
+## Support
+
+* [Issues](https://github.com/zendframework/zend-log/issues/)
+* [Chat](https://zendframework-slack.herokuapp.com/)
+* [Forum](https://discourse.zendframework.com/)

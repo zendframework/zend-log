@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [#96](https://github.com/zendframework/zend-log/pull/96) adds support for PHP 7.3.
 
+- [#83](https://github.com/zendframework/zend-log/pull/83) adds
+  ability to define custom ignored namespaces in addition to default `Zend\Log`
+  in `Backtrace` processor.
+
 ### Changed
 
 - Nothing.

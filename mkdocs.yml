@@ -1,7 +1,7 @@
 docs_dir: docs/book
 site_dir: docs/html
 pages:
-    - index.md
+    - Home: index.md
     - Introduction: intro.md
     - Reference:
       - Writers: writers.md
@@ -11,6 +11,5 @@ pages:
       - "Service Manager Integration": service-manager.md
     - 'PSR-3 Support': psr3.md
 site_name: zend-log
-site_description: Zend\Log
+site_description: 'Robust, composite logger with filtering, formatting, and PSR-3 support.'
 repo_url: 'https://github.com/zendframework/zend-log'
-copyright: 'Copyright (c) 2005-2018 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'

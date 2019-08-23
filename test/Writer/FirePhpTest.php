@@ -12,14 +12,13 @@ namespace ZendTest\Log\Writer;
 use PHPUnit\Framework\TestCase;
 use Zend\Log\Logger;
 use Zend\Log\Writer\FirePhp;
-use Zend\Log\Writer\FirePhp\FirePhpInterface;
 use ZendTest\Log\TestAsset\MockFirePhp;
 
 class FirePhpTest extends TestCase
 {
     protected $firephp;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->firephp = new MockFirePhp();
     }

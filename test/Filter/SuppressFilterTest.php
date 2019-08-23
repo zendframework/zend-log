@@ -14,7 +14,7 @@ use Zend\Log\Filter\SuppressFilter;
 
 class SuppressFilterTest extends TestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->filter = new SuppressFilter();
     }

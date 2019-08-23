@@ -10,15 +10,15 @@
 namespace ZendTest\Log\Writer;
 
 use PHPUnit\Framework\TestCase;
-use ZendTest\Log\TestAsset\MockChromePhp;
-use Zend\Log\Writer\ChromePhp;
 use Zend\Log\Logger;
+use Zend\Log\Writer\ChromePhp;
+use ZendTest\Log\TestAsset\MockChromePhp;
 
 class ChromePhpTest extends TestCase
 {
     protected $chromephp;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->chromephp = new MockChromePhp();
     }

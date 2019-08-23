@@ -10,8 +10,8 @@
 namespace ZendTest\Log\Writer;
 
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
 use Zend\Log\Filter\Mock as MockFilter;
 use Zend\Log\Formatter\Simple as SimpleFormatter;
@@ -19,7 +19,7 @@ use Zend\Log\Logger;
 use Zend\Log\Writer\Psr as PsrWriter;
 
 /**
- * @coversDefaultClass Zend\Log\Writer\Psr
+ * @coversDefaultClass \Zend\Log\Writer\Psr
  * @covers ::<!public>
  */
 class PsrTest extends TestCase

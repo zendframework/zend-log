@@ -9,12 +9,12 @@
 
 namespace ZendTest\Log\Processor;
 
-use stdClass;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use Zend\Log\Processor\PsrPlaceholder;
 
 /**
- * @coversDefaultClass Zend\Log\Processor\PsrPlaceholder
+ * @coversDefaultClass \Zend\Log\Processor\PsrPlaceholder
  */
 class PsrPlaceholderTest extends TestCase
 {

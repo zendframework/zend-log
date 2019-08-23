@@ -13,11 +13,11 @@ use MongoDB\Driver\Manager;
 use PHPUnit\Framework\TestCase;
 use Zend\Log\LoggerAbstractServiceFactory;
 use Zend\Log\ProcessorPluginManager;
-use Zend\Log\WriterPluginManager;
-use Zend\Log\Writer\Noop;
 use Zend\Log\Writer\Db as DbWriter;
 use Zend\Log\Writer\Mongo as MongoWriter;
 use Zend\Log\Writer\MongoDB as MongoDBWriter;
+use Zend\Log\Writer\Noop;
+use Zend\Log\WriterPluginManager;
 use Zend\ServiceManager\Config;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\ServiceManager;
@@ -31,8 +31,6 @@ class LoggerAbstractServiceFactoryTest extends TestCase
 
     /**
      * Set up LoggerAbstractServiceFactory and loggers configuration.
-     *
-     * @see PHPUnit_Framework_TestCase::setUp()
      */
     protected function setUp()
     {
@@ -153,7 +151,7 @@ class LoggerAbstractServiceFactoryTest extends TestCase
             $this->markTestSkipped('The mongo PHP extension is not available');
         }
 
-        if (version_compare(phpversion(), '7.0', '>=')) {
+        if (PHP_VERSION_ID >= 70000) {
             $this->markTestIncomplete('Code to test is not compatible with PHP 7 ');
         }
 

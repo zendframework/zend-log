@@ -20,7 +20,7 @@ class WriterPluginManagerTest extends TestCase
      */
     protected $plugins;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->plugins = new WriterPluginManager(new ServiceManager());
     }

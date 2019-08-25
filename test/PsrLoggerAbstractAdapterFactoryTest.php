@@ -32,7 +32,7 @@ class PsrLoggerAbstractAdapterFactoryTest extends TestCase
         $this->serviceManager = new ServiceManager();
         $config = new Config([
             'abstract_factories' => [PsrLoggerAbstractAdapterFactory::class],
-            'services' => [
+            'services'           => [
                 'config' => [
                     'psr_log' => [
                         'Application\Frontend' => [],
@@ -42,6 +42,29 @@ class PsrLoggerAbstractAdapterFactoryTest extends TestCase
             ],
         ]);
         $config->configureServiceManager($this->serviceManager);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerValidLoggerService()
+    {
+        return [
+            ['Application\Frontend'],
+            ['Application\Backend'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function providerInvalidLoggerService()
+    {
+        return [
+            ['Logger\Application\Unknown'],
+            ['Logger\Application\Frontend'],
+            ['Application\Backend\Logger'],
+        ];
     }
 
     /**

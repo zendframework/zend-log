@@ -27,7 +27,7 @@ class PsrLoggerAbstractAdapterFactory extends LoggerAbstractServiceFactory
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $logger = parent::__invoke($container, $requestedName,$options);
+        $logger = parent::__invoke($container, $requestedName, $options);
 
         return new PsrLoggerAdapter($logger);
     }

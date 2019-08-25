@@ -33,6 +33,7 @@ class ConfigProvider
         return [
             'abstract_factories' => [
                 LoggerAbstractServiceFactory::class,
+                PsrLoggerAbstractAdapterFactory::class,
             ],
             'factories' => [
                 Logger::class         => LoggerServiceFactory::class,

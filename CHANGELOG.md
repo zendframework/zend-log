@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#99](https://github.com/zendframework/zend-log/pull/99) Added AbstractFactory for PsrLoggerAdapter.
 
 ### Changed
 

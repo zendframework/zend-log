@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#99](https://github.com/zendframework/zend-log/pull/99) Added AbstractFactory for PsrLoggerAdapter.
+- [#99](https://github.com/zendframework/zend-log/pull/99) adds `Zend\Log\PsrLoggerAbstractAdapterFactory`, which will create instances of `PsrLoggerAdapter`. Usage is exactly like with `Zend\Log\LoggerAbstractServiceFactory`, with the exception that it looks under the `psr_log` configuration key instead of the `log` key for logger configuration.
 
 ### Changed
 

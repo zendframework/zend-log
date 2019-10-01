@@ -277,7 +277,7 @@
 <p>A <em>filter</em> prevents a message from being written to the log.</p>
 <p>You can add a filter to a specific writer using the <code>addFilter()</code> method of the
 writer:</p>
-<pre class="codehilite"><code class="language-php">use Zend\Log\Logger;
+<p> <pre class=codehilite><code class=language-php>use Zend\Log\Logger;
 
 $logger = new Logger();
 
@@ -295,8 +295,7 @@ $writer2-&gt;addFilter($filter);
 $logger-&gt;info('Informational message');
 
 // logged by both writers
-$logger-&gt;emerg('Emergency message');</code></pre>
-
+$logger-&gt;emerg('Emergency message');</code></pre></p>
 <h2 id="available-filters">Available filters</h2>
 <div class="table-responsive"><table>
 <thead>
@@ -367,7 +366,7 @@ $logger-&gt;emerg('Emergency message');</code></pre>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-log/edit/master/docs/filters.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-log/edit/master/docs/book/filters.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

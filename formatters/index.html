@@ -294,11 +294,10 @@ in the event array are formatted properly for the writer.</p>
 <h2 id="simple-formatting">Simple Formatting</h2>
 <p><code>Zend\Log\Formatter\Simple</code> is the default formatter. It is configured automatically when you
 specify no formatter. The default configuration is equivalent to the following:</p>
-<pre class="codehilite"><code class="language-php">$format = '%timestamp% %priorityName% (%priority%): %message%' . PHP_EOL;
-$formatter = new Zend\Log\Formatter\Simple($format);</code></pre>
-
+<p> <pre class=codehilite><code class=language-php>$format = '%timestamp% %priorityName% (%priority%): %message%' . PHP_EOL;
+$formatter = new Zend\Log\Formatter\Simple($format);</code></pre></p>
 <p>A formatter is set on an individual writer object using the writer's <code>setFormatter()</code> method:</p>
-<pre class="codehilite"><code class="language-php">$writer = new Zend\Log\Writer\Stream('php://output');
+<p> <pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Stream('php://output');
 $formatter = new Zend\Log\Formatter\Simple('hello %message%' . PHP_EOL);
 $writer-&gt;setFormatter($formatter);
 
@@ -307,8 +306,7 @@ $logger-&gt;addWriter($writer);
 
 $logger-&gt;info('there');
 
-// outputs "hello there"</code></pre>
-
+// outputs &quot;hello there&quot;</code></pre></p>
 <p>The constructor of <code>Zend\Log\Formatter\Simple</code> accepts a single parameter: the
 format string. This string contains keys surrounded by percent signs (e.g.
 <code>%message%</code>). The format string may contain any key from the event data array.
@@ -317,7 +315,7 @@ You can retrieve the default keys by using the <code>DEFAULT_FORMAT</code> const
 <h2 id="formatting-to-json">Formatting to JSON</h2>
 <p><code>Zend\Log\Formatter\Json</code> is the JSON formatter.  By default, it
 automatically logs all items as JSON:</p>
-<pre class="codehilite"><code class="language-php">$writer = new Zend\Log\Writer\Stream('php://output');
+<p> <pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Stream('php://output');
 $formatter = new Zend\Log\Formatter\Json();
 $writer-&gt;setFormatter($formatter);
 
@@ -326,34 +324,31 @@ $logger-&gt;addWriter($writer);
 
 $logger-&gt;info('there');
 
-// outputs "{"timestamp":"2016-09-07T13:58:01+00:00","priority":6,"priorityName":"INFO","message":"there","extra":[]}"</code></pre>
-
+// outputs &quot;{&quot;timestamp&quot;:&quot;2016-09-07T13:58:01+00:00&quot;,&quot;priority&quot;:6,&quot;priorityName&quot;:&quot;INFO&quot;,&quot;message&quot;:&quot;there&quot;,&quot;extra&quot;:[]}&quot;</code></pre></p>
 <h2 id="formatting-to-xml">Formatting to XML</h2>
 <p><code>Zend\Log\Formatter\Xml</code> formats log data into XML strings. By default, it
 automatically logs all items in the event array:</p>
-<pre class="codehilite"><code class="language-php">$writer = new Zend\Log\Writer\Stream('php://output');
+<p> <pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Stream('php://output');
 $formatter = new Zend\Log\Formatter\Xml();
 $writer-&gt;setFormatter($formatter);
 
 $logger = new Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
-$logger-&gt;info('informational message');</code></pre>
-
+$logger-&gt;info('informational message');</code></pre></p>
 <p>The code above outputs the following XML (space added for clarity):</p>
-<pre class="codehilite"><code class="language-php">&lt;logEntry&gt;
+<p> <pre class=codehilite><code class=language-php>&lt;logEntry&gt;
   &lt;timestamp&gt;2007-04-06T07:24:37-07:00&lt;/timestamp&gt;
   &lt;message&gt;informational message&lt;/message&gt;
   &lt;priority&gt;6&lt;/priority&gt;
   &lt;priorityName&gt;INFO&lt;/priorityName&gt;
-&lt;/logEntry&gt;</code></pre>
-
+&lt;/logEntry&gt;</code></pre></p>
 <p>It's possible to customize the root element, as well as specify a mapping of
 XML elements to the items in the event data array. The constructor of
 <code>Zend\Log\Formatter\Xml</code> accepts a string with the name of the root element as
 the first parameter, and an associative array with the element mapping as the
 second parameter:</p>
-<pre class="codehilite"><code class="language-php">$writer = new Zend\Log\Writer\Stream('php://output');
+<p> <pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Stream('php://output');
 $formatter = new Zend\Log\Formatter\Xml('log', [
     'msg' =&gt; 'message',
     'level' =&gt; 'priorityName',
@@ -363,16 +358,14 @@ $writer-&gt;setFormatter($formatter);
 $logger = new Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
-$logger-&gt;info('informational message');</code></pre>
-
+$logger-&gt;info('informational message');</code></pre></p>
 <p>The code above changes the root element from its default of <code>logEntry</code> to
 <code>log</code>. It also maps the element <code>msg</code> to the event data item <code>message</code>. This
 results in the following output:</p>
-<pre class="codehilite"><code class="language-php">&lt;log&gt;
+<p> <pre class=codehilite><code class=language-php>&lt;log&gt;
   &lt;msg&gt;informational message&lt;/msg&gt;
   &lt;level&gt;INFO&lt;/level&gt;
-&lt;/log&gt;</code></pre>
-
+&lt;/log&gt;</code></pre></p>
 <h2 id="formatting-to-firephp">Formatting to FirePhp</h2>
 <p><code>Zend\Log\Formatter\FirePhp</code> formats log data for the <a href="http://getfirebug.com/">Firebug</a> extension
 for Firefox.</p>
@@ -409,7 +402,7 @@ for Firefox.</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-log/edit/master/docs/formatters.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-log/edit/master/docs/book/formatters.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Robust, composite logger with filtering, formatting, and PSR-3 support.">  
+    <link rel="canonical" href="https://docs.zendframework.com/zend-log/writers/">
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    <title>Writers - zend-log - Zend Framework Docs</title>
+
+    <link rel="stylesheet" href="../css/styles-5cfabd53ee.css">
+</head>
+<body id="page-top">
+
+    
+    <div class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+
+            
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            
+            <span class="navbar-brand">
+                <a class="logo-link" href="https://framework.zend.com/" data-tooltip data-placement="bottom" title="Go to the ZF homepage">
+                    <img src="../img/zend-framework-logo.svg" height="28" alt="Zend Framework">
+                </a>
+            </span>
+        </div>
+
+        <div class="navbar-collapse collapse">
+
+            
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="https://framework.zend.com/about">About</a>
+                </li>
+                <li>
+                    <a href="https://framework.zend.com/downloads">Install</a>
+                </li>
+                <li class="active">
+                    <a href="https://docs.zendframework.com">Documentation</a>
+                </li>
+                <li>
+                    <a href="https://www.zend.com/en/services/training">Training</a>
+                </li>
+                <li>
+                    <a href="https://framework.zend.com/blog">Blog</a>
+                </li>
+                <li>
+                    <a href="https://framework.zend.com/participate">Participate</a>
+                </li>
+            </ul>
+
+            
+            
+                <div class="nav navbar-nav navbar-collapse visible-xs-block ">
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">zend-log</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">Writers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../filters/" class="subnavigation__link">Filters</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../formatters/" class="subnavigation__link">Formatters</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../processors/" class="subnavigation__link">Processors</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../service-manager/" class="subnavigation__link">Service Manager Integration</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../psr3/" class="subnavigation__link">PSR-3 Support</a>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                </div>
+            
+
+            
+            <div class="nav navbar-nav navbar-collapse visible-xs-block">
+                <div class="component-selector">
+    <h4 class="component-selector__title">Components</h4>
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+    <header class="header">
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="col-xs-8">
+                <h1 class="header__title">
+                    Documentation
+
+                    
+                        <small class="header__subtitle">zend-log</small>
+                    
+                </h1>
+            </div>
+
+            
+            <div class="col-xs-4 text-right">
+                
+                    
+
+                    <a href="#" class="header__link header__link--search" data-toggle="modal" data-target="#mkdocs_search_modal" title="Open search">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                    <a href="https://github.com/zendframework/zend-log/" class="header__link header__link--github" title="Go to repository of zend-log">
+                        <i class="fa fa-github"></i> GitHub
+                    </a>
+                
+            </div>
+        </div>
+    </div>
+</header>
+
+    
+    <div class="laminas-announcement">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 col-xs-12 content" role="main">
+            <!-- content:begin -->
+                
+                    <ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
+    <li><a href="https://framework.zend.com/">Home</a></li>
+
+    
+        <li><a href="https://docs.zendframework.com/">Documentation</a></li>
+
+        
+            <li><a href="..">zend-log</a></li>
+
+            
+                
+                    
+                    
+                        <li>Reference</li>
+                    
+                
+            
+
+            <li class="active">Writers</li>
+        
+    
+</ol>
+
+
+
+
+
+
+    
+    
+        <h2 class="chapter__headline">Reference</h2>
+    
+
+    <div>
+        
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">In This Article</h6>
+            <ul class="toc__list">
+                
+                    <li class="toc__entry">
+                        <a href="#writing-to-streams" class="toc__link">Writing to Streams</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#writing-to-databases" class="toc__link">Writing to Databases</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#writing-to-firephp" class="toc__link">Writing to FirePHP</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#writing-to-chromephp" class="toc__link">Writing to ChromePHP</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#writing-to-mail" class="toc__link">Writing to Mail</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#writing-to-mongodb" class="toc__link">Writing to MongoDB</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#writing-to-syslog" class="toc__link">Writing to Syslog</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#writing-to-zend-monitor" class="toc__link">Writing to Zend Monitor</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#stubbing-out-the-writer" class="toc__link">Stubbing Out the Writer</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#testing-with-the-mock-writer" class="toc__link">Testing with the Mock Writer</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#compositing-writers" class="toc__link">Compositing Writers</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#distinction-between-priority-in-the-queue-of-writers-and-the-filter-priority" class="toc__link">Distinction between priority in the queue of writers and the filter Priority</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+    </div>
+
+    <h1 id="writers">Writers</h1>
+<p>A <strong><em>writer</em></strong> is an object that inherits from <code>Zend\Log\Writer\AbstractWriter</code>.
+A writer's responsibility is to record log data to a storage backend.</p>
+<h2 id="writing-to-streams">Writing to Streams</h2>
+<p><code>Zend\Log\Writer\Stream</code> sends log data to a <a href="http://www.php.net/stream">PHP stream</a>.</p>
+<p>To write log data to the PHP output buffer, use the <code>php://output</code> stream.
+Alternately, you can send log data directly to a stream like <code>STDERR</code>
+(<code>php://stderr</code>).</p>
+<p> <pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Stream('php://output');
+$logger = new Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>To write data to a file, use one of the <a href="http://www.php.net/manual/en/wrappers.php#wrappers.file">filesystem
+streams</a>:</p>
+<p> <pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Stream('/path/to/logfile');
+$logger = new Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>By default, the stream opens in the append access mode ("a"). To open it with a
+different access mode, the <code>Zend\Log\Writer\Stream</code> constructor accepts an
+optional second parameter for the stream mode.</p>
+<p>The constructor of <code>Zend\Log\Writer\Stream</code> also accepts an existing stream resource:</p>
+<p> <pre class=codehilite><code class=language-php>$stream = @fopen('/path/to/logfile', 'a', false);
+if (! $stream) {
+    throw new Exception('Failed to open stream');
+}
+
+$writer = new Zend\Log\Writer\Stream($stream);
+$logger = new Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>You cannot specify the stream access mode for existing stream resources. Doing
+so causes a <code>Zend\Log\Exception</code> to be thrown.</p>
+<p>You can use an array of options in place of the stream argument when
+constructing a <code>Stream</code> instance; when doing so, the <code>stream</code> key is required:</p>
+<p> <pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Stream([
+    'stream' =&gt; 'php://output',
+]);
+$logger = new Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>The following table details all allowed constructor arguments and their
+corresponding configuration options.</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Constructor Argument</th>
+<th>Option Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$streamOrUrl</code></td>
+<td>stream</td>
+<td>None; required</td>
+<td>Stream resource or URL to open and log to</td>
+</tr>
+<tr>
+<td><code>$mode</code></td>
+<td>mode</td>
+<td>"a"</td>
+<td>Stream access mode to use when opening a stream URL</td>
+</tr>
+<tr>
+<td><code>$logSeparator</code></td>
+<td>log_separator</td>
+<td><code>PHP_EOL</code></td>
+<td>Separator string to use between entries</td>
+</tr>
+<tr>
+<td><code>$filePermissions</code></td>
+<td>chmod</td>
+<td><code>null</code></td>
+<td>Permissions mode to use for stream resource; defaults to existing file/stream permissions</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="writing-to-databases">Writing to Databases</h2>
+<p><code>Zend\Log\Writer\Db</code> writes log information to a database table using
+<code>Zend\Db\Adapter\Adapter</code>. The constructor of <code>Zend\Log\Writer\Db</code> receives a
+<code>Zend\Db\Adapter\Adapter</code> instance, a table name, an optional mapping of event
+data to database columns, and an optional string contains the character
+separator for the log array:</p>
+<p> <pre class=codehilite><code class=language-php>$dbconfig = [
+    // Sqlite Configuration
+    'driver' =&gt; 'Pdo',
+    'dsn' =&gt; 'sqlite:' . __DIR__ . '/tmp/sqlite.db',
+];
+$db = new Zend\Db\Adapter\Adapter($dbconfig);
+
+$writer = new Zend\Log\Writer\Db($db, 'log_table_name');
+$logger = new Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>The example above writes a single row of log data to the database table named
+<code>log_table_name</code> table. The database columns will be created according to the
+event array generated by the <code>Zend\Log\Logger</code> instance.</p>
+<p>If we specify the mapping of the events with the database columns, the log will
+store only to the selected fields in the database:</p>
+<p> <pre class=codehilite><code class=language-php>$dbconfig = [
+    // Sqlite Configuration
+    'driver' =&gt; 'Pdo',
+    'dsn' =&gt; 'sqlite:' . __DIR__ . '/tmp/sqlite.db',
+];
+$db = new Zend\Db\Adapter\Adapter($dbconfig);
+
+$mapping = [
+    'timestamp' =&gt; 'date',
+    'priority'  =&gt; 'type',
+    'message'   =&gt; 'event',
+];
+$writer = new Zend\Log\Writer\Db($db, 'log_table_name', $mapping);
+$logger = new Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>In this example, the writer stores only the log timestamp, priority, and
+message, in the database fields date, type, and event, respectively.</p>
+<p><code>Zend\Log\Writer\Db</code> has a fourth optional parameter in the constructor. This
+parameter is the character separator for array fields in the log event. For
+instance, if we have a log event that contains the field <code>extra</code>, and that field
+is an array, its elements will be translated as 'extra-field', where '-' is the
+character separator (default), and 'field' is the subname of the specific field
+found in the <code>extra</code> array.</p>
+<h2 id="writing-to-firephp">Writing to FirePHP</h2>
+<p><code>Zend\Log\Writer\FirePHP</code> writes log information to the
+<a href="http://www.firephp.org/">FirePHP</a> Firefox extension. In order to use it, you
+must install the FirePHPCore server library and the FirePHP browser extension.</p>
+<p>To install the FirePHPCore library you can use
+<a href="https://getcomposer.org">Composer</a>:</p>
+<p> <pre class=codehilite><code class=language-bash>$ composer require firephp/firephp-core</code></pre></p>
+<h2 id="writing-to-chromephp">Writing to ChromePHP</h2>
+<p><code>Zend\Log\Writer\ChromePHP</code> sends log data to the
+<a href="https://chrome.google.com/webstore/detail/chrome-logger/noaneddfkdjfnfdakjjmocngnfkfehhd">ChromePHP</a>
+Chrome extension.</p>
+<p>To use the ChromePHP writer, you will also need to include the <a href="http://craig.is/writing/chrome-logger">ChromePHP
+Library</a> library in your application. Use
+<a href="https://getcomposer.org">Composer</a> to do this:</p>
+<p> <pre class=codehilite><code class=language-bash>$ composer require ccampbell/chromephp</code></pre></p>
+<h2 id="writing-to-mail">Writing to Mail</h2>
+<p><code>Zend\Log\Writer\Mail</code> takes a configuration array or <code>Zend\Mail\Message</code>. Basic usage looks like</p>
+<p> <pre class=codehilite><code class=language-php>$message = new \Zend\Mail\Message();
+$message-&gt;setTo('email@example.com');
+
+$writer = new \Zend\Log\Writer\Mail($message);
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to mail message
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>An email of the logged information will be sent via <code>sendmail</code> by default. You may also provide a <code>Zend\Mail\Transport</code>
+during construction. For configuration options checkout the <code>Zend\Mail\Transport</code> documentation.</p>
+<p> <pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Mail($mail, $transport);</code></pre></p>
+<p><code>Zend\Log\Writer\mail</code> may also be constructed with a configuration array. The configuration array accepts the following
+keys:</p>
+<p> <pre class=codehilite><code class=language-php>[
+    'subject_prepend_text' =&gt; '',
+    'transport' =&gt; $transport
+    'mail' =&gt; $mail,
+    'filters' =&gt; [],
+    'formatter' =&gt; []
+]</code></pre></p>
+<p>And expects the following data:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Array Index</th>
+<th>Accepted Values</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>subject_prepend_text</code></td>
+<td>string</td>
+<td>Mail message</td>
+</tr>
+<tr>
+<td><code>transport</code></td>
+<td><code>Transport\TransportInterface</code></td>
+<td>Transport method</td>
+</tr>
+<tr>
+<td><code>mail</code></td>
+<td><code>Zend\Mail\Message</code></td>
+<td>mail message</td>
+</tr>
+<tr>
+<td><code>mail</code></td>
+<td><code>array</code></td>
+<td><code>Zend\Mail\Message</code> factory array</td>
+</tr>
+<tr>
+<td><code>filters</code></td>
+<td>array, int, string, Zend\Log\Filter\FilterInterface</td>
+<td>Log filter(s)</td>
+</tr>
+<tr>
+<td><code>formatter</code></td>
+<td>array, string, Zend\Log\Formatter\FormatterInterface</td>
+<td>Log formatter(s)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Basic usage of the configuration array looks like:</p>
+<p> <pre class=codehilite><code class=language-php>$transport = new \Zend\Mail\Transport\Smtp();
+// TODO configure the SMTP transport
+
+$message = new \Zend\Mail\Message();
+// TODO configure the Mail message
+
+$writer = new \Zend\Log\Writer\Mail([
+    'subject_prepend_text' =&gt; 'Start of the subject',
+    'transport' =&gt; $transport,
+    'mail' =&gt; $mail,
+    'filters' =&gt; [],
+    'formatter' =&gt; []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to mail message
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>To use the <code>Zend\Mail\Message</code> factory array construction will look like:</p>
+<p> <pre class=codehilite><code class=language-php>$transport = new \Zend\Mail\Transport\Smtp();
+// TODO configure the SMTP transport
+
+$writer = new \Zend\Log\Writer\Mail([
+    'subject_prepend_text' =&gt; 'Start of the subject',
+    'transport' =&gt; $transport,
+    'mail' =&gt; [
+        'to' =&gt; 'email@example.com'
+    ],
+    'filters' =&gt; [],
+    'formatter' =&gt; []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to mail message
+$logger-&gt;info('Informational message');</code></pre></p>
+<h2 id="writing-to-mongodb">Writing to MongoDB</h2>
+<p>Using the legacy mongo php driver (may be used up to up to php 5.6)</p>
+<p>In this example <code>Zend\Log\Writer\MongoDB</code> uses an array for construction. Available keys include:</p>
+<p> <pre class=codehilite><code class=language-php>[
+    'save_options' =&gt; [],
+    'collection'   =&gt; '',
+    'database'     =&gt; '',
+    'mongo'        =&gt; $mongo,
+    'filters'      =&gt; [],
+    'formatter'    =&gt; []
+]</code></pre></p>
+<p><code>collection</code>, <code>database</code>, and <code>mongo</code> are required. Each key accepts:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Array Index</th>
+<th>Accepted Values</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>save_options</code></td>
+<td>array</td>
+<td>MongoDB driver options</td>
+</tr>
+<tr>
+<td><code>collection</code></td>
+<td>string</td>
+<td>collection name</td>
+</tr>
+<tr>
+<td><code>database</code></td>
+<td>string</td>
+<td>database name</td>
+</tr>
+<tr>
+<td><code>mongo</code></td>
+<td><code>Mongo</code> or <code>MongoClient</code></td>
+<td>MongoDB connection object</td>
+</tr>
+<tr>
+<td><code>filters</code></td>
+<td>array, int, string, <code>Zend\Log\Filter\FilterInterface</code></td>
+<td>Log filter(s)</td>
+</tr>
+<tr>
+<td><code>formatter</code></td>
+<td>array, string, <code>Zend\Log\Formatter\FormatterInterface</code></td>
+<td>Log formatter(s)</td>
+</tr>
+</tbody>
+</table></div>
+<p>And <code>Zend\Log\Writer\MongoDB</code> is used like this:</p>
+<p> <pre class=codehilite><code class=language-php>$mongo = new MongoClient();
+
+$writer = new \Zend\Log\Writer\MongoDB([
+    'save_options' =&gt; [], // MongoDB Driver Options
+    'collection'   =&gt; 'collectionName',
+    'database'     =&gt; 'databaseName',
+    'mongo'        =&gt; $mongo,
+    'filters'      =&gt; [],
+    'formatter'    =&gt; []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to Mongo DB
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>It may also be constructed by passing the arguments directly</p>
+<p> <pre class=codehilite><code class=language-php>$mongo       = new MongoClient();
+$database    = 'databaseName';
+$collection  = 'collectionName';
+$saveOptions = [];
+
+$writer = new \Zend\Log\Writer\MongoDB($mongo, $database, $collection, $saveOptions);
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to Mongo DB
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>Using the mongodb driver (php 5.4 and later)</p>
+<p>In this example <code>Zend\Log\Writer\MongoDB</code> uses an array for construction. Available keys include:</p>
+<p> <pre class=codehilite><code class=language-php>[
+    'save_options' =&gt; [],
+    'collection'   =&gt; '',
+    'database'     =&gt; '',
+    'manager'      =&gt; $mongo,
+    'filters'      =&gt; [],
+    'formatter'    =&gt; []
+]</code></pre></p>
+<p><code>collection</code>, <code>database</code>, and <code>manager</code> are required. Each key accepts:</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Array Index</th>
+<th>Accepted Values</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>save_options</code></td>
+<td>array</td>
+<td>MongoDB driver options</td>
+</tr>
+<tr>
+<td><code>collection</code></td>
+<td>string</td>
+<td>collection name</td>
+</tr>
+<tr>
+<td><code>database</code></td>
+<td>string</td>
+<td>database name</td>
+</tr>
+<tr>
+<td><code>manager</code></td>
+<td><code>MongoDB\Driver\Manager</code></td>
+<td>MongoDB connection object</td>
+</tr>
+<tr>
+<td><code>filters</code></td>
+<td>array, int, string, <code>Zend\Log\Filter\FilterInterface</code></td>
+<td>Log filter(s)</td>
+</tr>
+<tr>
+<td><code>formatter</code></td>
+<td>array, string, <code>Zend\Log\Formatter\FormatterInterface</code></td>
+<td>Log formatter(s)</td>
+</tr>
+</tbody>
+</table></div>
+<p>And <code>Zend\Log\Writer\MongoDB</code> is used like this:</p>
+<p> <pre class=codehilite><code class=language-php>$mongo = new MongoDB\Driver\Manager();
+
+$writer = new \Zend\Log\Writer\MongoDB([
+    'save_options' =&gt; [], // MongoDB Driver Options
+    'collection'   =&gt; 'collectionName',
+    'database'     =&gt; 'databaseName',
+    'manager'      =&gt; $mongo,
+    'filters'      =&gt; [],
+    'formatter'    =&gt; []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to Mongo DB
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>It may also be constructed by passing the arguments directly</p>
+<p> <pre class=codehilite><code class=language-php>$mongo       = new MongoDB\Driver\Manager();
+$database    = 'databaseName';
+$collection  = 'collectionName';
+$saveOptions = [];
+
+$writer = new \Zend\Log\Writer\MongoDB($manager, $database, $collection, $saveOptions);
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to Mongo DB
+$logger-&gt;info('Informational message');</code></pre></p>
+<h2 id="writing-to-syslog">Writing to Syslog</h2>
+<p><code>Zend\Log\Writer\Syslog</code> is a writer generates system log messages from the data it receives.</p>
+<p> <pre class=codehilite><code class=language-php>$writer = new \Zend\Log\Writer\Syslog();
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to system log
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>The application name and syslog facility may be set</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Array Index</th>
+<th>Accepted Values</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>application</code></td>
+<td>string</td>
+<td>application name</td>
+</tr>
+<tr>
+<td><code>facility</code></td>
+<td>string</td>
+<td>syslog facility (list of facilities)[http://php.net/openlog]</td>
+</tr>
+<tr>
+<td><code>filters</code></td>
+<td>array, int, string, Zend\Log\Filter\FilterInterface</td>
+<td>Log filter(s)</td>
+</tr>
+<tr>
+<td><code>formatter</code></td>
+<td>array, string, Zend\Log\Formatter\FormatterInterface</td>
+<td>Log formatter(s)</td>
+</tr>
+</tbody>
+</table></div>
+<p> <pre class=codehilite><code class=language-php>$writer = new \Zend\Log\Writer\Syslog([
+    'application' =&gt; '',
+    'facility' =&gt; '',
+    'filters' =&gt; [],
+    'formatter' =&gt; []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+$logger-&gt;info('Informational message');</code></pre></p>
+<h2 id="writing-to-zend-monitor">Writing to Zend Monitor</h2>
+<p><code>Zend\Log\Writer\ZendMonitor</code> writes log data to the Zend Monitor on a Zend Server. If the web server is not a Zend
+Server or Zend Monitor is not enabled it will fail silently.</p>
+<p> <pre class=codehilite><code class=language-php>$writer = new \Zend\Log\Writer\ZendMonitor();
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to Zend Monitor
+$logger-&gt;info('Informational message');</code></pre></p>
+<p><code>Zend\Log\Writer\AbstractWriter</code> options are available.</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Array Index</th>
+<th>Accepted Values</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>filters</code></td>
+<td>array, int, string, Zend\Log\Filter\FilterInterface</td>
+<td>Log filter(s)</td>
+</tr>
+<tr>
+<td><code>formatter</code></td>
+<td>array, string, Zend\Log\Formatter\FormatterInterface</td>
+<td>Log formatter(s)</td>
+</tr>
+</tbody>
+</table></div>
+<p> <pre class=codehilite><code class=language-php>$writer = new \Zend\Log\Writer\ZendMonitor([
+    'filters' =&gt; [],
+    'formatter' =&gt; []
+]);
+
+$logger = new \Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes to Zend Monitor
+$logger-&gt;info('Informational message');</code></pre></p>
+<h2 id="stubbing-out-the-writer">Stubbing Out the Writer</h2>
+<p><code>Zend\Log\Writer\Noop</code> is a stub that does not write log data to anything; it is
+useful for disabling logging or stubbing out logging during tests:</p>
+<p> <pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Noop;
+$logger = new Zend\Log\Logger();
+$logger-&gt;addWriter($writer);
+
+// goes nowhere
+$logger-&gt;info('Informational message');</code></pre></p>
+<h3>Migration from 2.0-2.3 to 2.4+</h3>
+<p>Version 2.4 adds support for PHP 7. In PHP 7, <code>null</code> is a reserved keyword, which required renaming
+the <code>Null</code> log writer. If you were using the <code>Null</code> writer directly previously, you will now receive
+an <code>E_USER_DEPRECATED</code> notice on instantiation. Please update your code to refer to the <code>Noop</code> class
+instead.</p>
+<p>Users pulling their <code>Null</code> writer instance from the writer plugin manager receive a <code>Noop</code> instance
+instead starting in 2.4.0.</p>
+<h2 id="testing-with-the-mock-writer">Testing with the Mock Writer</h2>
+<p><code>Zend\Log\Writer\Mock</code> is a simple writer that records the raw data it receives
+in an array that it exposes as a public property.</p>
+<p> <pre class=codehilite><code class=language-php>$mock = new Zend\Log\Writer\Mock;
+$logger = new Zend\Log\Logger();
+$logger-&gt;addWriter($mock);
+
+$logger-&gt;info('Informational message');
+
+var_dump($mock-&gt;events[0]);
+
+// Array
+// (
+//    [timestamp] =&gt; 2007-04-06T07:16:37-07:00
+//    [message] =&gt; Informational message
+//    [priority] =&gt; 6
+//    [priorityName] =&gt; INFO
+// )</code></pre></p>
+<p>To clear the events logged by the mock, reset the <code>$events</code> property:</p>
+<p> <pre class=codehilite><code class=language-php>$mock-&gt;events = [];</code></pre></p>
+<h2 id="compositing-writers">Compositing Writers</h2>
+<p>There is no composite writer object. However, a <code>Logger</code> instance can write to
+any number of writers, effectively making it a composite logger.</p>
+<p>To utilize this functionality, add writers via the <code>Logger::addWriter()</code> method:</p>
+<p> <pre class=codehilite><code class=language-php>$writer1 = new Zend\Log\Writer\Stream('/path/to/first/logfile');
+$writer2 = new Zend\Log\Writer\Stream('/path/to/second/logfile');
+
+$logger = new Zend\Log\Logger();
+$logger-&gt;addWriter($writer1);
+$logger-&gt;addWriter($writer2);
+
+// goes to both writers
+$logger-&gt;info('Informational message');</code></pre></p>
+<p>You can also specify the priority number for each writer to change the order of writing. The
+priority number is an integer number passed as second parameter in the
+<code>addWriter()</code> method. Internally, <code>SplPriorityQueue</code> is used to manage writers,
+which means that:</p>
+<ul>
+<li>higher integer values indicate higher priority (triggered earliest);</li>
+<li>lower integer values (including negative values) have lower priority
+(triggered last).</li>
+</ul>
+<h2 id="distinction-between-priority-in-the-queue-of-writers-and-the-filter-priority">Distinction between priority in the queue of writers and the filter <code>Priority</code></h2>
+<p>When you add a writer to the logger, you can set its priority as a second
+argument. This priority is the priority in the queue of all writers of the
+logger. It can be any integer, and the default is <code>1</code> (<code>\Zend\Log\Logger::ALERT</code>)
+for the writers; the bigger the number, the higher the priority. A writer with a
+lower priority will be triggered later, so <code>ALERT</code> is triggered after <code>DEBUG</code>.
+For details on the list of the priorities, see the section entitled <a href="../intro/#using-built-in-priorities">Using Built-in Priorities</a>.</p>
+<p>This priority should not be confused with the <a href="../filters/#available-filters"><code>Priority</code> filter</a>,
+which determines if a message meets a <em>severity</em> threshold. When a <code>Priority</code>
+filter is attached, the writer will output the message only when the filter is
+lower or equal (by default) to the priority (the biggest severity is 0).</p>
+
+
+
+
+    <nav>
+    <ul class="page-nav hidden-print">
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../intro/">
+                    <i class="fa fa-chevron-left"></i> Previous
+                </a>
+            
+        </li>
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../filters/">
+                    Next <i class="fa fa-chevron-right"></i>
+                </a>
+            
+        </li>
+    </ul>
+</nav>
+
+
+
+
+    <div class="help-wanted">
+        <p>
+            Found a mistake or want to contribute to the documentation?
+            <a href="https://github.com/zendframework/zend-log/edit/master/docs/book/writers.md" target="_blank" class="help-wanted__link">
+                Edit this page on GitHub!
+            </a>
+        </p>
+    </div>
+
+                
+            <!-- content:end -->
+            </div>
+            <div class="col-md-3 col-xs-12 sidebar">
+                
+                    <div class="component-selector">
+    <h4 class="component-selector__title">Components</h4>
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">zend-log</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item subnavigation__list-item--active">
+        <a href="./" class="subnavigation__link">Writers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../filters/" class="subnavigation__link">Filters</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../formatters/" class="subnavigation__link">Formatters</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../processors/" class="subnavigation__link">Processors</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../service-manager/" class="subnavigation__link">Service Manager Integration</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../psr3/" class="subnavigation__link">PSR-3 Support</a>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <h5>Zend Framework</h5>
+                <ul>
+                    <li><a href="https://framework.zend.com/">framework.zend.com</a></li>
+                    <li><a href="https://docs.zendframework.com">docs.zendframework.com</a></li>
+                    <li><a href="https://packages.zendframework.com">packages.zendframework.com</a></li>
+                    <li><a href="https://apigility.org">apigility.org</a></li>
+                    <li><a href="https://getexpressive.org/">getexpressive.org</a></li>
+                </ul>
+            </div>
+        </div>
+
+        
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <a class="footer__button" href="#page-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+            </div>
+        </div>
+
+        <div class="row">
+
+            
+            <div class="col-md-9">
+                <h4 class="footer__headline">Copyright</h4>
+                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">Support</h4>
+                <ul class="support__list">
+                    <li class="support__list-item">
+                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        var base_url = '..',
+            siteName = 'zend-log';
+    </script>
+    <script src="../js/scripts-8d7ae56abf.js"></script>
+        <script src="../search/main.js"></script>
+
+    
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+
+</html>

@@ -2,42 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://docs.zendframework.com/zend-log/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-log/intro/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-log/writers/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-log/filters/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-log/formatters/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-log/processors/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-log/service-manager/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://docs.zendframework.com/zend-log/psr3/</loc>
-     <lastmod>2019-10-25</lastmod>
+     <lastmod>2019-11-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>

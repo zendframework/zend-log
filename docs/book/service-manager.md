@@ -110,6 +110,23 @@ Because the main filter is `Priority`, it can be set directly too:
 ];
 ```
 
+## PsrLoggerAbstractServiceFactory
+
+Same as above, you can use PsrLoggerAbstractServiceFactory to create a PSR-3 conform logger.
+Just use following configuration instead.
+
+```php
+// module.config.php
+return [
+    'service_manager' => [
+        'abstract_factories' => [
+            'Zend\Log\PsrLoggerAbstractServiceFactory',
+        ],
+    ],
+];
+```
+
+
 ## Custom Writers, Formatters, Filters, and Processors
 
 In the `LoggerAbstractServiceFactory` example above, a custom formatter (called

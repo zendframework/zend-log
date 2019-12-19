@@ -111,7 +111,7 @@ Given the following:
 
 ```php
 $processor = new Zend\Log\Processor\ReferenceId();
-$processor->setIdentifier(microtime(true) . '_' . uniqid());
+$processor->setReferenceId(microtime(true) . '_' . uniqid());
 $logger->addProcessor($processor);
 $logger->info('Log event');
 ```

@@ -286,14 +286,14 @@ provide custom writers, filters, formatters, or processors.</p>
 <p>When you register the abstract factory called <code>Zend\Log\LoggerAbstractServiceFactory</code>,
 you will be able to setup loggers via the configuration. The abstract factory can be
 registered in the service manager using the following configuration:</p>
-<p> <pre class=codehilite><code class=language-php>// module.config.php
+<pre class=codehilite><code class=language-php>// module.config.php
 return [
     'service_manager' =&gt; [
         'abstract_factories' =&gt; [
             'Zend\Log\LoggerAbstractServiceFactory',
         ],
     ],
-];</code></pre></p>
+];</code></pre>
 <blockquote>
 <h3>Users of zend-component-installer</h3>
 <p>If you are using zend-component-installer, you will have been prompted to
@@ -307,7 +307,7 @@ module in your application. When you do, the abstract service factory
 will be registered automatically.</p>
 </blockquote>
 <p>Next, define your custom loggers in the configuration as follows:</p>
-<p> <pre class=codehilite><code class=language-php>// module.config.php
+<pre class=codehilite><code class=language-php>// module.config.php
 return [
     'log' =&gt; [
         'MyLogger' =&gt; [
@@ -343,15 +343,15 @@ return [
             ],
         ],
     ],
-];</code></pre></p>
+];</code></pre>
 <p>The logger can now be retrieved via the service manager using the key used in
 the configuration (<code>MyLogger</code>):</p>
-<p> <pre class=codehilite><code class=language-php>/** @var \Zend\Log\Logger $logger */
-$logger = $container-&gt;get('MyLogger');</code></pre></p>
+<pre class=codehilite><code class=language-php>/** @var \Zend\Log\Logger $logger */
+$logger = $container-&gt;get('MyLogger');</code></pre>
 <p>For the formatter and the filters, only the <code>name</code> is required, the options have
 default values (the values set in this example are the default ones). When only
 the name is needed, a shorter format can be used:</p>
-<p> <pre class=codehilite><code class=language-php>// module.config.php
+<pre class=codehilite><code class=language-php>// module.config.php
                     'options' =&gt; [
                         'stream' =&gt; 'php://output',
                         'formatter' =&gt; \Zend\Log\Formatter\Simple::class,
@@ -359,11 +359,11 @@ the name is needed, a shorter format can be used:</p>
                             'priority' =&gt; \Zend\Log\Filter\Priority::class,
                         ],
                     ],
-];</code></pre></p>
+];</code></pre>
 <p>Because the main filter is <code>Priority</code>, it can be set directly too:</p>
-<p> <pre class=codehilite><code class=language-php>// module.config.php
+<pre class=codehilite><code class=language-php>// module.config.php
                         'filters' =&gt; \Zend\Log\Logger::INFO,
-];</code></pre></p>
+];</code></pre>
 <h2 id="custom-writers-formatters-filters-and-processors">Custom Writers, Formatters, Filters, and Processors</h2>
 <p>In the <code>LoggerAbstractServiceFactory</code> example above, a custom formatter (called
 <code>MyFormatter</code>) and a custom filter (called <code>MyFilter</code>) are used. These classes
@@ -376,7 +376,7 @@ custom plugin managers which have the names:</p>
 <li><code>log_writers</code></li>
 </ul>
 <h3>Example</h3>
-<p> <pre class=codehilite><code class=language-php>// module.config.php
+<pre class=codehilite><code class=language-php>// module.config.php
 return [
     'log_formatters' =&gt; [
         'factories' =&gt; [
@@ -398,7 +398,7 @@ return [
             // ...
         ],
     ],
-];</code></pre></p>
+];</code></pre>
 
 
 

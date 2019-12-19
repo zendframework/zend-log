@@ -286,10 +286,10 @@ compatibility features:</p>
 <h2 id="psrloggeradapter">PsrLoggerAdapter</h2>
 <p><code>Zend\Log\PsrLoggerAdapter</code> wraps <code>Zend\Log\LoggerInterface</code>, allowing it to be used
 anywhere <code>Psr\Log\LoggerInterface</code> is expected.</p>
-<p> <pre class=codehilite><code class=language-php>$zendLogLogger = new Zend\Log\Logger;
+<pre class=codehilite><code class=language-php>$zendLogLogger = new Zend\Log\Logger;
 
 $psrLogger = new Zend\Log\PsrLoggerAdapter($zendLogLogger);
-$psrLogger-&gt;log(Psr\Log\LogLevel::INFO, 'We have a PSR-compatible logger');</code></pre></p>
+$psrLogger-&gt;log(Psr\Log\LogLevel::INFO, 'We have a PSR-compatible logger');</code></pre>
 <h2 id="psr-3-log-writer">PSR-3 log writer</h2>
 <p><code>Zend\Log\Writer\Psr</code> allows log messages and extras to be forwared to any
 PSR-3 compatible logger. As with any log writer, this has the added benefit
@@ -297,7 +297,7 @@ that your filters can be used to limit forwarded messages.</p>
 <p>The writer needs a <code>Psr\Logger\LoggerInterface</code> instance to be useful, and
 falls back to <code>Psr\Log\NullLogger</code> if none is provided. There are three ways to
 provide the PSR logger instance to the log writer:</p>
-<p> <pre class=codehilite><code class=language-php>// Via constructor parameter:
+<pre class=codehilite><code class=language-php>// Via constructor parameter:
 $writer = new Zend\Log\Writer\Psr($psrLogger);
 
 // Via option:
@@ -305,7 +305,7 @@ $writer = new Zend\Log\Writer\Psr(['logger' =&gt; $psrLogger]);
 
 // Via setter injection:
 $writer = new Zend\Log\Writer\Psr();
-$writer-&gt;setLogger($psrLogger);</code></pre></p>
+$writer-&gt;setLogger($psrLogger);</code></pre>
 <h2 id="psr-3-placeholder-processor">PSR-3 placeholder processor</h2>
 <p><code>Zend\Log\Processor\PsrPlaceholder</code> adds support for <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md#12-message">PSR-3 message placeholders</a>.
 Placeholder names correspond to keys in the "extra" array passed when logging
@@ -313,11 +313,11 @@ a message.</p>
 <p>Values can be of arbitrary type, including all scalars, and objects
 implementing <code>__toString</code>; objects not capable of string serialization will
 result in the fully-qualified class name being substituted.</p>
-<p> <pre class=codehilite><code class=language-php>$logger = new Zend\Log\Logger;
+<pre class=codehilite><code class=language-php>$logger = new Zend\Log\Logger;
 $logger-&gt;addProcessor(new Zend\Log\Processor\PsrPlaceholder);
 
 $logger-&gt;info('User with email {email} registered', ['email' =&gt; 'user@example.org']);
-// logs message 'User with email user@example.org registered'</code></pre></p>
+// logs message 'User with email user@example.org registered'</code></pre>
 
 
 

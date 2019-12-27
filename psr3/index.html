@@ -266,6 +266,10 @@
                         <a href="#psr-3-placeholder-processor" class="toc__link">PSR-3 placeholder processor</a>
                     </li>
                 
+                    <li class="toc__entry">
+                        <a href="#usage-with-zend-servicemanager" class="toc__link">Usage with zend-servicemanager</a>
+                    </li>
+                
             </ul>
         </div>
     
@@ -318,6 +322,9 @@ $logger-&gt;addProcessor(new Zend\Log\Processor\PsrPlaceholder);
 
 $logger-&gt;info('User with email {email} registered', ['email' =&gt; 'user@example.org']);
 // logs message 'User with email user@example.org registered'</code></pre>
+<h2 id="usage-with-zend-servicemanager">Usage with zend-servicemanager</h2>
+<p>For usage with zend-servicemanager, read the <a href="../service-manager/#psrloggerabstractservicefactory"><code>PsrLoggerAbstractServiceFactory</code>
+documentation</a>.</p>
 
 
 

@@ -61,6 +61,8 @@ $logger->addProcessor(new Zend\Log\Processor\PsrPlaceholder);
 $logger->info('User with email {email} registered', ['email' => 'user@example.org']);
 // logs message 'User with email user@example.org registered'
 ```
-## Usage with ServiceManager
 
-For usage with ServiceManager, check this [PsrLoggerAbstractServiceFactory](./service-manager.md#PsrLoggerAbstractServiceFactory).
+## Usage with zend-servicemanager
+
+For usage with zend-servicemanager, read the [`PsrLoggerAbstractServiceFactory`
+documentation](service-manager.md#psrloggerabstractservicefactory).

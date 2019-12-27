@@ -112,20 +112,72 @@ Because the main filter is `Priority`, it can be set directly too:
 
 ## PsrLoggerAbstractServiceFactory
 
-Same as above, you can use PsrLoggerAbstractServiceFactory to create a PSR-3 conform logger.
-Just use following configuration instead.
+As with the [`LoggerAbstractServiceFactory` above](#loggerabstractservicefactory),
+you can use `PsrLoggerAbstractServiceFactory` to create [PSR-3-conforming
+logger instances](psr3.md). Register it as an abstract factory in your
+configuration; as an example:
 
 ```php
 // module.config.php
+
+use Zend\Log\PsrLoggerAbstractServiceFactory;
+
 return [
     'service_manager' => [
         'abstract_factories' => [
-            'Zend\Log\PsrLoggerAbstractServiceFactory',
+            PsrLoggerAbstractServiceFactory::class,
         ],
     ],
 ];
 ```
 
+Additionally, instead of using the `log` configuration key, you will use the key
+`psr_log`:
+
+```php
+// module.config.php
+
+use Zend\Log\Formatter\Simple;
+use Zend\Log\Logger;
+use Zend\Log\Processor\RequestId;
+
+return [
+    'psr_log' => [                   // <-- NOTE: key change!
+        'MyLogger' => [
+            'writers' => [
+                'stream' => [
+                    'name' => 'stream',
+                    'priority' => 1,
+                    'options' => [
+                        'stream' => 'php://output',
+                        'formatter' => [
+                            'name' => Simple::class,
+                            'options' => [
+                                'format' => '%timestamp% %priorityName% (%priority%): %message% %extra%',
+                                'dateTimeFormat' => 'c',
+                            ],
+                        ],
+                        'filters' => [
+                            'priority' => [
+                                'name' => 'priority',
+                                'options' => [
+                                    'operator' => '<=',
+                                    'priority' => Logger::INFO,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'processors' => [
+                'requestid' => [
+                    'name' => RequestId::class,
+                ],
+            ],
+        ],
+    ],
+];
+```
 
 ## Custom Writers, Formatters, Filters, and Processors
 

@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.12.0 - TBD
+## 2.12.0 - 2019-12-27
 
 ### Added
 
@@ -11,28 +11,6 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Changed
 
 - [#100](https://github.com/zendframework/zend-log/pull/100) updates the psr/log constraint to 1.1.2, removing the need for an extra autoloader in this package.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## 2.11.1 - TBD
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
 
 ### Deprecated
 

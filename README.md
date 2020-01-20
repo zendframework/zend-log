@@ -2,7 +2,7 @@
 
 > ## Repository abandoned 2019-12-31
 >
-> This repository has moved to laminas/laminas-log.
+> This repository has moved to [laminas/laminas-log](https://github.com/laminas/laminas-log).
 
 [![Build Status](https://secure.travis-ci.org/zendframework/zend-log.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-log)
 [![Coverage Status](https://coveralls.io/repos/github/zendframework/zend-log/badge.svg?branch=master)](https://coveralls.io/github/zendframework/zend-log?branch=master)

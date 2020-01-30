@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Robust, composite logger with filtering, formatting, and PSR-3 support.">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-log/service-manager/">
+    <link rel="canonical" href="https://docs.zendframework.com/service-manager/">
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>Service Manager Integration - zend-log - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -207,9 +207,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.laminas.dev/laminas-log/">laminas/laminas-log.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -290,14 +290,16 @@ provide custom writers, filters, formatters, or processors.</p>
 <p>When you register the abstract factory called <code>Zend\Log\LoggerAbstractServiceFactory</code>,
 you will be able to setup loggers via the configuration. The abstract factory can be
 registered in the service manager using the following configuration:</p>
-<pre class=codehilite><code class=language-php>// module.config.php
+<pre><code class="language-php">// module.config.php
 return [
     'service_manager' =&gt; [
         'abstract_factories' =&gt; [
             'Zend\Log\LoggerAbstractServiceFactory',
         ],
     ],
-];</code></pre>
+];
+</code></pre>
+
 <blockquote>
 <h3>Users of zend-component-installer</h3>
 <p>If you are using zend-component-installer, you will have been prompted to
@@ -311,7 +313,7 @@ module in your application. When you do, the abstract service factory
 will be registered automatically.</p>
 </blockquote>
 <p>Next, define your custom loggers in the configuration as follows:</p>
-<pre class=codehilite><code class=language-php>// module.config.php
+<pre><code class="language-php">// module.config.php
 return [
     'log' =&gt; [
         'MyLogger' =&gt; [
@@ -347,15 +349,19 @@ return [
             ],
         ],
     ],
-];</code></pre>
+];
+</code></pre>
+
 <p>The logger can now be retrieved via the service manager using the key used in
 the configuration (<code>MyLogger</code>):</p>
-<pre class=codehilite><code class=language-php>/** @var \Zend\Log\Logger $logger */
-$logger = $container-&gt;get('MyLogger');</code></pre>
+<pre><code class="language-php">/** @var \Zend\Log\Logger $logger */
+$logger = $container-&gt;get('MyLogger');
+</code></pre>
+
 <p>For the formatter and the filters, only the <code>name</code> is required, the options have
 default values (the values set in this example are the default ones). When only
 the name is needed, a shorter format can be used:</p>
-<pre class=codehilite><code class=language-php>// module.config.php
+<pre><code class="language-php">// module.config.php
                     'options' =&gt; [
                         'stream' =&gt; 'php://output',
                         'formatter' =&gt; \Zend\Log\Formatter\Simple::class,
@@ -363,17 +369,21 @@ the name is needed, a shorter format can be used:</p>
                             'priority' =&gt; \Zend\Log\Filter\Priority::class,
                         ],
                     ],
-];</code></pre>
+];
+</code></pre>
+
 <p>Because the main filter is <code>Priority</code>, it can be set directly too:</p>
-<pre class=codehilite><code class=language-php>// module.config.php
+<pre><code class="language-php">// module.config.php
                         'filters' =&gt; \Zend\Log\Logger::INFO,
-];</code></pre>
+];
+</code></pre>
+
 <h2 id="psrloggerabstractservicefactory">PsrLoggerAbstractServiceFactory</h2>
 <p>As with the <a href="#loggerabstractservicefactory"><code>LoggerAbstractServiceFactory</code> above</a>,
 you can use <code>PsrLoggerAbstractServiceFactory</code> to create <a href="../psr3/">PSR-3-conforming
 logger instances</a>. Register it as an abstract factory in your
 configuration; as an example:</p>
-<pre class=codehilite><code class=language-php>// module.config.php
+<pre><code class="language-php">// module.config.php
 
 use Zend\Log\PsrLoggerAbstractServiceFactory;
 
@@ -383,10 +393,12 @@ return [
             PsrLoggerAbstractServiceFactory::class,
         ],
     ],
-];</code></pre>
+];
+</code></pre>
+
 <p>Additionally, instead of using the <code>log</code> configuration key, you will use the key
 <code>psr_log</code>:</p>
-<pre class=codehilite><code class=language-php>// module.config.php
+<pre><code class="language-php">// module.config.php
 
 use Zend\Log\Formatter\Simple;
 use Zend\Log\Logger;
@@ -427,7 +439,9 @@ return [
             ],
         ],
     ],
-];</code></pre>
+];
+</code></pre>
+
 <h2 id="custom-writers-formatters-filters-and-processors">Custom Writers, Formatters, Filters, and Processors</h2>
 <p>In the <code>LoggerAbstractServiceFactory</code> example above, a custom formatter (called
 <code>MyFormatter</code>) and a custom filter (called <code>MyFilter</code>) are used. These classes
@@ -440,7 +454,7 @@ custom plugin managers which have the names:</p>
 <li><code>log_writers</code></li>
 </ul>
 <h3>Example</h3>
-<pre class=codehilite><code class=language-php>// module.config.php
+<pre><code class="language-php">// module.config.php
 return [
     'log_formatters' =&gt; [
         'factories' =&gt; [
@@ -462,7 +476,8 @@ return [
             // ...
         ],
     ],
-];</code></pre>
+];
+</code></pre>
 
 
 
@@ -636,7 +651,7 @@ return [
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -644,10 +659,10 @@ return [
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -655,27 +670,28 @@ return [
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '..',
             siteName = 'zend-log';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">

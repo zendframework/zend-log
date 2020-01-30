@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Robust, composite logger with filtering, formatting, and PSR-3 support.">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-log/writers/">
+    <link rel="canonical" href="https://docs.zendframework.com/writers/">
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>Writers - zend-log - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -207,9 +207,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.laminas.dev/laminas-log/">laminas/laminas-log.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -325,23 +325,27 @@ A writer's responsibility is to record log data to a storage backend.</p>
 <p>To write log data to the PHP output buffer, use the <code>php://output</code> stream.
 Alternately, you can send log data directly to a stream like <code>STDERR</code>
 (<code>php://stderr</code>).</p>
-<pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Stream('php://output');
+<pre><code class="language-php">$writer = new Zend\Log\Writer\Stream('php://output');
 $logger = new Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>To write data to a file, use one of the <a href="http://www.php.net/manual/en/wrappers.php#wrappers.file">filesystem
 streams</a>:</p>
-<pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Stream('/path/to/logfile');
+<pre><code class="language-php">$writer = new Zend\Log\Writer\Stream('/path/to/logfile');
 $logger = new Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>By default, the stream opens in the append access mode ("a"). To open it with a
 different access mode, the <code>Zend\Log\Writer\Stream</code> constructor accepts an
 optional second parameter for the stream mode.</p>
 <p>The constructor of <code>Zend\Log\Writer\Stream</code> also accepts an existing stream resource:</p>
-<pre class=codehilite><code class=language-php>$stream = @fopen('/path/to/logfile', 'a', false);
+<pre><code class="language-php">$stream = @fopen('/path/to/logfile', 'a', false);
 if (! $stream) {
     throw new Exception('Failed to open stream');
 }
@@ -350,18 +354,22 @@ $writer = new Zend\Log\Writer\Stream($stream);
 $logger = new Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>You cannot specify the stream access mode for existing stream resources. Doing
 so causes a <code>Zend\Log\Exception</code> to be thrown.</p>
 <p>You can use an array of options in place of the stream argument when
 constructing a <code>Stream</code> instance; when doing so, the <code>stream</code> key is required:</p>
-<pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Stream([
+<pre><code class="language-php">$writer = new Zend\Log\Writer\Stream([
     'stream' =&gt; 'php://output',
 ]);
 $logger = new Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>The following table details all allowed constructor arguments and their
 corresponding configuration options.</p>
 <div class="table-responsive"><table>
@@ -406,7 +414,7 @@ corresponding configuration options.</p>
 <code>Zend\Db\Adapter\Adapter</code> instance, a table name, an optional mapping of event
 data to database columns, and an optional string contains the character
 separator for the log array:</p>
-<pre class=codehilite><code class=language-php>$dbconfig = [
+<pre><code class="language-php">$dbconfig = [
     // Sqlite Configuration
     'driver' =&gt; 'Pdo',
     'dsn' =&gt; 'sqlite:' . __DIR__ . '/tmp/sqlite.db',
@@ -417,13 +425,15 @@ $writer = new Zend\Log\Writer\Db($db, 'log_table_name');
 $logger = new Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>The example above writes a single row of log data to the database table named
 <code>log_table_name</code> table. The database columns will be created according to the
 event array generated by the <code>Zend\Log\Logger</code> instance.</p>
 <p>If we specify the mapping of the events with the database columns, the log will
 store only to the selected fields in the database:</p>
-<pre class=codehilite><code class=language-php>$dbconfig = [
+<pre><code class="language-php">$dbconfig = [
     // Sqlite Configuration
     'driver' =&gt; 'Pdo',
     'dsn' =&gt; 'sqlite:' . __DIR__ . '/tmp/sqlite.db',
@@ -439,7 +449,9 @@ $writer = new Zend\Log\Writer\Db($db, 'log_table_name', $mapping);
 $logger = new Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>In this example, the writer stores only the log timestamp, priority, and
 message, in the database fields date, type, and event, respectively.</p>
 <p><code>Zend\Log\Writer\Db</code> has a fourth optional parameter in the constructor. This
@@ -454,7 +466,9 @@ found in the <code>extra</code> array.</p>
 must install the FirePHPCore server library and the FirePHP browser extension.</p>
 <p>To install the FirePHPCore library you can use
 <a href="https://getcomposer.org">Composer</a>:</p>
-<pre class=codehilite><code class=language-bash>$ composer require firephp/firephp-core</code></pre>
+<pre><code class="language-bash">$ composer require firephp/firephp-core
+</code></pre>
+
 <h2 id="writing-to-chromephp">Writing to ChromePHP</h2>
 <p><code>Zend\Log\Writer\ChromePHP</code> sends log data to the
 <a href="https://chrome.google.com/webstore/detail/chrome-logger/noaneddfkdjfnfdakjjmocngnfkfehhd">ChromePHP</a>
@@ -462,10 +476,12 @@ Chrome extension.</p>
 <p>To use the ChromePHP writer, you will also need to include the <a href="http://craig.is/writing/chrome-logger">ChromePHP
 Library</a> library in your application. Use
 <a href="https://getcomposer.org">Composer</a> to do this:</p>
-<pre class=codehilite><code class=language-bash>$ composer require ccampbell/chromephp</code></pre>
+<pre><code class="language-bash">$ composer require ccampbell/chromephp
+</code></pre>
+
 <h2 id="writing-to-mail">Writing to Mail</h2>
 <p><code>Zend\Log\Writer\Mail</code> takes a configuration array or <code>Zend\Mail\Message</code>. Basic usage looks like</p>
-<pre class=codehilite><code class=language-php>$message = new \Zend\Mail\Message();
+<pre><code class="language-php">$message = new \Zend\Mail\Message();
 $message-&gt;setTo('email@example.com');
 
 $writer = new \Zend\Log\Writer\Mail($message);
@@ -473,19 +489,25 @@ $logger = new \Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
 // goes to mail message
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>An email of the logged information will be sent via <code>sendmail</code> by default. You may also provide a <code>Zend\Mail\Transport</code>
 during construction. For configuration options checkout the <code>Zend\Mail\Transport</code> documentation.</p>
-<pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Mail($mail, $transport);</code></pre>
+<pre><code class="language-php">$writer = new Zend\Log\Writer\Mail($mail, $transport);
+</code></pre>
+
 <p><code>Zend\Log\Writer\mail</code> may also be constructed with a configuration array. The configuration array accepts the following
 keys:</p>
-<pre class=codehilite><code class=language-php>[
+<pre><code class="language-php">[
     'subject_prepend_text' =&gt; '',
     'transport' =&gt; $transport
     'mail' =&gt; $mail,
     'filters' =&gt; [],
     'formatter' =&gt; []
-]</code></pre>
+]
+</code></pre>
+
 <p>And expects the following data:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -529,7 +551,7 @@ keys:</p>
 </tbody>
 </table></div>
 <p>Basic usage of the configuration array looks like:</p>
-<pre class=codehilite><code class=language-php>$transport = new \Zend\Mail\Transport\Smtp();
+<pre><code class="language-php">$transport = new \Zend\Mail\Transport\Smtp();
 // TODO configure the SMTP transport
 
 $message = new \Zend\Mail\Message();
@@ -547,9 +569,11 @@ $logger = new \Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
 // goes to mail message
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>To use the <code>Zend\Mail\Message</code> factory array construction will look like:</p>
-<pre class=codehilite><code class=language-php>$transport = new \Zend\Mail\Transport\Smtp();
+<pre><code class="language-php">$transport = new \Zend\Mail\Transport\Smtp();
 // TODO configure the SMTP transport
 
 $writer = new \Zend\Log\Writer\Mail([
@@ -566,18 +590,22 @@ $logger = new \Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
 // goes to mail message
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <h2 id="writing-to-mongodb">Writing to MongoDB</h2>
 <p>Using the legacy mongo php driver (may be used up to up to php 5.6)</p>
 <p>In this example <code>Zend\Log\Writer\MongoDB</code> uses an array for construction. Available keys include:</p>
-<pre class=codehilite><code class=language-php>[
+<pre><code class="language-php">[
     'save_options' =&gt; [],
     'collection'   =&gt; '',
     'database'     =&gt; '',
     'mongo'        =&gt; $mongo,
     'filters'      =&gt; [],
     'formatter'    =&gt; []
-]</code></pre>
+]
+</code></pre>
+
 <p><code>collection</code>, <code>database</code>, and <code>mongo</code> are required. Each key accepts:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -621,7 +649,7 @@ $logger-&gt;info('Informational message');</code></pre>
 </tbody>
 </table></div>
 <p>And <code>Zend\Log\Writer\MongoDB</code> is used like this:</p>
-<pre class=codehilite><code class=language-php>$mongo = new MongoClient();
+<pre><code class="language-php">$mongo = new MongoClient();
 
 $writer = new \Zend\Log\Writer\MongoDB([
     'save_options' =&gt; [], // MongoDB Driver Options
@@ -636,9 +664,11 @@ $logger = new \Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
 // goes to Mongo DB
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>It may also be constructed by passing the arguments directly</p>
-<pre class=codehilite><code class=language-php>$mongo       = new MongoClient();
+<pre><code class="language-php">$mongo       = new MongoClient();
 $database    = 'databaseName';
 $collection  = 'collectionName';
 $saveOptions = [];
@@ -648,17 +678,21 @@ $logger = new \Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
 // goes to Mongo DB
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>Using the mongodb driver (php 5.4 and later)</p>
 <p>In this example <code>Zend\Log\Writer\MongoDB</code> uses an array for construction. Available keys include:</p>
-<pre class=codehilite><code class=language-php>[
+<pre><code class="language-php">[
     'save_options' =&gt; [],
     'collection'   =&gt; '',
     'database'     =&gt; '',
     'manager'      =&gt; $mongo,
     'filters'      =&gt; [],
     'formatter'    =&gt; []
-]</code></pre>
+]
+</code></pre>
+
 <p><code>collection</code>, <code>database</code>, and <code>manager</code> are required. Each key accepts:</p>
 <div class="table-responsive"><table>
 <thead>
@@ -702,7 +736,7 @@ $logger-&gt;info('Informational message');</code></pre>
 </tbody>
 </table></div>
 <p>And <code>Zend\Log\Writer\MongoDB</code> is used like this:</p>
-<pre class=codehilite><code class=language-php>$mongo = new MongoDB\Driver\Manager();
+<pre><code class="language-php">$mongo = new MongoDB\Driver\Manager();
 
 $writer = new \Zend\Log\Writer\MongoDB([
     'save_options' =&gt; [], // MongoDB Driver Options
@@ -717,9 +751,11 @@ $logger = new \Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
 // goes to Mongo DB
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>It may also be constructed by passing the arguments directly</p>
-<pre class=codehilite><code class=language-php>$mongo       = new MongoDB\Driver\Manager();
+<pre><code class="language-php">$mongo       = new MongoDB\Driver\Manager();
 $database    = 'databaseName';
 $collection  = 'collectionName';
 $saveOptions = [];
@@ -729,15 +765,19 @@ $logger = new \Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
 // goes to Mongo DB
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <h2 id="writing-to-syslog">Writing to Syslog</h2>
 <p><code>Zend\Log\Writer\Syslog</code> is a writer generates system log messages from the data it receives.</p>
-<pre class=codehilite><code class=language-php>$writer = new \Zend\Log\Writer\Syslog();
+<pre><code class="language-php">$writer = new \Zend\Log\Writer\Syslog();
 $logger = new \Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
 // goes to system log
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>The application name and syslog facility may be set</p>
 <div class="table-responsive"><table>
 <thead>
@@ -770,7 +810,7 @@ $logger-&gt;info('Informational message');</code></pre>
 </tr>
 </tbody>
 </table></div>
-<pre class=codehilite><code class=language-php>$writer = new \Zend\Log\Writer\Syslog([
+<pre><code class="language-php">$writer = new \Zend\Log\Writer\Syslog([
     'application' =&gt; '',
     'facility' =&gt; '',
     'filters' =&gt; [],
@@ -780,16 +820,20 @@ $logger-&gt;info('Informational message');</code></pre>
 $logger = new \Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <h2 id="writing-to-zend-monitor">Writing to Zend Monitor</h2>
 <p><code>Zend\Log\Writer\ZendMonitor</code> writes log data to the Zend Monitor on a Zend Server. If the web server is not a Zend
 Server or Zend Monitor is not enabled it will fail silently.</p>
-<pre class=codehilite><code class=language-php>$writer = new \Zend\Log\Writer\ZendMonitor();
+<pre><code class="language-php">$writer = new \Zend\Log\Writer\ZendMonitor();
 $logger = new \Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
 // goes to Zend Monitor
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p><code>Zend\Log\Writer\AbstractWriter</code> options are available.</p>
 <div class="table-responsive"><table>
 <thead>
@@ -812,7 +856,7 @@ $logger-&gt;info('Informational message');</code></pre>
 </tr>
 </tbody>
 </table></div>
-<pre class=codehilite><code class=language-php>$writer = new \Zend\Log\Writer\ZendMonitor([
+<pre><code class="language-php">$writer = new \Zend\Log\Writer\ZendMonitor([
     'filters' =&gt; [],
     'formatter' =&gt; []
 ]);
@@ -821,16 +865,20 @@ $logger = new \Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
 // goes to Zend Monitor
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <h2 id="stubbing-out-the-writer">Stubbing Out the Writer</h2>
 <p><code>Zend\Log\Writer\Noop</code> is a stub that does not write log data to anything; it is
 useful for disabling logging or stubbing out logging during tests:</p>
-<pre class=codehilite><code class=language-php>$writer = new Zend\Log\Writer\Noop;
+<pre><code class="language-php">$writer = new Zend\Log\Writer\Noop;
 $logger = new Zend\Log\Logger();
 $logger-&gt;addWriter($writer);
 
 // goes nowhere
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <h3>Migration from 2.0-2.3 to 2.4+</h3>
 <p>Version 2.4 adds support for PHP 7. In PHP 7, <code>null</code> is a reserved keyword, which required renaming
 the <code>Null</code> log writer. If you were using the <code>Null</code> writer directly previously, you will now receive
@@ -841,7 +889,7 @@ instead starting in 2.4.0.</p>
 <h2 id="testing-with-the-mock-writer">Testing with the Mock Writer</h2>
 <p><code>Zend\Log\Writer\Mock</code> is a simple writer that records the raw data it receives
 in an array that it exposes as a public property.</p>
-<pre class=codehilite><code class=language-php>$mock = new Zend\Log\Writer\Mock;
+<pre><code class="language-php">$mock = new Zend\Log\Writer\Mock;
 $logger = new Zend\Log\Logger();
 $logger-&gt;addWriter($mock);
 
@@ -855,14 +903,18 @@ var_dump($mock-&gt;events[0]);
 //    [message] =&gt; Informational message
 //    [priority] =&gt; 6
 //    [priorityName] =&gt; INFO
-// )</code></pre>
+// )
+</code></pre>
+
 <p>To clear the events logged by the mock, reset the <code>$events</code> property:</p>
-<pre class=codehilite><code class=language-php>$mock-&gt;events = [];</code></pre>
+<pre><code class="language-php">$mock-&gt;events = [];
+</code></pre>
+
 <h2 id="compositing-writers">Compositing Writers</h2>
 <p>There is no composite writer object. However, a <code>Logger</code> instance can write to
 any number of writers, effectively making it a composite logger.</p>
 <p>To utilize this functionality, add writers via the <code>Logger::addWriter()</code> method:</p>
-<pre class=codehilite><code class=language-php>$writer1 = new Zend\Log\Writer\Stream('/path/to/first/logfile');
+<pre><code class="language-php">$writer1 = new Zend\Log\Writer\Stream('/path/to/first/logfile');
 $writer2 = new Zend\Log\Writer\Stream('/path/to/second/logfile');
 
 $logger = new Zend\Log\Logger();
@@ -870,7 +922,9 @@ $logger-&gt;addWriter($writer1);
 $logger-&gt;addWriter($writer2);
 
 // goes to both writers
-$logger-&gt;info('Informational message');</code></pre>
+$logger-&gt;info('Informational message');
+</code></pre>
+
 <p>You can also specify the priority number for each writer to change the order of writing. The
 priority number is an integer number passed as second parameter in the
 <code>addWriter()</code> method. Internally, <code>SplPriorityQueue</code> is used to manage writers,
@@ -1064,7 +1118,7 @@ lower or equal (by default) to the priority (the biggest severity is 0).</p>
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -1072,10 +1126,10 @@ lower or equal (by default) to the priority (the biggest severity is 0).</p>
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -1083,27 +1137,28 @@ lower or equal (by default) to the priority (the biggest severity is 0).</p>
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '..',
             siteName = 'zend-log';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">

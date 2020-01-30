@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-     <loc>https://docs.zendframework.com/zend-log/</loc>
-     <lastmod>2019-12-27</lastmod>
+     <loc>https://docs.zendframework.com/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-log/intro/</loc>
-     <lastmod>2019-12-27</lastmod>
+     <loc>https://docs.zendframework.com/intro/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-log/writers/</loc>
-     <lastmod>2019-12-27</lastmod>
+     <loc>https://docs.zendframework.com/writers/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-log/filters/</loc>
-     <lastmod>2019-12-27</lastmod>
+     <loc>https://docs.zendframework.com/filters/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-log/formatters/</loc>
-     <lastmod>2019-12-27</lastmod>
+     <loc>https://docs.zendframework.com/formatters/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-log/processors/</loc>
-     <lastmod>2019-12-27</lastmod>
+     <loc>https://docs.zendframework.com/processors/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-log/service-manager/</loc>
-     <lastmod>2019-12-27</lastmod>
+     <loc>https://docs.zendframework.com/service-manager/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-log/psr3/</loc>
-     <lastmod>2019-12-27</lastmod>
+     <loc>https://docs.zendframework.com/psr3/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>

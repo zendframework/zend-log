@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Robust, composite logger with filtering, formatting, and PSR-3 support.">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-log/psr3/">
+    <link rel="canonical" href="https://docs.zendframework.com/psr3/">
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>PSR-3 Support - zend-log - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -207,9 +207,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.laminas.dev/laminas-log/">laminas/laminas-log.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -290,10 +290,12 @@ compatibility features:</p>
 <h2 id="psrloggeradapter">PsrLoggerAdapter</h2>
 <p><code>Zend\Log\PsrLoggerAdapter</code> wraps <code>Zend\Log\LoggerInterface</code>, allowing it to be used
 anywhere <code>Psr\Log\LoggerInterface</code> is expected.</p>
-<pre class=codehilite><code class=language-php>$zendLogLogger = new Zend\Log\Logger;
+<pre><code class="language-php">$zendLogLogger = new Zend\Log\Logger;
 
 $psrLogger = new Zend\Log\PsrLoggerAdapter($zendLogLogger);
-$psrLogger-&gt;log(Psr\Log\LogLevel::INFO, 'We have a PSR-compatible logger');</code></pre>
+$psrLogger-&gt;log(Psr\Log\LogLevel::INFO, 'We have a PSR-compatible logger');
+</code></pre>
+
 <h2 id="psr-3-log-writer">PSR-3 log writer</h2>
 <p><code>Zend\Log\Writer\Psr</code> allows log messages and extras to be forwared to any
 PSR-3 compatible logger. As with any log writer, this has the added benefit
@@ -301,7 +303,7 @@ that your filters can be used to limit forwarded messages.</p>
 <p>The writer needs a <code>Psr\Logger\LoggerInterface</code> instance to be useful, and
 falls back to <code>Psr\Log\NullLogger</code> if none is provided. There are three ways to
 provide the PSR logger instance to the log writer:</p>
-<pre class=codehilite><code class=language-php>// Via constructor parameter:
+<pre><code class="language-php">// Via constructor parameter:
 $writer = new Zend\Log\Writer\Psr($psrLogger);
 
 // Via option:
@@ -309,7 +311,9 @@ $writer = new Zend\Log\Writer\Psr(['logger' =&gt; $psrLogger]);
 
 // Via setter injection:
 $writer = new Zend\Log\Writer\Psr();
-$writer-&gt;setLogger($psrLogger);</code></pre>
+$writer-&gt;setLogger($psrLogger);
+</code></pre>
+
 <h2 id="psr-3-placeholder-processor">PSR-3 placeholder processor</h2>
 <p><code>Zend\Log\Processor\PsrPlaceholder</code> adds support for <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md#12-message">PSR-3 message placeholders</a>.
 Placeholder names correspond to keys in the "extra" array passed when logging
@@ -317,11 +321,13 @@ a message.</p>
 <p>Values can be of arbitrary type, including all scalars, and objects
 implementing <code>__toString</code>; objects not capable of string serialization will
 result in the fully-qualified class name being substituted.</p>
-<pre class=codehilite><code class=language-php>$logger = new Zend\Log\Logger;
+<pre><code class="language-php">$logger = new Zend\Log\Logger;
 $logger-&gt;addProcessor(new Zend\Log\Processor\PsrPlaceholder);
 
 $logger-&gt;info('User with email {email} registered', ['email' =&gt; 'user@example.org']);
-// logs message 'User with email user@example.org registered'</code></pre>
+// logs message 'User with email user@example.org registered'
+</code></pre>
+
 <h2 id="usage-with-zend-servicemanager">Usage with zend-servicemanager</h2>
 <p>For usage with zend-servicemanager, read the <a href="../service-manager/#psrloggerabstractservicefactory"><code>PsrLoggerAbstractServiceFactory</code>
 documentation</a>.</p>
@@ -494,7 +500,7 @@ documentation</a>.</p>
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -502,10 +508,10 @@ documentation</a>.</p>
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -513,27 +519,28 @@ documentation</a>.</p>
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '..',
             siteName = 'zend-log';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">

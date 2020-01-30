@@ -7,12 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Robust, composite logger with filtering, formatting, and PSR-3 support.">  
-    <link rel="canonical" href="https://docs.zendframework.com/zend-log/intro/">
+    <link rel="canonical" href="https://docs.zendframework.com/intro/">
     <link rel="shortcut icon" href="../img/favicon.ico">
 
     <title>Introduction - zend-log - Zend Framework Docs</title>
 
-    <link rel="stylesheet" href="../css/styles-5cfabd53ee.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body id="page-top">
 
@@ -207,9 +207,9 @@
     <div class="laminas-announcement">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                Zend Framework transitions to the Linux Foundation. <a href="https://getlaminas.org">Learn More.</a>
-            </div>
+            <div class="col-xs-12"><strong>
+                This package has moved. Visit its replacement, <a href="https://docs.laminas.dev/laminas-log/">laminas/laminas-log.</a>
+            </strong></div>
         </div>
     </div>
 </div>
@@ -308,25 +308,31 @@ objects:</p>
 </ul>
 <h2 id="creating-a-log">Creating a Log</h2>
 <p>To get started logging, instantiate a writer and then pass it to a logger instance:</p>
-<pre class=codehilite><code class=language-php>$logger = new Zend\Log\Logger;
+<pre><code class="language-php">$logger = new Zend\Log\Logger;
 $writer = new Zend\Log\Writer\Stream('php://output');
 
-$logger-&gt;addWriter($writer);</code></pre>
+$logger-&gt;addWriter($writer);
+</code></pre>
+
 <p>It is important to note that the logger must have at least one writer. You can
 add any number of writers using the logger's <code>addWriter()</code> method.</p>
 <p>You can also add a priority to each writer. The priority is specified as an
 integer and passed as the second argument in the <code>addWriter()</code> method.</p>
 <p>Another way to add a writer to a logger is to use the name of the writer as
 follow:</p>
-<pre class=codehilite><code class=language-php>$logger = new Zend\Log\Logger;
+<pre><code class="language-php">$logger = new Zend\Log\Logger;
 
-$logger-&gt;addWriter('stream', null, ['stream' =&gt; 'php://output']);</code></pre>
+$logger-&gt;addWriter('stream', null, ['stream' =&gt; 'php://output']);
+</code></pre>
+
 <p>In this example we passed the stream <code>php://output</code> as a parameter (via an
 options array).</p>
 <h2 id="logging-messages">Logging Messages</h2>
 <p>To log a message, call the <code>log()</code> method of a <code>Logger</code> instance and pass it the
 message priority and the message:</p>
-<pre class=codehilite><code class=language-php>$logger-&gt;log(Zend\Log\Logger::INFO, 'Informational message');</code></pre>
+<pre><code class="language-php">$logger-&gt;log(Zend\Log\Logger::INFO, 'Informational message');
+</code></pre>
+
 <p>The first parameter of the <code>log()</code> method is the integer <code>priority</code> and the
 second parameter is the string <code>message</code>. The priority must be one of the
 priorities recognized by the <code>Logger</code> instance (explained in the next section).
@@ -335,28 +341,34 @@ information/metadata to the writer.</p>
 <p>Instead of using the <code>log()</code> method, you can optionally call methods named after
 the various supported priorities, which allows you to omit the <code>priority</code>
 argument:</p>
-<pre class=codehilite><code class=language-php>$logger-&gt;log(Zend\Log\Logger::INFO, 'Informational message');
+<pre><code class="language-php">$logger-&gt;log(Zend\Log\Logger::INFO, 'Informational message');
 $logger-&gt;info('Informational message');
 
 $logger-&gt;log(Zend\Log\Logger::EMERG, 'Emergency message');
-$logger-&gt;emerg('Emergency message');</code></pre>
+$logger-&gt;emerg('Emergency message');
+</code></pre>
+
 <h2 id="destroying-a-log">Destroying a Log</h2>
 <p>If the <code>Logger</code> instance is no longer needed, set the variable containing it to
 <code>NULL</code> to destroy it.  This will automatically call the <code>shutdown()</code> instance
 method of each attached writer before the <code>Logger</code> instance is destroyed.</p>
-<pre class=codehilite><code class=language-php>$logger = null;</code></pre>
+<pre><code class="language-php">$logger = null;
+</code></pre>
+
 <p>Explicitly destroying the log in this way is optional and is performed
 automatically at PHP shutdown.</p>
 <h2 id="using-built-in-priorities">Using Built-in Priorities</h2>
 <p>The <code>Zend\Log\Logger</code> class defines the following priorities:</p>
-<pre class=codehilite><code class=language-php>EMERG   = 0;  // Emergency: system is unusable
+<pre><code class="language-php">EMERG   = 0;  // Emergency: system is unusable
 ALERT   = 1;  // Alert: action must be taken immediately
 CRIT    = 2;  // Critical: critical conditions
 ERR     = 3;  // Error: error conditions
 WARN    = 4;  // Warning: warning conditions
 NOTICE  = 5;  // Notice: normal but significant condition
 INFO    = 6;  // Informational: informational messages
-DEBUG   = 7;  // Debug: debug messages</code></pre>
+DEBUG   = 7;  // Debug: debug messages
+</code></pre>
+
 <p>These priorities are always available, and a convenience method of the same name
 (but lowercased) is available for each one.</p>
 <p>The priorities are not arbitrary. They come from the BSD syslog protocol, which
@@ -388,12 +400,14 @@ Calling the static method <code>registerErrorHandler($logger)</code> will regist
 <code>$logger</code> instance to log errors; it returns a boolean <code>false</code> ensuring that it
 returns delegation to any other error handlers registered, including the default
 PHP error handler.</p>
-<pre class=codehilite><code class=language-php>$logger = new Zend\Log\Logger;
+<pre><code class="language-php">$logger = new Zend\Log\Logger;
 $writer = new Zend\Log\Writer\Stream('php://output');
 
 $logger-&gt;addWriter($writer);
 
-Zend\Log\Logger::registerErrorHandler($logger);</code></pre>
+Zend\Log\Logger::registerErrorHandler($logger);
+</code></pre>
+
 <p>If you want to unregister the error handler, can use the <code>unregisterErrorHandler()</code> static
 method.</p>
 <p>You can also configure a logger to intercept exceptions using the static method
@@ -571,7 +585,7 @@ method.</p>
             
             <div class="col-md-9">
                 <h4 class="footer__headline">Copyright</h4>
-                <p>&copy; 2006-2019 by <a href="https://www.zend.com/">Zend</a>, a <a href="https://www.roguewave.com/">Rogue Wave Company</a>.</p>
+                <p>&copy; 2006-2020 by <a href="https://www.zend.com/">Zend</a> by <a href="https://www.perforce.com/">Perforce</a>.</p>
             </div>
 
             
@@ -579,10 +593,10 @@ method.</p>
                 <h4 class="footer__headline">Support</h4>
                 <ul class="support__list">
                     <li class="support__list-item">
-                        <a href="https://discourse.zendframework.com" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
                     </li>
                     <li class="support__list-item">
-                        <a href="https://zendframework-slack.herokuapp.com" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                        <a href="https://laminas.dev/chat/" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
                     </li>
                     <li class="support__list-item">
                         <a href="https://github.com/zendframework" class="support__link" title="Github"><i class="fa fa-github"></i></a>
@@ -590,27 +604,28 @@ method.</p>
                     <li class="support__list-item">
                         <a href="https://twitter.com/zfdevteam" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
                     </li>
-                    <li class="support__list-item">
-                        <a href="https://tinyletter.com/mwopzend" class="support__link" title="Newsletter"><i class="fa fa-envelope"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
-                    </li>
-                    <li class="support__list-item">
-                        <a href="https://framework.zend.com/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
-                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </footer>
 
+<nav class="cookie-bar navbar navbar-fixed-bottom navbar-default hidden">
+    <div class="container">
+        <p class="navbar-text">
+            We use cookies to allow you to dismiss dialogs such as the Laminas
+            Project notification.
+        </p>
+        <button type="button" class="cookie-button btn btn-default navbar-btn">Allow Cookies</button>
+    </div>
+</nav>
+
     <script>
         var base_url = '..',
             siteName = 'zend-log';
     </script>
-    <script src="../js/scripts-8d7ae56abf.js"></script>
-        <script src="../search/main.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
